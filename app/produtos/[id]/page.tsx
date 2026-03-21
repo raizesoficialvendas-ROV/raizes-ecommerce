@@ -28,14 +28,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export const dynamicParams = true;          // permite acessar IDs não pré-gerados
-
-export async function generateStaticParams() {
-  // Não fazemos query no build pois createClient() usa cookies()
-  // que não existe no build-time. dynamicParams = true garante 
-  // que qualquer ID é resolvido em runtime.
-  return [];
-}
+export const dynamic = 'force-dynamic';     // sempre renderiza dinamicamente (cookies() requer request context)
 
 export default async function ProductPage({ params }: PageProps) {
   const { id } = await params;
