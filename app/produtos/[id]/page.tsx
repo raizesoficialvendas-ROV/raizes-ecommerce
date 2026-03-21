@@ -29,7 +29,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export const dynamicParams = true;          // permite acessar IDs não pré-gerados
-export const revalidate = 60;                // ISR: re-valida a cada 60s
 
 export async function generateStaticParams() {
   // Não fazemos query no build pois createClient() usa cookies()
