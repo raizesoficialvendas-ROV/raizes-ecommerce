@@ -1,0 +1,12 @@
+.env.local
+.env
+node_modules/
+.next/
+out/
+dist/
+*.log
+npm-debug.log*
+
+# Supabase
+supabase/.branches
+supabase/.temp
