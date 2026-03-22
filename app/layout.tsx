@@ -82,7 +82,7 @@ export default function RootLayout({
       lang="pt-BR"
       className={`${inter.variable} ${playfairDisplay.variable} ${cormorantGaramond.variable}`}
     >
-      <body className="bg-ivory text-obsidian antialiased">
+      <body className="bg-ivory text-obsidian antialiased" suppressHydrationWarning>
         <CartDrawer />
         {children}
         <ToastProvider />
