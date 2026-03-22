@@ -50,18 +50,18 @@ const itemVariants = {
 
 export default function ValueProposition() {
   return (
-    <section className="py-24 md:py-36 bg-obsidian overflow-hidden">
+    <section className="py-32 md:py-40 bg-obsidian overflow-hidden">
       <div className="raizes-container">
 
         {/* ── Header ── */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-          className="mb-20 md:mb-24 max-w-lg"
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="mb-16 md:mb-20 max-w-lg"
         >
-          <p className="label-category text-stone-600 mb-4">
+          <p className="label-category text-stone-600 mb-5">
             Por que Raízes
           </p>
           <h2 className="font-serif text-4xl md:text-5xl font-normal tracking-tighter text-ivory leading-tight">
@@ -72,13 +72,13 @@ export default function ValueProposition() {
           </h2>
         </motion.div>
 
-        {/* ── Grid de pilares ── */}
+        {/* ── Grid de pilares — com gap e cards arredondados ── */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-60px" }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-0 md:gap-px bg-transparent md:bg-stone-800/30"
+          className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5"
         >
           {PILLARS.map((pillar) => {
             const Icon = pillar.icon;
@@ -86,14 +86,15 @@ export default function ValueProposition() {
               <motion.div
                 key={pillar.label}
                 variants={itemVariants}
-                className="bg-obsidian p-8 md:p-10 flex flex-col gap-6 border-b border-stone-800 md:border-b-0 last:border-b-0"
+                className="bg-[#141414] rounded-2xl p-8 md:p-10 lg:p-12 flex flex-col gap-8"
+                style={{ boxShadow: "inset 0 1px 0 0 rgba(255,255,255,0.04)" }}
               >
-                {/* Ícone */}
+                {/* Ícone + label */}
                 <div className="flex items-center justify-between">
                   <Icon
                     size={22}
                     strokeWidth={1.25}
-                    className="text-stone-400"
+                    className="text-stone-500"
                   />
                   <span className="label-category text-stone-700">
                     {pillar.label}
@@ -101,20 +102,20 @@ export default function ValueProposition() {
                 </div>
 
                 {/* Divisor */}
-                <div className="w-8 h-px bg-stone-700" />
+                <div className="w-8 h-px bg-stone-800" />
 
                 {/* Headline */}
-                <h3 className="font-serif text-xl md:text-2xl font-normal text-ivory tracking-tight leading-snug">
+                <h3 className="font-serif text-xl md:text-2xl font-normal text-ivory tracking-tighter leading-snug">
                   {pillar.headline}
                 </h3>
 
                 {/* Body */}
-                <p className="font-sans text-sm text-stone-500 leading-relaxed flex-1">
+                <p className="font-sans text-sm text-stone-500 leading-[1.75] flex-1">
                   {pillar.body}
                 </p>
 
                 {/* Detail badge */}
-                <p className="font-sans text-[10px] font-medium tracking-widest uppercase text-stone-600 pt-2 border-t border-stone-800">
+                <p className="font-sans text-[10px] font-medium tracking-widest uppercase text-stone-700 pt-4 border-t border-stone-800/80">
                   {pillar.detail}
                 </p>
               </motion.div>

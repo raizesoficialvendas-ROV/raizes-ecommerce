@@ -82,7 +82,7 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.55, ease: [0.25, 0.1, 0.25, 1] }}
-              className="font-sans text-ivory/60 text-base md:text-lg font-light leading-relaxed max-w-lg mb-10"
+              className="font-sans text-ivory/60 text-base md:text-lg font-light leading-[1.7] max-w-xl mb-12"
             >
               Funcional, atemporal e versátil. Feita para quem busca
               excelência em todas as ocasiões — do culto ao cotidiano.

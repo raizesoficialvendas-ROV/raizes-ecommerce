@@ -7,26 +7,29 @@ import { ArrowRight } from "lucide-react";
 
 export default function ManifestoSection() {
   return (
-    <section className="py-24 md:py-0 bg-ivory overflow-hidden">
-      <div className="grid grid-cols-1 md:grid-cols-2 min-h-[80vh]">
+    <section className="py-20 md:py-0 bg-white overflow-hidden">
+      <div className="md:grid md:grid-cols-2 min-h-[85vh]">
 
-        {/* ── Coluna de Imagem ── */}
-        <motion.div
-          initial={{ opacity: 0, scale: 1.04 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1.1, ease: [0.25, 0.1, 0.25, 1] }}
-          className="relative overflow-hidden min-h-[500px] md:min-h-0 order-2 md:order-1"
-        >
-          <Image
-            src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&q=85&fit=crop&crop=face"
-            alt="Homem cristão moderno vestindo Raízes"
-            fill
-            sizes="(max-width: 768px) 100vw, 50vw"
-            className="object-cover object-center"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent to-stone-200/10" />
-        </motion.div>
+        {/* ── Coluna de Imagem — com padding lateral para não colar na parede ── */}
+        <div className="relative flex items-stretch order-2 md:order-1 p-4 md:p-8">
+          <motion.div
+            initial={{ opacity: 0, scale: 1.04 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1.1, ease: [0.25, 0.1, 0.25, 1] }}
+            className="relative w-full min-h-[480px] md:min-h-0 rounded-2xl overflow-hidden"
+            style={{ boxShadow: "0 4px 32px 0 rgba(10,10,10,0.12)" }}
+          >
+            <Image
+              src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&q=85&fit=crop&crop=face"
+              alt="Homem cristão moderno vestindo Raízes"
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent to-stone-900/5 rounded-2xl" />
+          </motion.div>
+        </div>
 
         {/* ── Coluna de Texto ── */}
         <motion.div
@@ -34,11 +37,11 @@ export default function ManifestoSection() {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.9, delay: 0.15, ease: [0.25, 0.1, 0.25, 1] }}
-          className="flex flex-col justify-center px-8 md:px-16 lg:px-20 py-16 md:py-24 order-1 md:order-2 bg-ivory"
+          className="flex flex-col justify-center px-8 md:px-16 lg:px-24 xl:px-28 py-20 md:py-32 order-1 md:order-2 bg-[#F9F9F7]"
         >
-          <p className="label-category text-stone-400 mb-6">Manifesto</p>
+          <p className="label-category text-stone-400 mb-7">Manifesto</p>
 
-          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-normal tracking-tighter text-obsidian leading-[1.1] mb-8">
+          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-normal tracking-tighter text-obsidian leading-[1.1] mb-10">
             A excelência não é
             <br />
             <em className="not-italic text-stone-400">arrogância —</em>
@@ -46,20 +49,20 @@ export default function ManifestoSection() {
             é gratidão.
           </h2>
 
-          <div className="space-y-4 mb-10">
-            <p className="font-sans text-sm md:text-base text-stone-500 leading-relaxed">
+          <div className="space-y-5 mb-12">
+            <p className="font-sans text-sm md:text-[0.9375rem] text-stone-500 leading-[1.75]">
               Cuidar da sua aparência não é vaidade. É uma forma de honrar o
               que foi dado a você. Raízes nasceu para vestir pessoas que
               levam a vida a sério — no trabalho, na família, na fé.
             </p>
-            <p className="font-sans text-sm md:text-base text-stone-500 leading-relaxed">
+            <p className="font-sans text-sm md:text-[0.9375rem] text-stone-500 leading-[1.75]">
               Cada costura é intencional. Cada cor, escolhida para durar.
               Porque acreditamos que quem tem raízes profundas não precisa
               de modismos passageiros.
             </p>
           </div>
 
-          <div className="w-10 h-px bg-stone-300 mb-10" />
+          <div className="w-10 h-px bg-stone-200 mb-12" />
 
           <Link
             href="/sobre"

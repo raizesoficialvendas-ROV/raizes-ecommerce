@@ -15,11 +15,12 @@ export default async function Home() {
       <Navbar />
       <main>
         <HeroSection />
-        {collections.map((col) => (
+        {collections.map((col, index) => (
           <CollectionSection
             key={col.id}
             collection={col}
             products={col.products}
+            sectionIndex={index}
           />
         ))}
         <ManifestoSection />
