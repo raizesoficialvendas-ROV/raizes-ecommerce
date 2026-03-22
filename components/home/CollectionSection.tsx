@@ -145,11 +145,14 @@ export default function CollectionSection({
         </motion.div>
       </div>
 
-      {/* ── Track arrastável ── */}
-      <div className="pl-8 md:pl-[max(4rem,calc((100vw-1400px)/2+4rem))]">
+      {/* ── Track arrastável — primeiro card alinhado com o container ── */}
+      <div className="overflow-hidden">
         <motion.div
           ref={trackRef}
-          style={{ x }}
+          style={{
+            x,
+            paddingLeft: "max(3rem, calc((100vw - 1400px) / 2 + 3rem))",
+          }}
           drag="x"
           dragConstraints={{
             left: -(maxIndex * STEP),
