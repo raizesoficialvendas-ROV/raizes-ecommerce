@@ -7,17 +7,21 @@ import { ArrowRight } from "lucide-react";
 
 export default function ManifestoSection() {
   return (
-    <section className="py-24 md:py-28 lg:py-36 bg-white overflow-hidden">
-      <div className="md:grid md:grid-cols-2 min-h-[85vh]">
+    <section className="bg-white overflow-hidden">
 
-        {/* ── Coluna de Imagem — com padding lateral para não colar na parede ── */}
-        <div className="relative flex items-stretch order-2 md:order-1 p-4 md:p-8">
+      {/* ── Espaço superior generoso ── */}
+      <div className="h-24 md:h-32 lg:h-40" />
+
+      <div className="md:grid md:grid-cols-2 items-stretch">
+
+        {/* ── Coluna de Imagem ── */}
+        <div className="relative order-2 md:order-1 p-4 md:p-8 min-h-[480px] md:min-h-[600px]">
           <motion.div
             initial={{ opacity: 0, scale: 1.04 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 1.1, ease: [0.25, 0.1, 0.25, 1] }}
-            className="relative w-full min-h-[480px] md:min-h-0 rounded-2xl overflow-hidden"
+            className="relative w-full h-full rounded-2xl overflow-hidden"
             style={{ boxShadow: "0 4px 32px 0 rgba(10,10,10,0.12)" }}
           >
             <Image
@@ -37,7 +41,9 @@ export default function ManifestoSection() {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.9, delay: 0.15, ease: [0.25, 0.1, 0.25, 1] }}
-          className="flex flex-col justify-center px-10 md:px-14 lg:px-20 xl:px-24 py-16 md:py-24 order-1 md:order-2 bg-[#F9F9F7]"
+          className="flex flex-col justify-center order-1 md:order-2 bg-[#F9F9F7]
+                     px-10 sm:px-14 md:px-16 lg:px-20 xl:px-24
+                     py-16 md:py-24"
         >
           <p className="label-category text-stone-400 mb-7">Manifesto</p>
 
@@ -77,6 +83,10 @@ export default function ManifestoSection() {
           </Link>
         </motion.div>
       </div>
+
+      {/* ── Espaço inferior generoso ── */}
+      <div className="h-24 md:h-32 lg:h-40" />
+
     </section>
   );
 }
