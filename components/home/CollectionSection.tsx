@@ -146,7 +146,7 @@ export default function CollectionSection({
       </div>
 
       {/* ── Track arrastável ── */}
-      <div className="pl-8 md:pl-[max(2rem,calc((100vw-1400px)/2+2rem))]">
+      <div className="pl-8 md:pl-[max(4rem,calc((100vw-1400px)/2+4rem))]">
         <motion.div
           ref={trackRef}
           style={{ x }}
