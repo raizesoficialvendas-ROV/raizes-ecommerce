@@ -43,6 +43,7 @@ export default function ManifestoSection() {
           transition={{ duration: 0.9, delay: 0.15, ease: [0.25, 0.1, 0.25, 1] }}
           className="flex flex-col justify-center order-1 md:order-2 bg-[#F9F9F7]
                      px-10 sm:px-14 md:px-16 lg:px-20 xl:px-24
+                     pr-10 sm:pr-14 md:pr-16 lg:pr-20 xl:pr-24
                      py-16 md:py-24"
         >
           <p className="label-category text-stone-400 mb-7">Manifesto</p>
