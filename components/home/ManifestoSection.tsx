@@ -15,13 +15,13 @@ export default function ManifestoSection() {
       <div className="md:grid md:grid-cols-2 items-stretch">
 
         {/* ── Coluna de Imagem ── */}
-        <div className="relative order-2 md:order-1 p-4 md:p-8 min-h-[480px] md:min-h-[600px]">
+        <div className="relative flex items-stretch order-2 md:order-1 p-4 md:p-8">
           <motion.div
             initial={{ opacity: 0, scale: 1.04 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 1.1, ease: [0.25, 0.1, 0.25, 1] }}
-            className="relative w-full h-full rounded-2xl overflow-hidden"
+            className="relative w-full min-h-[480px] md:min-h-[600px] rounded-2xl overflow-hidden"
             style={{ boxShadow: "0 4px 32px 0 rgba(10,10,10,0.12)" }}
           >
             <Image
