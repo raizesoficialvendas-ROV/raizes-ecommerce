@@ -110,17 +110,20 @@ export default function ProductCard({
       {/* ── Info ── */}
       <div className="pt-4 px-1 pb-1">
         <Link href={`/produtos/${product.id}`} className="block group/link">
-          <h3 className="font-sans text-sm font-medium text-obsidian tracking-tight mb-1 group-hover/link:text-stone-500 transition-colors">
+          <h3 className="font-sans text-[15px] font-bold text-[#141414] tracking-tight mb-1.5 group-hover/link:text-stone-500 transition-colors leading-tight">
             {product.name}
           </h3>
         </Link>
 
-        <div className="flex items-center justify-between">
-          <p className="font-sans text-sm font-normal text-obsidian">
-            {formatCurrency(product.price)}
-          </p>
+        <div className="flex items-end justify-between">
+          <div className="flex flex-col">
+            {/* Se houver preço antigo, viria aqui. Por enquanto formatamos o preço atual */}
+            <p className="font-sans text-[15px] font-bold text-[#141414] leading-none">
+              {formatCurrency(product.price)}
+            </p>
+          </div>
           {material && (
-            <p className="font-sans text-[10px] tracking-wider uppercase text-stone-400">
+            <p className="font-sans text-[10.5px] font-medium tracking-wide uppercase text-stone-500 leading-none">
               {material}
             </p>
           )}
