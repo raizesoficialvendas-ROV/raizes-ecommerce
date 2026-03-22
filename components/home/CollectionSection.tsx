@@ -39,7 +39,7 @@ export default function CollectionSection({
   /* ── Estado vazio — coleção sem produtos publicados ── */
   if (products.length === 0) {
     return (
-      <section className="py-24 md:py-32 overflow-hidden bg-[#FAFAF8]">
+      <section className="py-32 md:py-44 lg:py-52 overflow-hidden bg-[#FAFAF8]">
         <div className="raizes-container">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
             <div>
@@ -94,7 +94,7 @@ export default function CollectionSection({
   }
 
   return (
-    <section className="py-24 md:py-32 overflow-hidden bg-[#FAFAF8]">
+    <section className="py-32 md:py-44 lg:py-52 overflow-hidden bg-[#FAFAF8]">
       <div className="raizes-container">
         {/* ── Header ── */}
         <motion.div
