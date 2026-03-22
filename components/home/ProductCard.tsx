@@ -30,6 +30,15 @@ export default function ProductCard({
       ? product.images_urls[1]
       : null;
 
+  const meta = (product.metadata ?? {}) as Record<string, string>;
+  const tech = meta.tech ?? "";
+  const material = meta.material ?? "";
+
+  // Divide "Dry-fit, Proteção UV 50+, Tech Insider" em badges individuais
+  const techBadges = tech
+    ? tech.split(",").map((t) => t.trim()).filter(Boolean)
+    : [];
+
   return (
     <motion.article
       initial={{ opacity: 0, y: 24 }}
@@ -72,18 +81,46 @@ export default function ProductCard({
             className="object-cover object-center opacity-0 group-hover:opacity-100 group-hover:scale-[1.05] transition-all duration-700 ease-out"
           />
         )}
+
+        {/* ── Badges de Tecnologia — exibidos sobre a imagem ── */}
+        {techBadges.length > 0 && (
+          <div className="absolute top-3 left-3 right-3 flex flex-wrap gap-1.5 z-10">
+            {techBadges.map((badge) => (
+              <span
+                key={badge}
+                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-medium tracking-widest uppercase"
+                style={{
+                  background: "rgba(10,10,10,0.55)",
+                  backdropFilter: "blur(6px)",
+                  WebkitBackdropFilter: "blur(6px)",
+                  color: "rgba(248,245,240,0.90)",
+                  border: "1px solid rgba(248,245,240,0.12)",
+                }}
+              >
+                ◆ {badge}
+              </span>
+            ))}
+          </div>
+        )}
       </Link>
 
-      {/* ── Info: Nome e Preço ── */}
+      {/* ── Info: Nome, Material e Preço ── */}
       <div className="pt-4 px-1">
         <Link href={`/produtos/${product.id}`} className="block group/link">
           <h3 className="font-sans text-sm font-medium text-obsidian tracking-wide leading-relaxed group-hover/link:text-stone-400 transition-colors duration-300">
             {product.name}
           </h3>
         </Link>
-        <p className="font-sans text-sm text-stone-400 mt-1.5 font-light">
-          {formatCurrency(product.price)}
-        </p>
+        <div className="flex items-center justify-between mt-1.5">
+          <p className="font-sans text-sm text-stone-400 font-light">
+            {formatCurrency(product.price)}
+          </p>
+          {material && (
+            <p className="font-sans text-[10px] text-stone-400 tracking-widest uppercase font-medium">
+              {material}
+            </p>
+          )}
+        </div>
       </div>
     </motion.article>
   );
