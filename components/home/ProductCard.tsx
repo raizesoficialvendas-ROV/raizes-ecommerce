@@ -110,7 +110,7 @@ export default function ProductCard({
       {/* ── Info ── */}
       <div className="pt-4 px-1 pb-1">
         <Link href={`/produtos/${product.id}`} className="block group/link">
-          <h3 className="font-sans text-[15px] font-bold text-[#141414] tracking-tight mb-1.5 group-hover/link:text-stone-500 transition-colors leading-tight">
+          <h3 className="!font-sans text-[15px] !font-bold text-[#141414] tracking-tight mb-1.5 group-hover/link:text-stone-500 transition-colors leading-tight">
             {product.name}
           </h3>
         </Link>
