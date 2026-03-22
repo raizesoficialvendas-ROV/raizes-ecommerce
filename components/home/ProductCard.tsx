@@ -4,6 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { ShoppingBag, Zap, Truck } from "lucide-react";
+import { useCartStore } from "@/store/useCartStore";
 import { formatCurrency } from "@/lib/utils";
 import type { Product } from "@/types/database.types";
 
@@ -19,6 +21,7 @@ export default function ProductCard({
   priority = false,
 }: ProductCardProps) {
   const [hovered, setHovered] = useState(false);
+  const { addItem } = useCartStore();
 
   const mainImage =
     product.images_urls && product.images_urls.length > 0
@@ -30,14 +33,10 @@ export default function ProductCard({
       ? product.images_urls[1]
       : null;
 
-  const meta = (product.metadata ?? {}) as Record<string, string>;
-  const tech = meta.tech ?? "";
-  const material = meta.material ?? "";
-
-  // Divide "Dry-fit, Proteção UV 50+, Tech Insider" em badges individuais
-  const techBadges = tech
-    ? tech.split(",").map((t) => t.trim()).filter(Boolean)
-    : [];
+  const meta = product.metadata as Record<string, unknown> | null;
+  const tech = meta?.tech ? String(meta.tech) : null;
+  const material = meta?.material ? String(meta.material) : null;
+  const freeShipping = meta?.free_shipping === true;
 
   return (
     <motion.article
@@ -49,11 +48,11 @@ export default function ProductCard({
         delay: index * 0.08,
         ease: [0.25, 0.1, 0.25, 1],
       }}
-      className="group flex-none w-[300px] md:w-[340px]"
+      className="product-card group flex-none w-[300px] md:w-[340px] cursor-pointer"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* ── Imagem com bordas arredondadas e shadow hover ── */}
+      {/* ── Imagem ── */}
       <Link
         href={`/produtos/${product.id}`}
         className="block relative aspect-[3/4] overflow-hidden bg-[#F4F2EF] rounded-2xl transition-all duration-500"
@@ -64,63 +63,77 @@ export default function ProductCard({
           transform: hovered ? "translateY(-4px)" : "translateY(0px)",
         }}
       >
+        {/* Imagem principal */}
         <Image
           src={mainImage}
           alt={product.name}
           fill
           sizes="(max-width: 768px) 300px, 340px"
           priority={priority}
-          className={`object-cover object-center transition-all duration-700 ease-out group-hover:scale-[1.05]${hoverImage ? ' group-hover:opacity-0' : ''}`}
+          className={`product-card-img object-cover object-center transition-all duration-700 ease-out group-hover:scale-[1.04]${hoverImage ? ' group-hover:opacity-0' : ''}`}
         />
+        {/* Imagem de hover */}
         {hoverImage && (
           <Image
             src={hoverImage}
             alt={`${product.name} — vista alternativa`}
             fill
             sizes="(max-width: 768px) 300px, 340px"
-            className="object-cover object-center opacity-0 group-hover:opacity-100 group-hover:scale-[1.05] transition-all duration-700 ease-out"
+            className="product-card-img object-cover object-center opacity-0 group-hover:opacity-100 group-hover:scale-[1.04] transition-all duration-700 ease-out"
           />
         )}
 
-        {/* ── Badges de Tecnologia — exibidos sobre a imagem ── */}
-        {techBadges.length > 0 && (
-          <div className="absolute top-3 left-3 right-3 flex flex-wrap gap-1.5 z-10">
-            {techBadges.map((badge) => (
-              <span
-                key={badge}
-                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-medium tracking-widest uppercase"
-                style={{
-                  background: "rgba(10,10,10,0.55)",
-                  backdropFilter: "blur(6px)",
-                  WebkitBackdropFilter: "blur(6px)",
-                  color: "rgba(248,245,240,0.90)",
-                  border: "1px solid rgba(248,245,240,0.12)",
-                }}
-              >
-                ◆ {badge}
-              </span>
-            ))}
+        {/* ── Badge de tecnologia — design original (retangular, obsidian, ícone Zap) ── */}
+        {tech && (
+          <div className="absolute top-3 left-3 flex items-center gap-1.5 bg-obsidian/90 backdrop-blur-sm px-2.5 py-1.5">
+            <Zap size={10} strokeWidth={2} className="text-gold" />
+            <span className="font-sans text-[9px] font-semibold tracking-widest uppercase text-ivory">
+              {tech}
+            </span>
           </div>
         )}
+
+        {/* ── Quick add — aparece no hover na base da imagem ── */}
+        <button
+          className="absolute bottom-0 left-0 right-0 bg-obsidian/95 backdrop-blur-sm text-ivory font-sans text-[11px] font-medium tracking-widest uppercase py-3 px-4 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300"
+          onClick={(e) => {
+            e.preventDefault();
+            addItem(product, 1);
+          }}
+          aria-label={`Adicionar ${product.name} ao carrinho`}
+        >
+          <ShoppingBag size={13} strokeWidth={1.5} />
+          Adicionar à sacola
+        </button>
       </Link>
 
-      {/* ── Info: Nome, Material e Preço ── */}
-      <div className="pt-4 px-1">
+      {/* ── Info ── */}
+      <div className="pt-4 px-1 pb-1">
         <Link href={`/produtos/${product.id}`} className="block group/link">
-          <h3 className="font-sans text-sm font-medium text-obsidian tracking-wide leading-relaxed group-hover/link:text-stone-400 transition-colors duration-300">
+          <h3 className="font-sans text-sm font-medium text-obsidian tracking-tight mb-1 group-hover/link:text-stone-500 transition-colors">
             {product.name}
           </h3>
         </Link>
-        <div className="flex items-center justify-between mt-1.5">
-          <p className="font-sans text-sm text-stone-400 font-light">
+
+        <div className="flex items-center justify-between">
+          <p className="font-sans text-sm font-normal text-obsidian">
             {formatCurrency(product.price)}
           </p>
           {material && (
-            <p className="font-sans text-[10px] text-stone-400 tracking-widest uppercase font-medium">
+            <p className="font-sans text-[10px] tracking-wider uppercase text-stone-400">
               {material}
             </p>
           )}
         </div>
+
+        {freeShipping && (
+          <div className="flex items-center gap-1 mt-1">
+            <Truck size={10} strokeWidth={1.8} className="text-emerald-600" />
+            <span className="font-sans text-[10px] font-semibold tracking-wider uppercase text-emerald-600">
+              Frete Grátis
+            </span>
+          </div>
+        )}
       </div>
     </motion.article>
   );
