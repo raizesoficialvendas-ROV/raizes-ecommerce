@@ -7,7 +7,7 @@ import { ArrowRight } from "lucide-react";
 
 export default function ManifestoSection() {
   return (
-    <section className="py-20 md:py-0 bg-white overflow-hidden">
+    <section className="py-24 md:py-28 lg:py-36 bg-white overflow-hidden">
       <div className="md:grid md:grid-cols-2 min-h-[85vh]">
 
         {/* ── Coluna de Imagem — com padding lateral para não colar na parede ── */}
@@ -37,7 +37,7 @@ export default function ManifestoSection() {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.9, delay: 0.15, ease: [0.25, 0.1, 0.25, 1] }}
-          className="flex flex-col justify-center px-8 md:px-16 lg:px-24 xl:px-28 py-20 md:py-32 order-1 md:order-2 bg-[#F9F9F7]"
+          className="flex flex-col justify-center px-10 md:px-14 lg:px-20 xl:px-24 py-16 md:py-24 order-1 md:order-2 bg-[#F9F9F7]"
         >
           <p className="label-category text-stone-400 mb-7">Manifesto</p>
 
