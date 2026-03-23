@@ -5,8 +5,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import type { Banner } from "@/types/database.types";
 
-export default function HeroSection() {
+export default function HeroSection({ banner }: { banner?: Banner | null }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
@@ -30,14 +31,37 @@ export default function HeroSection() {
         style={{ y: imageY }}
         className="absolute inset-0 w-full h-[115%] -top-[7.5%]"
       >
-        <Image
-          src="https://images.unsplash.com/photo-1516826957135-700dedea698c?w=1800&q=85&fit=crop"
-          alt="Homem vestindo camiseta essencial Raízes em ambiente urbano"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-center"
-        />
+        {banner?.image_desktop_url ? (
+          <>
+            <Image
+              src={banner.image_desktop_url}
+              alt="Capa Raízes"
+              fill
+              priority
+              sizes="100vw"
+              className={`object-cover object-center ${banner.image_mobile_url ? 'hidden md:block' : ''}`}
+            />
+            {banner.image_mobile_url && (
+              <Image
+                src={banner.image_mobile_url}
+                alt="Capa Raízes Mobile"
+                fill
+                priority
+                sizes="100vw"
+                className="object-cover object-center md:hidden"
+              />
+            )}
+          </>
+        ) : (
+          <Image
+            src="https://images.unsplash.com/photo-1516826957135-700dedea698c?w=1800&q=85&fit=crop"
+            alt="Homem vestindo camiseta essencial Raízes em ambiente urbano"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center"
+          />
+        )}
         {/* Overlay gradiente duplo — escurece de baixo para cima para legibilidade */}
         <div className="absolute inset-0 bg-gradient-to-t from-obsidian/80 via-obsidian/20 to-obsidian/30" />
         {/* Overlay lateral sutil */}

@@ -21,6 +21,39 @@ export type Database = {
   };
   public: {
     Tables: {
+      banners: {
+        Row: {
+          id: string;
+          section: string;
+          image_desktop_url: string | null;
+          image_mobile_url: string | null;
+          link_url: string | null;
+          active: boolean | null;
+          created_at: string | null;
+          updated_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          section: string;
+          image_desktop_url?: string | null;
+          image_mobile_url?: string | null;
+          link_url?: string | null;
+          active?: boolean | null;
+          created_at?: string | null;
+          updated_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          section?: string;
+          image_desktop_url?: string | null;
+          image_mobile_url?: string | null;
+          link_url?: string | null;
+          active?: boolean | null;
+          created_at?: string | null;
+          updated_at?: string | null;
+        };
+        Relationships: [];
+      };
       categories: {
         Row: {
           id: string;
@@ -279,6 +312,10 @@ export type Enums<T extends keyof PublicSchema["Enums"]> =
   PublicSchema["Enums"][T];
 
 // ---- Domain types (aliases legíveis) ----
+
+export type Banner = Tables<"banners">;
+export type BannerInsert = TablesInsert<"banners">;
+export type BannerUpdate = TablesUpdate<"banners">;
 
 export type Category = Tables<"categories">;
 export type CategoryInsert = TablesInsert<"categories">;

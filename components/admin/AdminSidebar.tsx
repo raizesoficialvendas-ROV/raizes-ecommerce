@@ -10,10 +10,12 @@ import {
   Settings,
   LogOut,
   Sprout,
+  Image as ImageIcon,
 } from "lucide-react";
 
 const NAV = [
   { label: "Dashboard",    href: "/admin",               icon: LayoutGrid },
+  { label: "Banners",      href: "/admin/banners",       icon: ImageIcon },
   { label: "Produtos",     href: "/admin/produtos",      icon: Package },
   { label: "Coleções",     href: "/admin/colecoes",      icon: Layers },
   { label: "Pedidos",      href: "/admin/pedidos",       icon: ShoppingBag },

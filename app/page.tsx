@@ -6,15 +6,18 @@ import ManifestoSection from "@/components/home/ManifestoSection";
 import ValueProposition from "@/components/home/ValueProposition";
 import NewsletterSection from "@/components/home/NewsletterSection";
 import { getCollectionsForHome } from "@/lib/queries/collections";
+import { getActiveBanner } from "@/lib/actions/banners";
 
 export default async function Home() {
   const collections = await getCollectionsForHome();
+  const heroBanner = await getActiveBanner("hero");
+  const manifestoBanner = await getActiveBanner("manifesto");
 
   return (
     <>
       <Navbar />
       <main>
-        <HeroSection />
+        <HeroSection banner={heroBanner} />
         {collections.map((col, index) => (
           <CollectionSection
             key={col.id}
@@ -23,7 +26,7 @@ export default async function Home() {
             sectionIndex={index}
           />
         ))}
-        <ManifestoSection />
+        <ManifestoSection banner={manifestoBanner} />
         <ValueProposition />
         <NewsletterSection />
       </main>

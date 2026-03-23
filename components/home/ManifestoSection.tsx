@@ -4,8 +4,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import type { Banner } from "@/types/database.types";
 
-export default function ManifestoSection() {
+export default function ManifestoSection({ banner }: { banner?: Banner | null }) {
   return (
     <section className="bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
@@ -20,13 +21,34 @@ export default function ManifestoSection() {
             transition={{ duration: 1.1, ease: [0.25, 0.1, 0.25, 1] }}
             className="relative w-full aspect-[4/5] md:aspect-[3/4] lg:aspect-[4/5] rounded-lg overflow-hidden order-1 md:order-1"
           >
-            <Image
-              src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&q=85&fit=crop&crop=face"
-              alt="Homem cristão moderno vestindo Raízes"
-              fill
-              sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-cover"
-            />
+            {banner?.image_desktop_url ? (
+              <>
+                <Image
+                  src={banner.image_desktop_url}
+                  alt="Manifesto Raízes"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className={`object-cover ${banner.image_mobile_url ? 'hidden md:block' : ''}`}
+                />
+                {banner.image_mobile_url && (
+                  <Image
+                    src={banner.image_mobile_url}
+                    alt="Manifesto Raízes Mobile"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover md:hidden"
+                  />
+                )}
+              </>
+            ) : (
+              <Image
+                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&q=85&fit=crop&crop=face"
+                alt="Homem cristão moderno vestindo Raízes"
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover"
+              />
+            )}
           </motion.div>
 
           {/* ── Coluna de Texto ── */}
