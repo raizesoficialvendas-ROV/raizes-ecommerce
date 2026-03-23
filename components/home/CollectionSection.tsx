@@ -13,9 +13,7 @@ interface CollectionSectionProps {
   sectionIndex?: number;
 }
 
-const CARD_WIDTH = 340;
-const CARD_GAP = 28;
-const STEP = CARD_WIDTH + CARD_GAP;
+// The step will be dynamic based on screen size
 
 export default function CollectionSection({
   collection,
@@ -28,9 +26,17 @@ export default function CollectionSection({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [visibleCards, setVisibleCards] = useState(3);
 
+  const [step, setStep] = useState(328);
+
   useEffect(() => {
-    const calc = () =>
-      setVisibleCards(Math.floor((window.innerWidth - 64) / STEP));
+    const calc = () => {
+      const isMobile = window.innerWidth < 768;
+      const cardW = isMobile ? 260 : 300;
+      const gap = 28; // gap-7 = 28px
+      const newStep = cardW + gap;
+      setStep(newStep);
+      setVisibleCards(Math.floor((window.innerWidth - 64) / newStep));
+    };
     calc();
     window.addEventListener("resize", calc);
     return () => window.removeEventListener("resize", calc);
@@ -86,7 +92,7 @@ export default function CollectionSection({
   function snapTo(index: number) {
     const clamped = Math.max(0, Math.min(index, maxIndex));
     setCurrentIndex(clamped);
-    animate(x, -(clamped * STEP), {
+    animate(x, -(clamped * step), {
       type: "spring",
       stiffness: 200,
       damping: 30,
@@ -155,7 +161,7 @@ export default function CollectionSection({
           }}
           drag="x"
           dragConstraints={{
-            left: -(maxIndex * STEP),
+            left: -(maxIndex * step),
             right: 0,
           }}
           dragElastic={0.08}
@@ -166,9 +172,9 @@ export default function CollectionSection({
             const velocity = info.velocity.x;
             const offset = info.offset.x;
 
-            if (velocity < -400 || offset < -(STEP / 3)) {
+            if (velocity < -400 || offset < -(step / 3)) {
               snapTo(currentIndex + 1);
-            } else if (velocity > 400 || offset > STEP / 3) {
+            } else if (velocity > 400 || offset > step / 3) {
               snapTo(currentIndex - 1);
             } else {
               snapTo(currentIndex);
