@@ -127,7 +127,7 @@ export default function ProductCard({
 
         {/* ── Quick add — barra preta desliza da base no hover ── */}
         <button
-          className="absolute bottom-0 left-0 right-0 bg-black text-white font-sans text-[11px] font-bold tracking-widest uppercase py-3 px-4 flex items-center justify-center gap-2 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"
+          className="absolute bottom-0 left-0 right-0 bg-obsidian/90 backdrop-blur-sm text-white font-sans text-[11px] font-bold tracking-widest uppercase py-3 px-4 flex items-center justify-center gap-2 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"
           onClick={(e) => {
             e.preventDefault();
             addItem(product, 1);
