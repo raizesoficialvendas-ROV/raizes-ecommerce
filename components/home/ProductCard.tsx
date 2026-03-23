@@ -115,10 +115,9 @@ export default function ProductCard({
             {tech.split(",").map((t) => (
               <div
                 key={t.trim()}
-                className="flex items-center gap-1 bg-black/90 backdrop-blur-sm px-2 py-1"
+                className="bg-obsidian/90 backdrop-blur-sm px-2 py-1"
               >
-                <Zap size={9} strokeWidth={2} className="text-gold shrink-0" />
-                <span className="font-sans text-[9px] font-semibold tracking-widest uppercase text-white leading-none">
+                <span className="font-sans text-[9px] font-bold tracking-widest uppercase text-white leading-none">
                   {t.trim()}
                 </span>
               </div>
