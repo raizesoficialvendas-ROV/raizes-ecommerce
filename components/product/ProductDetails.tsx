@@ -27,8 +27,16 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
     : [];
 
   return (
-    <section className="mt-20 md:mt-28 border-t border-stone-200 pt-16">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
+    <section className="mt-24 md:mt-32">
+
+      {/* ── Divisor editorial ── */}
+      <div className="flex items-center gap-6 mb-16 md:mb-20">
+        <div className="flex-1 h-px bg-stone-100" />
+        <p className="label-category text-stone-300">A peça</p>
+        <div className="flex-1 h-px bg-stone-100" />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-24 md:gap-28">
 
         {/* ── Tecnologia Funcional ── */}
         <motion.div
@@ -36,13 +44,14 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+          className="flex flex-col"
         >
-          <p className="label-category text-stone-400 mb-4">Tecnologia</p>
-          <h2 className="font-serif text-2xl md:text-3xl font-normal tracking-tighter text-obsidian mb-6 leading-tight">
+          <p className="label-category text-stone-400 mb-8">Tecnologia</p>
+          <h2 className="font-serif text-3xl md:text-4xl font-normal tracking-tighter text-obsidian mb-8 leading-[1.2]">
             Funcional por{" "}
             <em className="not-italic text-stone-400">design.</em>
           </h2>
-          <p className="font-sans text-sm text-stone-500 leading-relaxed mb-8">
+          <p className="font-sans text-sm text-stone-500 leading-[1.9] mb-10">
             Cada fio foi escolhido com intenção. O tecido{" "}
             <strong className="font-medium text-stone-700">
               {meta?.tech ?? "premium"}
@@ -52,33 +61,24 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
             anuncia — apenas funciona.
           </p>
 
-          {/* Specs */}
-          <div className="space-y-3">
+          {/* Specs — linhas de tabela */}
+          <div className="mt-auto border-t border-stone-100">
             {meta?.material && (
-              <div className="flex items-start gap-3">
-                <div className="w-px h-4 bg-stone-300 mt-1 shrink-0" />
-                <div>
-                  <p className="font-sans text-xs font-medium text-obsidian tracking-wide uppercase mb-0.5">Material</p>
-                  <p className="font-sans text-sm text-stone-500">{meta.material}</p>
-                </div>
+              <div className="flex items-baseline justify-between py-4 border-b border-stone-100">
+                <p className="font-sans text-[11px] font-medium text-stone-400 tracking-widest uppercase">Material</p>
+                <p className="font-sans text-sm text-obsidian">{meta.material}</p>
               </div>
             )}
             {meta?.tech && (
-              <div className="flex items-start gap-3">
-                <div className="w-px h-4 bg-stone-300 mt-1 shrink-0" />
-                <div>
-                  <p className="font-sans text-xs font-medium text-obsidian tracking-wide uppercase mb-0.5">Tecnologia</p>
-                  <p className="font-sans text-sm text-stone-500">{meta.tech}</p>
-                </div>
+              <div className="flex items-baseline justify-between py-4 border-b border-stone-100">
+                <p className="font-sans text-[11px] font-medium text-stone-400 tracking-widest uppercase">Tecnologia</p>
+                <p className="font-sans text-sm text-obsidian">{meta.tech}</p>
               </div>
             )}
             {specs.map(([key, value]) => (
-              <div key={key} className="flex items-start gap-3">
-                <div className="w-px h-4 bg-stone-300 mt-1 shrink-0" />
-                <div>
-                  <p className="font-sans text-xs font-medium text-obsidian tracking-wide uppercase mb-0.5">{key}</p>
-                  <p className="font-sans text-sm text-stone-500">{value}</p>
-                </div>
+              <div key={key} className="flex items-baseline justify-between py-4 border-b border-stone-100">
+                <p className="font-sans text-[11px] font-medium text-stone-400 tracking-widest uppercase">{key}</p>
+                <p className="font-sans text-sm text-obsidian">{value}</p>
               </div>
             ))}
           </div>
@@ -90,34 +90,35 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7, delay: 0.12, ease: [0.25, 0.1, 0.25, 1] }}
+          className="flex flex-col"
         >
-          <p className="label-category text-stone-400 mb-4">Propósito</p>
-          <h2 className="font-serif text-2xl md:text-3xl font-normal tracking-tighter text-obsidian mb-6 leading-tight">
+          <p className="label-category text-stone-400 mb-8">Propósito</p>
+          <h2 className="font-serif text-3xl md:text-4xl font-normal tracking-tighter text-obsidian mb-8 leading-[1.2]">
             Veste quem tem{" "}
             <em className="not-italic text-stone-400">intenção.</em>
           </h2>
-          <p className="font-sans text-sm text-stone-500 leading-relaxed mb-6">
+          <p className="font-sans text-sm text-stone-500 leading-[1.9] mb-6">
             Esta peça não foi feita para impressionar — foi feita para
             acompanhar. O cristão moderno não precisa gritar para ser visto.
             Uma presença calibrada, um visual intencional, fala antes de
             qualquer palavra.
           </p>
-          <p className="font-sans text-sm text-stone-500 leading-relaxed mb-8">
+          <p className="font-sans text-sm text-stone-500 leading-[1.9] mb-12">
             Da manhã de devoção ao compromisso profissional, do encontro de
             célula ao café casual — {product.name} é a peça que não precisa
             ser trocada porque já está certa.
           </p>
 
           {/* Instruções de cuidado */}
-          <div className="border-t border-stone-100 pt-6">
-            <p className="font-sans text-xs font-medium tracking-widest uppercase text-stone-400 mb-4">
+          <div className="mt-auto border-t border-stone-100 pt-8">
+            <p className="label-category text-stone-400 mb-7">
               Cuidados com a peça
             </p>
-            <div className="flex items-center gap-6">
+            <div className="grid grid-cols-3 gap-3">
               {CARE_ICONS.map(({ icon: Icon, label }) => (
-                <div key={label} className="flex flex-col items-center gap-1.5 text-center">
-                  <Icon size={16} strokeWidth={1.25} className="text-stone-400" />
-                  <span className="font-sans text-[10px] text-stone-400 leading-tight max-w-[60px]">
+                <div key={label} className="flex flex-col gap-4 p-5 bg-stone-50">
+                  <Icon size={18} strokeWidth={1.25} className="text-stone-400" />
+                  <span className="font-sans text-[11px] text-stone-500 leading-[1.6]">
                     {label}
                   </span>
                 </div>

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { ZoomIn } from "lucide-react";
+import { ZoomIn, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface ProductGalleryProps {
   images: string[];
@@ -18,6 +18,13 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
     images.length > 0
       ? images
       : ["https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=1200&q=85&fit=crop"];
+
+  function prev() {
+    setActiveIndex((i) => (i === 0 ? safeImages.length - 1 : i - 1));
+  }
+  function next() {
+    setActiveIndex((i) => (i === safeImages.length - 1 ? 0 : i + 1));
+  }
 
   return (
     <>
@@ -75,16 +82,45 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
               </motion.div>
             </AnimatePresence>
 
-            {/* Zoom hint */}
-            <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-ivory/80 backdrop-blur-sm px-2.5 py-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            {/* Zoom hint — desktop */}
+            <div className="absolute top-4 right-4 hidden md:flex items-center gap-1.5 bg-ivory/80 backdrop-blur-sm px-2.5 py-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               <ZoomIn size={12} strokeWidth={1.5} className="text-stone-500" />
               <span className="font-sans text-[10px] text-stone-500 tracking-wider">Ampliar</span>
             </div>
+
+            {/* ── Setas mobile ── */}
+            {safeImages.length > 1 && (
+              <>
+                <button
+                  onClick={(e) => { e.stopPropagation(); prev(); }}
+                  aria-label="Imagem anterior"
+                  className="md:hidden absolute left-3 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-10 h-10 bg-obsidian/60 backdrop-blur-sm text-ivory active:scale-95 transition-transform duration-150"
+                >
+                  <ChevronLeft size={20} strokeWidth={1.5} />
+                </button>
+                <button
+                  onClick={(e) => { e.stopPropagation(); next(); }}
+                  aria-label="Próxima imagem"
+                  className="md:hidden absolute right-3 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-10 h-10 bg-obsidian/60 backdrop-blur-sm text-ivory active:scale-95 transition-transform duration-150"
+                >
+                  <ChevronRight size={20} strokeWidth={1.5} />
+                </button>
+              </>
+            )}
+
+            {/* Contador mobile — canto inferior direito */}
+            {safeImages.length > 1 && (
+              <div className="md:hidden absolute bottom-3 right-3 bg-obsidian/60 backdrop-blur-sm px-2.5 py-1">
+                <span className="font-sans text-[11px] text-ivory tracking-widest">
+                  {activeIndex + 1}/{safeImages.length}
+                </span>
+              </div>
+            )}
           </div>
 
           {/* ── Dots mobile ── */}
           {safeImages.length > 1 && (
-            <div className="flex md:hidden items-center justify-center gap-2 mt-4">
+            <div className="flex md:hidden items-center justify-center gap-2.5 mt-5">
               {safeImages.map((_, i) => (
                 <button
                   key={i}
@@ -92,7 +128,7 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
                   aria-label={`Imagem ${i + 1}`}
                   className={[
                     "transition-all duration-300",
-                    i === activeIndex ? "w-5 h-1 bg-obsidian" : "w-1.5 h-1 bg-stone-300",
+                    i === activeIndex ? "w-6 h-[3px] bg-obsidian" : "w-[10px] h-[3px] bg-stone-300",
                   ].join(" ")}
                 />
               ))}

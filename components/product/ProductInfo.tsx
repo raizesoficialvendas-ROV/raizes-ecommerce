@@ -180,7 +180,7 @@ export default function ProductInfo({ product, categoryName }: ProductInfoProps)
 
       {/* Descrição curta */}
       {product.description && (
-        <p className="font-sans text-sm text-stone-500 leading-relaxed pt-2 border-t border-stone-100">
+        <p className="font-sans text-sm text-stone-500 leading-[1.9] pt-5 pb-1 border-t border-stone-100">
           {product.description}
         </p>
       )}

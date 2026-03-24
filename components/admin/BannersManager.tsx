@@ -33,8 +33,19 @@ export default function BannersManager({ initialBanners }: BannersManagerProps) 
   const [loading, setLoading] = useState<Record<string, boolean>>({});
   const [banners, setBanners] = useState<Banner[]>(initialBanners);
 
-  const getBannerData = (sectionId: string) => {
-    return banners.find((b) => b.section === sectionId) || { section: sectionId };
+  const getBannerData = (sectionId: string): Banner => {
+    return (
+      banners.find((b) => b.section === sectionId) ?? {
+        id: "",
+        section: sectionId,
+        image_desktop_url: null,
+        image_mobile_url: null,
+        link_url: null,
+        active: true,
+        created_at: null,
+        updated_at: null,
+      }
+    );
   };
 
   const updateLocalBanner = (sectionId: string, updates: Partial<Banner>) => {
