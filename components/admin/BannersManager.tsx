@@ -95,7 +95,7 @@ export default function BannersManager({ initialBanners }: BannersManagerProps) 
         image_desktop_url: currentData.image_desktop_url,
         image_mobile_url: currentData.image_mobile_url,
         link_url: currentData.link_url,
-        active: currentData.active,
+        active: currentData.active ?? undefined,
         ...updatePayload, // inject the fresh URL synchronously
       });
 
@@ -118,7 +118,7 @@ export default function BannersManager({ initialBanners }: BannersManagerProps) 
         image_desktop_url: data.image_desktop_url,
         image_mobile_url: data.image_mobile_url,
         link_url: data.link_url,
-        active: data.active,
+        active: data.active ?? undefined,
       });
 
       if (res.error) throw new Error(res.error);
