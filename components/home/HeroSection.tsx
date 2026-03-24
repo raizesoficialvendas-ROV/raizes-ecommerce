@@ -81,7 +81,7 @@ export default function HeroSection({ banner }: { banner?: Banner | null }) {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-              className="label-category text-ivory/60 mb-6"
+              className="label-category text-linen/70 mb-6"
             >
               Coleção Essenciais · Verão 2026
             </motion.p>
@@ -91,12 +91,12 @@ export default function HeroSection({ banner }: { banner?: Banner | null }) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
-              className="font-serif text-ivory font-normal leading-[1.08] tracking-tighter mb-7"
+              className="font-serif !text-linen font-normal leading-[1.08] tracking-tighter mb-7"
               style={{ fontSize: "clamp(2.5rem, 6vw, 5rem)" }}
             >
               A Camiseta Essencial
               <br />
-              <em className="not-italic text-ivory/70">para a Rotina</em>
+              <em className="not-italic !text-linen/65">para a Rotina</em>
               <br />
               do Cristão.
             </motion.h1>
@@ -106,7 +106,7 @@ export default function HeroSection({ banner }: { banner?: Banner | null }) {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.55, ease: [0.25, 0.1, 0.25, 1] }}
-              className="font-sans text-ivory/60 text-base md:text-lg font-light leading-[1.7] max-w-xl mb-12"
+              className="font-sans text-linen/60 text-base md:text-lg font-light leading-[1.7] max-w-xl mb-12"
             >
               Funcional, atemporal e versátil. Feita para quem busca
               excelência em todas as ocasiões — do culto ao cotidiano.
@@ -128,7 +128,7 @@ export default function HeroSection({ banner }: { banner?: Banner | null }) {
                 />
               </Link>
 
-              <Link href="/sobre" className="btn-outline border-ivory/40 text-ivory hover:bg-ivory hover:text-obsidian">
+              <Link href="/sobre" className="btn-outline border-linen/40 text-linen hover:bg-linen hover:text-obsidian">
                 Nossa história
               </Link>
             </motion.div>
@@ -141,11 +141,11 @@ export default function HeroSection({ banner }: { banner?: Banner | null }) {
             transition={{ delay: 1.2, duration: 0.8 }}
             className="absolute bottom-10 right-8 hidden md:flex flex-col items-center gap-3"
           >
-            <span className="label-category text-ivory/30 rotate-90 origin-center">Scroll</span>
+            <span className="label-category text-linen/30 rotate-90 origin-center">Scroll</span>
             <motion.div
               animate={{ y: [0, 8, 0] }}
               transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-              className="w-px h-12 bg-gradient-to-b from-ivory/40 to-transparent"
+              className="w-px h-12 bg-gradient-to-b from-linen/40 to-transparent"
             />
           </motion.div>
         </div>

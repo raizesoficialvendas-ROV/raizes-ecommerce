@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { ShoppingBag, Zap, Truck } from "lucide-react";
+import { ShoppingBag, Truck } from "lucide-react";
 import { useCartStore } from "@/store/useCartStore";
 import { formatCurrency } from "@/lib/utils";
 import type { Product } from "@/types/database.types";
@@ -63,7 +63,7 @@ export default function ProductCard({
       {/* ── Área da Imagem ── */}
       <Link
         href={`/produtos/${product.id}`}
-        className="block relative aspect-[4/5] overflow-hidden bg-zinc-100 rounded-sm"
+        className="block relative aspect-[4/5] overflow-hidden bg-stone-100"
         style={{
           transition: "box-shadow 0.3s ease",
           boxShadow: hovered
@@ -95,32 +95,30 @@ export default function ProductCard({
           />
         )}
 
-        {/* ── Badges: top-right — estilo Insider (branco + borda preta) ── */}
+        {/* ── Badges: top-right ── */}
         <div className="absolute top-2 right-2 flex flex-col gap-1 z-10">
           {isBestSeller && (
-            <span className="bg-white border border-black text-black text-[10px] font-bold px-2 py-0.5 uppercase tracking-wide leading-tight">
+            <span className="text-[#F8F5F0] text-[10px] font-semibold px-0 py-0 uppercase tracking-widest leading-tight drop-shadow-sm">
               Best Seller
             </span>
           )}
           {discountPct && (
-            <span className="bg-white border border-black text-black text-[10px] font-bold px-2 py-0.5 uppercase tracking-wide leading-tight">
+            <span className="text-[#F8F5F0] text-[10px] font-semibold uppercase tracking-widest leading-tight drop-shadow-sm">
               {discountPct}% OFF
             </span>
           )}
         </div>
 
-        {/* ── Tech badge: top-left — identidade Raízes (preto + ícone gold) ── */}
+        {/* ── Tech badge: top-left ── */}
         {tech && (
           <div className="absolute top-2 left-2 flex flex-col gap-1 z-10">
             {tech.split(",").map((t) => (
-              <div
+              <span
                 key={t.trim()}
-                className="bg-obsidian/90 backdrop-blur-sm px-2 py-1"
+                className="font-sans text-[9px] font-semibold tracking-widest uppercase text-[#F8F5F0] leading-none drop-shadow-sm"
               >
-                <span className="font-sans text-[9px] font-bold tracking-widest uppercase text-white leading-none">
-                  {t.trim()}
-                </span>
-              </div>
+                {t.trim()}
+              </span>
             ))}
           </div>
         )}

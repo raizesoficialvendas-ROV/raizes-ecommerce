@@ -45,7 +45,7 @@ export default function CollectionSection({
   /* ── Estado vazio — coleção sem produtos publicados ── */
   if (products.length === 0) {
     return (
-      <section className="py-32 md:py-44 lg:py-52 overflow-hidden bg-[#FAFAF8]">
+      <section className="section-rhythm overflow-hidden bg-stone-50">
         <div className="raizes-container">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
             <div>
@@ -62,8 +62,7 @@ export default function CollectionSection({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="rounded-2xl border border-stone-100 bg-white p-12 md:p-20 flex flex-col items-center justify-center text-center gap-6"
-            style={{ boxShadow: "0 2px 16px 0 rgba(10,10,10,0.05)" }}
+            className="border border-stone-100 bg-white p-12 md:p-20 flex flex-col items-center justify-center text-center gap-6"
           >
             <div className="divider-luxury" />
             <p className="font-serif text-2xl md:text-3xl font-normal tracking-wide text-obsidian">
@@ -126,7 +125,7 @@ export default function CollectionSection({
                 onClick={() => snapTo(currentIndex - 1)}
                 disabled={currentIndex === 0}
                 aria-label="Anterior"
-                className="flex items-center justify-center w-10 h-10 rounded-full border border-stone-200 text-stone-400 hover:border-obsidian hover:text-obsidian disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300"
+                className="flex items-center justify-center w-10 h-10 border border-stone-200 text-stone-400 hover:border-obsidian hover:text-obsidian disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300"
               >
                 <ChevronLeft size={16} strokeWidth={1.5} />
               </button>
@@ -134,7 +133,7 @@ export default function CollectionSection({
                 onClick={() => snapTo(currentIndex + 1)}
                 disabled={currentIndex >= maxIndex}
                 aria-label="Próximo"
-                className="flex items-center justify-center w-10 h-10 rounded-full border border-stone-200 text-stone-400 hover:border-obsidian hover:text-obsidian disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300"
+                className="flex items-center justify-center w-10 h-10 border border-stone-200 text-stone-400 hover:border-obsidian hover:text-obsidian disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300"
               >
                 <ChevronRight size={16} strokeWidth={1.5} />
               </button>
@@ -203,8 +202,7 @@ export default function CollectionSection({
             className="flex-none w-[300px] md:w-[340px] flex flex-col items-start justify-end pb-1"
           >
             <div 
-              className="aspect-[3/4] w-full bg-white rounded-2xl flex flex-col items-center justify-center gap-8 p-10"
-              style={{ boxShadow: "0 1px 8px 0 rgba(10,10,10,0.07)" }}
+              className="aspect-[3/4] w-full bg-stone-50 flex flex-col items-center justify-center gap-8 p-10 border border-stone-100"
             >
               <div className="divider-luxury" />
               <p className="font-serif text-2xl text-obsidian text-center tracking-wide leading-tight">
@@ -231,7 +229,7 @@ export default function CollectionSection({
             onClick={() => snapTo(i)}
             aria-label={`Ir para produto ${i + 1}`}
             className={[
-              "transition-all duration-300 rounded-full",
+              "transition-all duration-300",
               i === currentIndex
                 ? "w-6 h-1.5 bg-obsidian"
                 : "w-1.5 h-1.5 bg-stone-300",

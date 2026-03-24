@@ -44,7 +44,7 @@ export default function BestSellersCarousel({ products }: BestSellersCarouselPro
   }
 
   return (
-    <section className="py-24 md:py-32 overflow-hidden bg-ivory">
+    <section className="section-rhythm overflow-hidden bg-stone-50">
       <div className="raizes-container">
 
         {/* ── Header ── */}

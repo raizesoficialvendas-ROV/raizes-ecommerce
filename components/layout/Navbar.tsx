@@ -329,7 +329,7 @@ export default function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-              className="fixed top-0 right-0 bottom-0 z-[60] w-[85vw] max-w-sm bg-ivory flex flex-col shadow-luxury-xl"
+              className="fixed top-0 right-0 bottom-0 z-[60] w-[85vw] max-w-sm bg-white/80 backdrop-blur-xl flex flex-col shadow-luxury-xl"
               aria-label="Menu de navegação"
               role="dialog"
               aria-modal="true"

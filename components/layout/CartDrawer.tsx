@@ -64,13 +64,13 @@ export default function CartDrawer() {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-            className="fixed top-0 right-0 bottom-0 z-[60] w-full max-w-[420px] bg-ivory flex flex-col shadow-luxury-xl"
+            className="fixed top-0 right-0 bottom-0 z-[60] w-full max-w-[420px] bg-white/80 backdrop-blur-xl flex flex-col shadow-luxury-xl"
             aria-label="Sacola de compras"
             role="dialog"
             aria-modal="true"
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-7 py-6 border-b border-stone-200">
+            <div className="flex items-center justify-between px-8 py-7 border-b border-stone-200">
               <div className="flex items-center gap-3">
                 <ShoppingBag size={18} strokeWidth={1.5} className="text-obsidian" />
                 <h2 className="font-serif text-lg tracking-tight text-obsidian">
@@ -128,7 +128,7 @@ export default function CartDrawer() {
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: 20, height: 0 }}
                         transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-                        className="flex gap-4 px-7 py-5"
+                        className="flex gap-5 px-8 py-6"
                       >
                         {/* Imagem */}
                         <Link
@@ -211,7 +211,7 @@ export default function CartDrawer() {
 
             {/* Footer */}
             {items.length > 0 && (
-              <div className="border-t border-stone-200 px-7 py-6 space-y-4">
+              <div className="border-t border-stone-200 px-8 py-7 space-y-5">
                 {/* Subtotal */}
                 <div className="flex items-center justify-between">
                   <span className="font-sans text-sm text-stone-500">Subtotal</span>
@@ -227,17 +227,22 @@ export default function CartDrawer() {
                 <Link
                   href="/checkout/resumo"
                   onClick={closeCart}
-                  className="btn-primary w-full justify-center text-center"
+                  className="group w-full flex items-center justify-between px-0 py-4 border-b border-obsidian hover:border-stone-400 transition-colors duration-300"
                 >
-                  Finalizar compra
-                  <ArrowRight size={14} strokeWidth={1.5} />
+                  <span className="font-sans text-sm font-medium tracking-widest uppercase text-obsidian group-hover:text-stone-500 transition-colors duration-300">
+                    Finalizar compra
+                  </span>
+                  <ArrowRight size={14} strokeWidth={1.5} className="text-obsidian group-hover:text-stone-500 group-hover:translate-x-1 transition-all duration-300" />
                 </Link>
 
                 <button
                   onClick={closeCart}
-                  className="w-full font-sans text-xs text-center text-stone-400 hover:text-obsidian underline-reveal transition-colors"
+                  className="group w-full flex items-center justify-between px-0 py-4 border-b border-stone-200 hover:border-stone-400 transition-colors duration-300"
                 >
-                  Continuar comprando
+                  <span className="font-sans text-sm font-normal tracking-widest uppercase text-stone-400 group-hover:text-obsidian transition-colors duration-300">
+                    Continuar comprando
+                  </span>
+                  <ArrowRight size={14} strokeWidth={1.5} className="text-stone-300 group-hover:text-obsidian group-hover:translate-x-1 transition-all duration-300" />
                 </button>
               </div>
             )}

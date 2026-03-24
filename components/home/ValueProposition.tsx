@@ -8,8 +8,8 @@ const PILLARS = [
     icon: Layers,
     label: "Funcionalidade",
     headline: "Tecido que trabalha por você.",
-    body: "Tecnologia Dry Fit com proteção UV50+ e regulação térmica. Peças feitas para acompanhar a intensidade da sua rotina — sem perder a elegância de quem tem um chamado.",
-    detail: "Dry Fit · UV50+ · Thermoregulation",
+    body: "Biotecnologia com Fiação Penteada de Alta Precisão, Termorregulação Inteligente e Corte Digital (Modelagem CAD): O caimento perfeito não é por acaso. Peças feitas para acompanhar a intensidade da sua rotina, sem perder a elegância de quem tem um chamado.",
+    detail: "100% Algodão · Thermoregulation",
   },
   {
     icon: Clock,
@@ -50,7 +50,7 @@ const itemVariants = {
 
 export default function ValueProposition() {
   return (
-    <section className="py-32 md:py-40 bg-obsidian overflow-hidden">
+    <section className="section-rhythm bg-obsidian overflow-hidden">
       <div className="raizes-container">
 
         {/* ── Header ── */}
@@ -78,7 +78,7 @@ export default function ValueProposition() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-60px" }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5"
+          className="grid grid-cols-1 md:grid-cols-3 gap-px bg-stone-800/20"
         >
           {PILLARS.map((pillar) => {
             const Icon = pillar.icon;
@@ -86,8 +86,7 @@ export default function ValueProposition() {
               <motion.div
                 key={pillar.label}
                 variants={itemVariants}
-                className="bg-[#141414] rounded-2xl p-8 md:p-10 lg:p-12 flex flex-col gap-8"
-                style={{ boxShadow: "inset 0 1px 0 0 rgba(255,255,255,0.04)" }}
+                className="bg-obsidian p-10 md:p-12 flex flex-col gap-8 border-b border-stone-800 md:border-b-0 last:border-b-0"
               >
                 {/* Ícone + label */}
                 <div className="flex items-center justify-between">
