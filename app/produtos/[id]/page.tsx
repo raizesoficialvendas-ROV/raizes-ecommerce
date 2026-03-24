@@ -4,8 +4,10 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ProductGallery from "@/components/product/ProductGallery";
 import ProductInfo from "@/components/product/ProductInfo";
-import ProductDetails from "@/components/product/ProductDetails";
+import ProductShowcase from "@/components/product/ProductShowcase";
+import type { ShowcaseImage } from "@/components/product/ProductShowcase";
 import { getProductById, getPublishedProducts } from "@/lib/queries/products";
+import { getActiveBanner } from "@/lib/actions/banners";
 import { formatCurrency } from "@/lib/utils";
 import type { Product } from "@/types/database.types";
 
@@ -50,14 +52,26 @@ export default async function ProductPage({ params }: PageProps) {
     related = [];
   }
 
+  // Banners editoriais (showcase)
+  const [s1, s2, s3, s4] = await Promise.all([
+    getActiveBanner("showcase_1"),
+    getActiveBanner("showcase_2"),
+    getActiveBanner("showcase_3"),
+    getActiveBanner("showcase_4"),
+  ]);
+  const showcaseImages: ShowcaseImage[] = [s1, s2, s3, s4].map((b) => ({
+    desktop: b?.image_desktop_url ?? null,
+    mobile: b?.image_mobile_url ?? null,
+  }));
+
   return (
     <>
       <Navbar />
-      <main className="pt-[72px]">
+      <main className="pt-[72px] border-t border-stone-100">
 
         {/* ── Layout principal: Galeria + Info ── */}
-        <section className="raizes-container pt-8 pb-10 md:py-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 lg:gap-24">
+        <section className="raizes-container pt-10 pb-16 md:py-16">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_420px] gap-10 md:gap-12 lg:gap-16">
 
             {/* Galeria */}
             <ProductGallery images={images} productName={product.name} />
@@ -70,10 +84,10 @@ export default async function ProductPage({ params }: PageProps) {
               />
             </div>
           </div>
-
-          {/* Detalhes abaixo do fold */}
-          <ProductDetails product={product} />
         </section>
+
+        {/* ── Apresentação editorial ── */}
+        <ProductShowcase images={images} showcaseImages={showcaseImages} />
 
         {/* ── Produtos relacionados ── */}
         {related.length > 0 && (

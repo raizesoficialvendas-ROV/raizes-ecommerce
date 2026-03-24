@@ -92,6 +92,7 @@ export async function updateBanner(
 
   revalidatePath("/");
   revalidatePath("/admin/banners");
+  revalidatePath("/produtos", "layout");
   return { error: null };
 }
 
@@ -136,5 +137,6 @@ export async function upsertBanner(
 
   revalidatePath("/");
   revalidatePath("/admin/banners");
+  revalidatePath("/produtos", "layout");
   return { error: null };
 }

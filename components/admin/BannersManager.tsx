@@ -26,6 +26,34 @@ const SECTIONS = [
     dimDesktop: "1200 x 1500 px (Formato 4:5)",
     dimMobile: "1080 x 1350 px (Formato 4:5)",
   },
+  {
+    id: "showcase_1",
+    title: "Showcase 1 — A Coleção",
+    description: "Primeira seção da apresentação editorial na página de produto.",
+    dimDesktop: "960 x 1080 px (Formato 8:9)",
+    dimMobile: "1080 x 1080 px (Formato 1:1)",
+  },
+  {
+    id: "showcase_2",
+    title: "Showcase 2 — Tecnologia",
+    description: "Segunda seção da apresentação editorial na página de produto.",
+    dimDesktop: "960 x 1080 px (Formato 8:9)",
+    dimMobile: "1080 x 1080 px (Formato 1:1)",
+  },
+  {
+    id: "showcase_3",
+    title: "Showcase 3 — Identidade",
+    description: "Terceira seção da apresentação editorial na página de produto.",
+    dimDesktop: "960 x 1080 px (Formato 8:9)",
+    dimMobile: "1080 x 1080 px (Formato 1:1)",
+  },
+  {
+    id: "showcase_4",
+    title: "Showcase 4 — Cuidados",
+    description: "Quarta seção da apresentação editorial na página de produto.",
+    dimDesktop: "960 x 1080 px (Formato 8:9)",
+    dimMobile: "1080 x 1080 px (Formato 1:1)",
+  },
 ];
 
 export default function BannersManager({ initialBanners }: BannersManagerProps) {

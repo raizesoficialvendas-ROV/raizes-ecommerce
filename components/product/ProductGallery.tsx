@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { ZoomIn, ChevronLeft, ChevronRight } from "lucide-react";
+import { ZoomIn, ChevronLeft, ChevronRight, X } from "lucide-react";
 
 interface ProductGalleryProps {
   images: string[];
@@ -28,113 +28,96 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
 
   return (
     <>
-      <div className="flex gap-3 lg:gap-4">
-        {/* ── Thumbnails (vertical, desktop) ── */}
-        {safeImages.length > 1 && (
-          <div className="hidden md:flex flex-col gap-2.5 w-16 shrink-0">
-            {safeImages.map((src, i) => (
+      {/* ── Mobile: carousel ── */}
+      <div className="md:hidden">
+        <div
+          className="relative aspect-[3/4] w-full overflow-hidden bg-stone-100"
+          onClick={() => setLightboxOpen(true)}
+        >
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeIndex}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.35 }}
+              className="absolute inset-0"
+            >
+              <Image
+                src={safeImages[activeIndex]}
+                alt={`${productName} — imagem ${activeIndex + 1}`}
+                fill
+                priority
+                sizes="100vw"
+                className="object-cover object-center"
+              />
+            </motion.div>
+          </AnimatePresence>
+
+          {safeImages.length > 1 && (
+            <>
               <button
-                key={i}
-                onClick={() => setActiveIndex(i)}
-                aria-label={`Ver imagem ${i + 1}`}
-                className={[
-                  "relative aspect-[3/4] w-full overflow-hidden transition-all duration-300",
-                  i === activeIndex
-                    ? "ring-1 ring-obsidian opacity-100"
-                    : "opacity-40 hover:opacity-70",
-                ].join(" ")}
+                onClick={(e) => { e.stopPropagation(); prev(); }}
+                aria-label="Imagem anterior"
+                className="absolute left-3 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-10 h-10 rounded-full bg-white/30 backdrop-blur-md text-white border border-white/20 active:scale-95 transition-transform duration-150"
               >
-                <Image
-                  src={src}
-                  alt={`${productName} — miniatura ${i + 1}`}
-                  fill
-                  sizes="64px"
-                  className="object-cover object-center"
-                />
+                <ChevronLeft size={20} strokeWidth={1.5} />
               </button>
-            ))}
-          </div>
-        )}
-
-        {/* ── Imagem principal ── */}
-        <div className="flex-1">
-          <div
-            className="relative aspect-[3/4] w-full overflow-hidden bg-stone-100 cursor-zoom-in group"
-            onClick={() => setLightboxOpen(true)}
-          >
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeIndex}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.35 }}
-                className="absolute inset-0"
+              <button
+                onClick={(e) => { e.stopPropagation(); next(); }}
+                aria-label="Próxima imagem"
+                className="absolute right-3 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-10 h-10 rounded-full bg-white/30 backdrop-blur-md text-white border border-white/20 active:scale-95 transition-transform duration-150"
               >
-                <Image
-                  src={safeImages[activeIndex]}
-                  alt={`${productName} — imagem ${activeIndex + 1}`}
-                  fill
-                  priority
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover object-center transition-transform duration-700 group-hover:scale-[1.03]"
-                />
-              </motion.div>
-            </AnimatePresence>
-
-            {/* Zoom hint — desktop */}
-            <div className="absolute top-4 right-4 hidden md:flex items-center gap-1.5 bg-ivory/80 backdrop-blur-sm px-2.5 py-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <ZoomIn size={12} strokeWidth={1.5} className="text-stone-500" />
-              <span className="font-sans text-[10px] text-stone-500 tracking-wider">Ampliar</span>
-            </div>
-
-            {/* ── Setas mobile ── */}
-            {safeImages.length > 1 && (
-              <>
-                <button
-                  onClick={(e) => { e.stopPropagation(); prev(); }}
-                  aria-label="Imagem anterior"
-                  className="md:hidden absolute left-3 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-10 h-10 bg-obsidian/60 backdrop-blur-sm text-ivory active:scale-95 transition-transform duration-150"
-                >
-                  <ChevronLeft size={20} strokeWidth={1.5} />
-                </button>
-                <button
-                  onClick={(e) => { e.stopPropagation(); next(); }}
-                  aria-label="Próxima imagem"
-                  className="md:hidden absolute right-3 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-10 h-10 bg-obsidian/60 backdrop-blur-sm text-ivory active:scale-95 transition-transform duration-150"
-                >
-                  <ChevronRight size={20} strokeWidth={1.5} />
-                </button>
-              </>
-            )}
-
-            {/* Contador mobile — canto inferior direito */}
-            {safeImages.length > 1 && (
-              <div className="md:hidden absolute bottom-3 right-3 bg-obsidian/60 backdrop-blur-sm px-2.5 py-1">
-                <span className="font-sans text-[11px] text-ivory tracking-widest">
+                <ChevronRight size={20} strokeWidth={1.5} />
+              </button>
+              <div className="absolute bottom-3 right-4">
+                <span className="font-sans text-[11px] text-white tracking-widest drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]">
                   {activeIndex + 1}/{safeImages.length}
                 </span>
               </div>
-            )}
-          </div>
-
-          {/* ── Dots mobile ── */}
-          {safeImages.length > 1 && (
-            <div className="flex md:hidden items-center justify-center gap-2.5 mt-5">
-              {safeImages.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setActiveIndex(i)}
-                  aria-label={`Imagem ${i + 1}`}
-                  className={[
-                    "transition-all duration-300",
-                    i === activeIndex ? "w-6 h-[3px] bg-obsidian" : "w-[10px] h-[3px] bg-stone-300",
-                  ].join(" ")}
-                />
-              ))}
-            </div>
+            </>
           )}
         </div>
+
+        {safeImages.length > 1 && (
+          <div className="flex items-center justify-center gap-2.5 mt-5">
+            {safeImages.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setActiveIndex(i)}
+                aria-label={`Imagem ${i + 1}`}
+                className={[
+                  "transition-all duration-300",
+                  i === activeIndex ? "w-6 h-[3px] bg-obsidian" : "w-[10px] h-[3px] bg-stone-300",
+                ].join(" ")}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* ── Desktop: 2-column image grid ── */}
+      <div className="hidden md:grid grid-cols-2 gap-2">
+        {safeImages.map((src, i) => (
+          <div
+            key={i}
+            className="relative aspect-[3/4] overflow-hidden bg-stone-100 cursor-zoom-in group"
+            onClick={() => { setActiveIndex(i); setLightboxOpen(true); }}
+          >
+            <Image
+              src={src}
+              alt={`${productName} — imagem ${i + 1}`}
+              fill
+              priority={i < 2}
+              sizes="(max-width: 1400px) 25vw, 350px"
+              className="object-cover object-center transition-transform duration-700 group-hover:scale-[1.03]"
+            />
+            <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1.5 bg-white/75 backdrop-blur-sm px-2 py-1">
+              <ZoomIn size={11} strokeWidth={1.5} className="text-stone-600" />
+              <span className="font-sans text-[10px] text-stone-600 tracking-wider">Ampliar</span>
+            </div>
+          </div>
+        ))}
       </div>
 
       {/* ── Lightbox ── */}
@@ -147,6 +130,32 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
             onClick={() => setLightboxOpen(false)}
             className="fixed inset-0 z-50 bg-obsidian/95 flex items-center justify-center p-6 cursor-zoom-out"
           >
+            {/* Fechar */}
+            <button
+              onClick={() => setLightboxOpen(false)}
+              className="absolute top-5 right-5 flex items-center justify-center w-9 h-9 text-ivory/50 hover:text-ivory transition-colors duration-300"
+            >
+              <X size={20} strokeWidth={1.25} />
+            </button>
+
+            {/* Setas lightbox */}
+            {safeImages.length > 1 && (
+              <>
+                <button
+                  onClick={(e) => { e.stopPropagation(); prev(); }}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 text-ivory/50 hover:text-ivory transition-colors duration-300"
+                >
+                  <ChevronLeft size={26} strokeWidth={1.25} />
+                </button>
+                <button
+                  onClick={(e) => { e.stopPropagation(); next(); }}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 text-ivory/50 hover:text-ivory transition-colors duration-300"
+                >
+                  <ChevronRight size={26} strokeWidth={1.25} />
+                </button>
+              </>
+            )}
+
             <motion.div
               initial={{ scale: 0.92 }}
               animate={{ scale: 1 }}
@@ -163,6 +172,21 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
                 className="object-contain"
               />
             </motion.div>
+
+            {safeImages.length > 1 && (
+              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2">
+                {safeImages.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={(e) => { e.stopPropagation(); setActiveIndex(i); }}
+                    className={[
+                      "transition-all duration-300",
+                      i === activeIndex ? "w-5 h-[2px] bg-ivory" : "w-2 h-[2px] bg-ivory/30",
+                    ].join(" ")}
+                  />
+                ))}
+              </div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

@@ -1,23 +1,39 @@
 "use client";
 
 import { useState } from "react";
+import type { ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingBag, Check, Zap, Truck } from "lucide-react";
+import { ShoppingBag, Check, Zap, Truck, ChevronDown, Shield, Repeat, Droplets } from "lucide-react";
 import { useCartStore } from "@/store/useCartStore";
 import { formatCurrency } from "@/lib/utils";
 import type { Product } from "@/types/database.types";
+import ProductCharacteristics from "./ProductCharacteristics";
+import ProductShippingEstimate from "./ProductShippingEstimate";
 
 const SIZES = ["P", "M", "G", "GG"];
+
+const CARE_ICONS = [
+  { icon: Droplets, label: "Lavar à mão ou ciclo delicado" },
+  { icon: Shield, label: "Não usar alvejante" },
+  { icon: Repeat, label: "Secar à sombra" },
+];
 
 interface ProductInfoProps {
   product: Product;
   categoryName?: string;
 }
 
+type AccordionSection = {
+  id: string;
+  label: string;
+  content: ReactNode;
+};
+
 export default function ProductInfo({ product, categoryName }: ProductInfoProps) {
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [added, setAdded] = useState(false);
   const [sizeError, setSizeError] = useState(false);
+  const [openSection, setOpenSection] = useState<string | null>("descricao");
   const { addItem } = useCartStore();
 
   const meta = product.metadata as Record<string, string> | null;
@@ -33,8 +49,86 @@ export default function ProductInfo({ product, categoryName }: ProductInfoProps)
     setTimeout(() => setAdded(false), 2500);
   }
 
+  const specs = meta
+    ? (Object.entries(meta).filter(
+        ([k, v]) =>
+          !["tech", "material", "slug", "sizes"].includes(k) &&
+          typeof v === "string" &&
+          v.trim() !== ""
+      ) as [string, string][])
+    : [];
+
+  const accordionSections: AccordionSection[] = [
+    ...(product.description
+      ? [
+          {
+            id: "descricao",
+            label: "Descrição",
+            content: (
+              <p className="font-sans text-sm text-stone-500 leading-[1.9]">
+                {product.description}
+              </p>
+            ),
+          },
+        ]
+      : []),
+    ...(meta?.material || meta?.tech || specs.length > 0
+      ? [
+          {
+            id: "tecnologia",
+            label: "Tecnologia & Material",
+            content: (
+              <div>
+                {meta?.material && (
+                  <div className="flex items-baseline justify-between py-3.5 border-b border-stone-100">
+                    <p className="font-sans text-[11px] font-medium text-stone-400 tracking-widest uppercase">
+                      Material
+                    </p>
+                    <p className="font-sans text-sm text-obsidian">{meta.material}</p>
+                  </div>
+                )}
+                {meta?.tech && (
+                  <div className="flex items-baseline justify-between py-3.5 border-b border-stone-100">
+                    <p className="font-sans text-[11px] font-medium text-stone-400 tracking-widest uppercase">
+                      Tecnologia
+                    </p>
+                    <p className="font-sans text-sm text-obsidian">{meta.tech}</p>
+                  </div>
+                )}
+                {specs.map(([key, value]) => (
+                  <div
+                    key={key}
+                    className="flex items-baseline justify-between py-3.5 border-b border-stone-100 last:border-b-0"
+                  >
+                    <p className="font-sans text-[11px] font-medium text-stone-400 tracking-widest uppercase">
+                      {key}
+                    </p>
+                    <p className="font-sans text-sm text-obsidian">{value}</p>
+                  </div>
+                ))}
+              </div>
+            ),
+          },
+        ]
+      : []),
+    {
+      id: "cuidados",
+      label: "Cuidados com a peça",
+      content: (
+        <div className="grid grid-cols-3 gap-2">
+          {CARE_ICONS.map(({ icon: Icon, label }) => (
+            <div key={label} className="flex flex-col gap-3 p-4 bg-stone-50">
+              <Icon size={16} strokeWidth={1.25} className="text-stone-400" />
+              <span className="font-sans text-[11px] text-stone-500 leading-[1.6]">{label}</span>
+            </div>
+          ))}
+        </div>
+      ),
+    },
+  ];
+
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-5">
 
       {/* Categoria */}
       {categoryName && (
@@ -42,7 +136,7 @@ export default function ProductInfo({ product, categoryName }: ProductInfoProps)
       )}
 
       {/* Nome */}
-      <h1 className="font-serif text-3xl md:text-4xl font-normal tracking-tighter text-obsidian leading-tight">
+      <h1 className="font-serif text-3xl md:text-4xl font-normal tracking-tighter text-obsidian leading-[1.15]">
         {product.name}
       </h1>
 
@@ -56,43 +150,43 @@ export default function ProductInfo({ product, categoryName }: ProductInfoProps)
         </p>
       </div>
 
-      {/* Frete grátis badge */}
-      {(product.metadata as Record<string, unknown> | null)?.free_shipping === true && (
-        <div className="flex items-center gap-2 w-fit bg-emerald-50 border border-emerald-200 px-3 py-2">
-          <Truck size={13} strokeWidth={1.8} className="text-emerald-600" />
-          <span className="font-sans text-xs font-semibold tracking-wide uppercase text-emerald-700">
-            Frete Grátis
-          </span>
-        </div>
-      )}
-
-      {/* Tech badge */}
-      {meta?.tech && (
-        <div className="flex items-center gap-2 w-fit bg-stone-100 px-3 py-2">
-          <Zap size={12} strokeWidth={2} className="text-gold" />
-          <span className="font-sans text-[11px] font-semibold tracking-widest uppercase text-stone-600">
-            {meta.tech}
-          </span>
-          {meta.material && (
-            <>
-              <span className="text-stone-300">·</span>
-              <span className="font-sans text-[11px] text-stone-400 tracking-wide">
-                {meta.material}
-              </span>
-            </>
-          )}
-        </div>
-      )}
+      {/* Badges */}
+      <div className="flex flex-wrap items-center gap-2">
+        {(product.metadata as Record<string, unknown> | null)?.free_shipping === true && (
+          <div className="flex items-center gap-2 w-fit bg-emerald-50 border border-emerald-200 px-3 py-1.5">
+            <Truck size={12} strokeWidth={1.8} className="text-emerald-600" />
+            <span className="font-sans text-[11px] font-medium tracking-wide uppercase text-emerald-700">
+              Frete Grátis
+            </span>
+          </div>
+        )}
+        {meta?.tech && (
+          <div className="flex items-center gap-2 w-fit bg-stone-100 px-3 py-1.5">
+            <Zap size={11} strokeWidth={2} className="text-gold" />
+            <span className="font-sans text-[11px] font-semibold tracking-widest uppercase text-stone-600">
+              {meta.tech}
+            </span>
+            {meta.material && (
+              <>
+                <span className="text-stone-300">·</span>
+                <span className="font-sans text-[11px] text-stone-400 tracking-wide">
+                  {meta.material}
+                </span>
+              </>
+            )}
+          </div>
+        )}
+      </div>
 
       <div className="w-8 h-px bg-stone-200" />
 
-      {/* Seletor de Tamanho */}
+      {/* Tamanho */}
       <div>
-        <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center justify-between mb-4">
           <p className="font-sans text-xs font-medium tracking-widest uppercase text-stone-600">
             Tamanho
           </p>
-          <button className="font-sans text-xs text-stone-400 underline-reveal hover:text-obsidian transition-colors">
+          <button className="font-sans text-xs text-stone-400 hover:text-obsidian transition-colors duration-300 underline-reveal">
             Guia de tamanhos
           </button>
         </div>
@@ -101,10 +195,7 @@ export default function ProductInfo({ product, categoryName }: ProductInfoProps)
           {SIZES.map((size) => (
             <button
               key={size}
-              onClick={() => {
-                setSelectedSize(size);
-                setSizeError(false);
-              }}
+              onClick={() => { setSelectedSize(size); setSizeError(false); }}
               aria-label={`Tamanho ${size}`}
               className={[
                 "w-12 h-12 font-sans text-sm font-medium transition-all duration-200",
@@ -134,7 +225,7 @@ export default function ProductInfo({ product, categoryName }: ProductInfoProps)
         </AnimatePresence>
       </div>
 
-      {/* Botão Adicionar */}
+      {/* CTA */}
       <motion.button
         onClick={handleAddToCart}
         whileTap={{ scale: 0.98 }}
@@ -178,12 +269,50 @@ export default function ProductInfo({ product, categoryName }: ProductInfoProps)
         </p>
       )}
 
-      {/* Descrição curta */}
-      {product.description && (
-        <p className="font-sans text-sm text-stone-500 leading-[1.9] pt-5 pb-1 border-t border-stone-100">
-          {product.description}
-        </p>
-      )}
+      {/* ── Estimativa de Frete ── */}
+      <ProductShippingEstimate />
+
+      {/* ── Características ── */}
+      <ProductCharacteristics />
+
+      {/* ── Accordion ── */}
+      <div className="border-t border-stone-100 mt-1">
+        {accordionSections.map((section) => (
+          <div key={section.id} className="border-b border-stone-100">
+            <button
+              onClick={() =>
+                setOpenSection(openSection === section.id ? null : section.id)
+              }
+              className="w-full flex items-center justify-between py-4 text-left group"
+            >
+              <span className="label-category text-stone-500 group-hover:text-obsidian transition-colors duration-300">
+                {section.label}
+              </span>
+              <ChevronDown
+                size={14}
+                strokeWidth={1.5}
+                className={[
+                  "text-stone-400 transition-transform duration-300 shrink-0",
+                  openSection === section.id ? "rotate-180" : "",
+                ].join(" ")}
+              />
+            </button>
+            <AnimatePresence initial={false}>
+              {openSection === section.id && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+                  style={{ overflow: "hidden" }}
+                >
+                  <div className="pb-6">{section.content}</div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

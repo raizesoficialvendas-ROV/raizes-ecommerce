@@ -27,16 +27,14 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
     : [];
 
   return (
-    <section className="mt-24 md:mt-32">
+    <section className="mt-16 md:mt-32">
 
       {/* ── Divisor editorial ── */}
-      <div className="flex items-center gap-6 mb-16 md:mb-20">
-        <div className="flex-1 h-px bg-stone-100" />
-        <p className="label-category text-stone-300">A peça</p>
-        <div className="flex-1 h-px bg-stone-100" />
+      <div className="flex items-center mb-12 md:mb-20">
+        <div className="flex-1 h-px bg-stone-200" />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-24 md:gap-28">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-28">
 
         {/* ── Tecnologia Funcional ── */}
         <motion.div
