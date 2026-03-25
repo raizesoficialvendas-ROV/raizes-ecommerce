@@ -29,7 +29,7 @@ const TROCA_STEPS = [
     step: "01",
     titulo: "Entre em contato",
     descricao:
-      "Envie um e-mail para contato@raizes.com.br com o número do seu pedido, o motivo da troca ou devolução e fotos da peça caso haja defeito. Nossa equipe responde em até 1 dia útil.",
+      "Envie um e-mail para contato@raizesoficial.com.br com o número do seu pedido, o motivo da troca ou devolução e fotos da peça caso haja defeito. Nossa equipe responde em até 1 dia útil.",
     detalhe: "Prazo: até 30 dias após o recebimento",
   },
   {
@@ -414,7 +414,7 @@ export default function TrocasPage() {
               </div>
               <div className="flex flex-col sm:flex-row gap-3 shrink-0">
                 <a
-                  href="mailto:contato@raizes.com.br"
+                  href="mailto:contato@raizesoficial.com.br"
                   className="inline-flex items-center justify-center gap-2 bg-obsidian text-ivory font-sans text-xs font-semibold tracking-widest uppercase px-7 py-4 hover:bg-stone-800 transition-colors duration-300"
                 >
                   <Mail size={14} strokeWidth={2} />

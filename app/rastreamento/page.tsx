@@ -321,7 +321,7 @@ export default function RastreamentoPage() {
               <p className="font-sans text-xs text-amber-800 leading-relaxed">
                 <strong>Verifique sua pasta de spam.</strong> Em alguns provedores de e-mail, nossas mensagens
                 automáticas podem ser redirecionadas para lixo eletrônico. Adicione{" "}
-                <span className="font-medium">contato@raizes.com.br</span> aos seus contatos para garantir
+                <span className="font-medium">contato@raizesoficial.com.br</span> aos seus contatos para garantir
                 que nenhuma notificação fique perdida.
               </p>
             </div>
