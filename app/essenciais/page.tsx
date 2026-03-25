@@ -8,7 +8,7 @@ export default function EssenciaisPage() {
   return (
     <>
       <Navbar />
-      <main className="pt-[72px]">
+      <main>
         <div className="raizes-container py-16 md:py-24 max-w-2xl">
           <p className="label-category text-stone-400 mb-4">Linha</p>
           <h1 className="font-serif text-5xl md:text-6xl font-normal tracking-tighter text-obsidian mb-8">

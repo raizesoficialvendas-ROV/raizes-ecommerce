@@ -8,7 +8,7 @@ export default function SobrePage() {
   return (
     <>
       <Navbar />
-      <main className="pt-[72px]">
+      <main>
         <div className="raizes-container py-16 md:py-28">
 
           {/* Header */}

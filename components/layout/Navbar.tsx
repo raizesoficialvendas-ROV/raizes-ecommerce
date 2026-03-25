@@ -132,6 +132,12 @@ export default function Navbar() {
 
   return (
     <>
+      {/* ── Espaçador estrutural: garante que o conteúdo da página nunca fique
+           embaixo da navbar fixa. Páginas com hero full-bleed (home, coleção)
+           usam -mt-[72px] no <main> para cancelar este espaço e manter o efeito
+           de sobreposição intencional. ── */}
+      <div className="h-[72px] shrink-0" aria-hidden="true" />
+
       <motion.header
         initial={{ y: -10, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}

@@ -67,7 +67,7 @@ export default async function ProductPage({ params }: PageProps) {
   return (
     <>
       <Navbar />
-      <main className="pt-[72px] border-t border-stone-100">
+      <main>
 
         {/* ── Layout principal: Galeria + Info ── */}
         <section className="raizes-container pt-10 pb-16 md:py-16">
