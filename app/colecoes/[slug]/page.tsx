@@ -88,7 +88,7 @@ export default async function CollectionPage({ params }: Props) {
         </section>
 
         {/* ── Grid de produtos ── */}
-        <section className="py-20 md:py-28 bg-ivory">
+        <section className="py-16 md:py-24 bg-ivory">
           <div className="raizes-container">
             {products.length === 0 ? (
               <div className="py-24 text-center">
