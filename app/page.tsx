@@ -15,10 +15,8 @@ export default async function Home() {
 
   return (
     <>
-      <Navbar />
-      {/* -mt-[72px] cancela o espaçador da Navbar para que o Hero continue
-           cobrindo toda a viewport (efeito full-bleed intencional). */}
-      <main className="-mt-[72px]">
+      <Navbar transparent />
+      <main>
         <HeroSection banner={heroBanner} />
         {collections.map((col, index) => (
           <CollectionSection

@@ -43,7 +43,7 @@ const itemVariants = {
   visible: { opacity: 1, x: 0, transition: { duration: 0.25, ease: [0.25, 0.1, 0.25, 1] as const } },
 };
 
-export default function Navbar() {
+export default function Navbar({ transparent = false }: { transparent?: boolean }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -133,10 +133,11 @@ export default function Navbar() {
   return (
     <>
       {/* ── Espaçador estrutural: garante que o conteúdo da página nunca fique
-           embaixo da navbar fixa. Páginas com hero full-bleed (home, coleção)
-           usam -mt-[72px] no <main> para cancelar este espaço e manter o efeito
-           de sobreposição intencional. ── */}
-      <div className="h-[72px] shrink-0" aria-hidden="true" />
+           embaixo da navbar fixa. Suprimido com transparent={true} em páginas
+           com hero full-bleed intencional (ex: homepage). ── */}
+      {!transparent && (
+        <div className="h-[72px] shrink-0" aria-hidden="true" />
+      )}
 
       <motion.header
         initial={{ y: -10, opacity: 0 }}

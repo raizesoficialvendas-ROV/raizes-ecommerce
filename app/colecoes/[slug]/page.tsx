@@ -43,9 +43,7 @@ export default async function CollectionPage({ params }: Props) {
   return (
     <>
       <Navbar />
-      {/* -mt-[72px] cancela o espaçador da Navbar para que o Hero da coleção
-           seja full-bleed (efeito cinematográfico intencional). */}
-      <main className="-mt-[72px]">
+      <main>
         {/* ── Hero da coleção ── */}
         <section className="relative w-full h-[50vh] min-h-[360px] md:h-[60vh] overflow-hidden bg-obsidian">
           <Image
