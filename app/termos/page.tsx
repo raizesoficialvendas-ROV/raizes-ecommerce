@@ -1,3 +1,4 @@
+import React from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Link from "next/link";
@@ -15,13 +16,19 @@ import {
   Mail,
 } from "lucide-react";
 
+type BlocoTexto     = { tipo: "texto";       valor: string };
+type BlocoDestaque  = { tipo: "destaque";    valor: string };
+type BlocoLista     = { tipo: "lista";       itens: string[] };
+type BlocoListaCards= { tipo: "lista-cards"; itens: { titulo: string; desc: string }[] };
+type Bloco = BlocoTexto | BlocoDestaque | BlocoLista | BlocoListaCards;
+
 export const metadata: Metadata = {
   title: "Termos de Uso",
   description:
     "Termos de Uso e Condições Gerais de Compra da Raízes. Leia com atenção antes de realizar sua compra.",
 };
 
-const SECTIONS = [
+const SECTIONS: { id: string; icon: React.ElementType; titulo: string; conteudo: Bloco[] }[] = [
   {
     id: "aceitacao",
     icon: FileText,
