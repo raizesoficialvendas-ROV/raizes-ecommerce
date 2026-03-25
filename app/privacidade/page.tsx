@@ -1,7 +1,16 @@
+import React from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import type { Metadata } from "next";
 import { ShieldCheck, Lock, Eye, Database, Share2, UserCheck, Bell, Mail } from "lucide-react";
+
+type BlocoTexto      = { tipo: "texto";          valor: string };
+type BlocoSubtitulo  = { tipo: "subtitulo";       valor: string };
+type BlocoLista      = { tipo: "lista";           itens: string[] };
+type BlocoNumerada   = { tipo: "lista-numerada";  itens: string[] };
+type BlocoListaIcon  = { tipo: "lista-icon";      itens: { titulo: string; desc: string }[] };
+type BlocoTabela     = { tipo: "tabela";          linhas: { finalidade: string; base: string; dados: string }[] };
+type Bloco = BlocoTexto | BlocoSubtitulo | BlocoLista | BlocoNumerada | BlocoListaIcon | BlocoTabela;
 
 export const metadata: Metadata = {
   title: "Política de Privacidade",
@@ -9,7 +18,7 @@ export const metadata: Metadata = {
     "Política de Privacidade da Raízes. Saiba como coletamos, usamos e protegemos seus dados pessoais em conformidade com a LGPD.",
 };
 
-const SECTIONS = [
+const SECTIONS: { id: string; icon: React.ElementType; titulo: string; conteudo: Bloco[] }[] = [
   {
     id: "introducao",
     icon: ShieldCheck,
