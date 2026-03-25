@@ -55,7 +55,7 @@ export default function FaqSection() {
   }
 
   return (
-    <section className="section-rhythm bg-ivory border-t border-stone-100">
+    <section id="faq" className="section-rhythm bg-ivory border-t border-stone-100">
       <div className="raizes-container max-w-3xl">
 
         {/* ── Header ── */}

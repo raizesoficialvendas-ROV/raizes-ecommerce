@@ -99,7 +99,10 @@ export default function CollectionSection({
   }
 
   return (
-    <section className="py-32 md:py-44 lg:py-52 overflow-hidden bg-[#FAFAF8]">
+    <section
+      id={sectionIndex === 0 ? "produtos" : undefined}
+      className="py-32 md:py-44 lg:py-52 overflow-hidden bg-[#FAFAF8]"
+    >
       <div className="raizes-container">
         {/* ── Header ── */}
         <motion.div
