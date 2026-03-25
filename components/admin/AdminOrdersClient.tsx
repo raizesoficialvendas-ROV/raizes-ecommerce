@@ -19,9 +19,11 @@ import {
   ChevronUp,
   XCircle,
   RotateCcw,
+  Trash2,
+  AlertTriangle,
 } from "lucide-react";
 import { formatCurrency, formatDate, getOrderStatusLabel } from "@/lib/utils";
-import { updateOrderTracking, updateOrderStatus, retryMelhorEnvioShipment } from "@/lib/actions/orders";
+import { updateOrderTracking, updateOrderStatus, retryMelhorEnvioShipment, deleteOrder } from "@/lib/actions/orders";
 import { useToastStore } from "@/store/useToastStore";
 
 // ── Types ──
@@ -97,6 +99,7 @@ export default function AdminOrdersClient({
   const [trackingInputs, setTrackingInputs] = useState<Record<string, string>>({});
   const [isPending, startTransition] = useTransition();
   const [loadingOrderId, setLoadingOrderId] = useState<string | null>(null);
+  const [deleteConfirm, setDeleteConfirm] = useState<{ id: string; name: string } | null>(null);
   const toast = useToastStore();
 
   // ── Filtering ──
@@ -199,6 +202,22 @@ export default function AdminOrdersClient({
         toast.success("Envio ME criado!", `ID: ${shipmentId.slice(0, 8)}`);
       } else {
         toast.error("Erro ao criar envio ME", error ?? "Tente novamente.");
+      }
+      setLoadingOrderId(null);
+    });
+  };
+
+  const handleDeleteOrder = (orderId: string) => {
+    setDeleteConfirm(null);
+    setLoadingOrderId(orderId);
+    startTransition(async () => {
+      const { success, error } = await deleteOrder(orderId);
+      if (success) {
+        setOrders((prev) => prev.filter((o) => o.id !== orderId));
+        setExpandedOrder((prev) => (prev === orderId ? null : prev));
+        toast.success("Pedido excluído", "O pedido foi removido permanentemente.");
+      } else {
+        toast.error("Erro ao excluir", error ?? "Tente novamente.");
       }
       setLoadingOrderId(null);
     });
@@ -497,25 +516,41 @@ export default function AdminOrdersClient({
                       </div>
 
                       {/* Status Actions */}
-                      <div className="mt-6 pt-4 border-t border-stone-200 flex items-center gap-2">
-                        <span className="font-sans text-xs text-stone-400 mr-2">
-                          Alterar status:
-                        </span>
-                        {["paid", "processing", "shipped", "delivered", "cancelled"].map(
-                          (s) =>
-                            s !== order.status && (
-                              <button
-                                key={s}
-                                onClick={() => handleStatusChange(order.id, s)}
-                                disabled={isLoading}
-                                className={`px-2.5 py-1 text-[10px] font-medium border transition-all hover:opacity-80 disabled:opacity-40 ${
-                                  STATUS_CONFIG[s]?.bgColor ?? "bg-stone-100 border-stone-200"
-                                } ${STATUS_CONFIG[s]?.color ?? "text-stone-600"}`}
-                              >
-                                {STATUS_CONFIG[s]?.label ?? s}
-                              </button>
-                            )
-                        )}
+                      <div className="mt-6 pt-4 border-t border-stone-200 flex items-center justify-between gap-2 flex-wrap">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="font-sans text-xs text-stone-400 mr-2">
+                            Alterar status:
+                          </span>
+                          {["paid", "processing", "shipped", "delivered", "cancelled"].map(
+                            (s) =>
+                              s !== order.status && (
+                                <button
+                                  key={s}
+                                  onClick={() => handleStatusChange(order.id, s)}
+                                  disabled={isLoading}
+                                  className={`px-2.5 py-1 text-[10px] font-medium border transition-all hover:opacity-80 disabled:opacity-40 ${
+                                    STATUS_CONFIG[s]?.bgColor ?? "bg-stone-100 border-stone-200"
+                                  } ${STATUS_CONFIG[s]?.color ?? "text-stone-600"}`}
+                                >
+                                  {STATUS_CONFIG[s]?.label ?? s}
+                                </button>
+                              )
+                          )}
+                        </div>
+                        {/* Botão excluir */}
+                        <button
+                          onClick={() =>
+                            setDeleteConfirm({
+                              id: order.id,
+                              name: order.customer_name ?? `#${order.id.slice(0, 8)}`,
+                            })
+                          }
+                          disabled={isLoading}
+                          className="flex items-center gap-1.5 px-3 py-1.5 bg-red-50 border border-red-200 text-red-600 text-[10px] font-medium hover:bg-red-100 disabled:opacity-40 transition-all ml-auto"
+                        >
+                          <Trash2 size={11} />
+                          Excluir pedido
+                        </button>
                       </div>
                     </div>
                   )}
@@ -525,6 +560,50 @@ export default function AdminOrdersClient({
           </div>
         )}
       </div>
+      {/* ── Modal de confirmação de exclusão ── */}
+      {deleteConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          {/* Overlay */}
+          <div
+            className="absolute inset-0 bg-obsidian/60 backdrop-blur-sm"
+            onClick={() => setDeleteConfirm(null)}
+          />
+          {/* Modal */}
+          <div className="relative bg-white border border-stone-200 shadow-xl w-full max-w-md p-8">
+            <div className="flex items-start gap-4 mb-6">
+              <div className="shrink-0 w-10 h-10 bg-red-50 border border-red-200 flex items-center justify-center">
+                <AlertTriangle size={18} className="text-red-600" />
+              </div>
+              <div>
+                <h3 className="font-serif text-lg font-normal text-obsidian tracking-tight mb-1">
+                  Excluir pedido permanentemente?
+                </h3>
+                <p className="font-sans text-xs text-stone-500 leading-relaxed">
+                  O pedido de{" "}
+                  <strong className="text-obsidian">{deleteConfirm.name}</strong>{" "}
+                  (<span className="font-mono">#{deleteConfirm.id.slice(0, 8)}</span>) será
+                  removido do banco de dados. Esta ação não pode ser desfeita.
+                </p>
+              </div>
+            </div>
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={() => setDeleteConfirm(null)}
+                className="px-5 py-2.5 border border-stone-200 text-stone-600 font-sans text-xs font-semibold tracking-wide hover:border-stone-400 transition-colors"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={() => handleDeleteOrder(deleteConfirm.id)}
+                className="flex items-center gap-2 px-5 py-2.5 bg-red-600 text-white font-sans text-xs font-semibold tracking-wide hover:bg-red-700 transition-colors"
+              >
+                <Trash2 size={12} />
+                Sim, excluir
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

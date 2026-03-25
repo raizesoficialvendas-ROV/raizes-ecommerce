@@ -314,6 +314,39 @@ export async function retryMelhorEnvioShipment(
   return { success: false, shipmentId: null, error: meError ?? "Erro desconhecido ao criar envio" };
 }
 
+// ── Delete order (admin) ────────────────────────────────────────────────────
+
+export async function deleteOrder(
+  orderId: string
+): Promise<{ success: boolean; error: string | null }> {
+  const supabase = createAdminClient();
+
+  // Exclui os itens do pedido primeiro (caso não haja CASCADE no banco)
+  const { error: itemsError } = await supabase
+    .from("order_items")
+    .delete()
+    .eq("order_id", orderId);
+
+  if (itemsError) {
+    console.error("[deleteOrder items]", itemsError.message);
+    return { success: false, error: "Erro ao excluir itens do pedido." };
+  }
+
+  // Exclui o pedido
+  const { error } = await supabase
+    .from("orders")
+    .delete()
+    .eq("id", orderId);
+
+  if (error) {
+    console.error("[deleteOrder]", error.message);
+    return { success: false, error: error.message };
+  }
+
+  revalidatePath("/admin/pedidos");
+  return { success: true, error: null };
+}
+
 // ── Get all orders (admin) ───────────────────────────────────────────────────
 
 export async function getAllOrders() {
