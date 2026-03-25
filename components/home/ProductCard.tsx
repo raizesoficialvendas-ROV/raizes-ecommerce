@@ -67,12 +67,13 @@ export default function ProductCard({
       {/* ── Área da Imagem ── */}
       <Link
         href={`/produtos/${product.id}`}
-        className="block relative aspect-[4/5] overflow-hidden bg-stone-100"
+        className="block relative aspect-[4/5] overflow-hidden bg-stone-100 rounded-lg"
         style={{
           transition: "box-shadow 0.3s ease",
           boxShadow: hovered
             ? "0 8px 28px rgba(0,0,0,0.14)"
             : "0 1px 6px rgba(0,0,0,0.06)",
+          borderRadius: "8px",
         }}
       >
         {/* Imagem principal */}
