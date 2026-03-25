@@ -13,12 +13,14 @@ interface ProductCardProps {
   product: Product;
   index?: number;
   priority?: boolean;
+  grid?: boolean;
 }
 
 export default function ProductCard({
   product,
   index = 0,
   priority = false,
+  grid = false,
 }: ProductCardProps) {
   const [hovered, setHovered] = useState(false);
   const { addItem } = useCartStore();
@@ -56,7 +58,9 @@ export default function ProductCard({
         delay: index * 0.07,
         ease: [0.25, 0.1, 0.25, 1],
       }}
-      className="product-card group flex-none w-[260px] md:w-[300px] cursor-pointer"
+      className={`product-card group cursor-pointer ${
+        grid ? "w-full" : "flex-none w-[260px] md:w-[300px]"
+      }`}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >

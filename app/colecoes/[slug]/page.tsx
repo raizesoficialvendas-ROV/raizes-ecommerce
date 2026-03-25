@@ -4,11 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
+import ProductCard from "@/components/home/ProductCard";
 import {
   getCollectionBySlug,
   getCollectionProducts,
 } from "@/lib/queries/collections";
-import { formatCurrency } from "@/lib/utils";
 import type { Metadata } from "next";
 
 interface Props {
@@ -88,7 +88,7 @@ export default async function CollectionPage({ params }: Props) {
         </section>
 
         {/* ── Grid de produtos ── */}
-        <section className="py-16 md:py-24 bg-ivory">
+        <section className="py-20 md:py-28 bg-ivory">
           <div className="raizes-container">
             {products.length === 0 ? (
               <div className="py-24 text-center">
@@ -103,74 +103,16 @@ export default async function CollectionPage({ params }: Props) {
                 </Link>
               </div>
             ) : (
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-                {products.map((product) => {
-                  const mainImage =
-                    product.images_urls && product.images_urls.length > 0
-                      ? product.images_urls[0]
-                      : "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80&fit=crop";
-
-                  const hoverImage =
-                    product.images_urls && product.images_urls.length > 1
-                      ? product.images_urls[1]
-                      : mainImage;
-
-                  const meta = product.metadata as Record<string, unknown> | null;
-                  const tech = meta?.tech ? String(meta.tech) : null;
-                  const material = meta?.material
-                    ? String(meta.material)
-                    : null;
-
-                  return (
-                    <Link
-                      key={product.id}
-                      href={`/produtos/${product.id}`}
-                      className="group block"
-                    >
-                      {/* Imagem */}
-                      <div className="relative aspect-[3/4] overflow-hidden bg-stone-100 mb-3">
-                        <Image
-                          src={mainImage}
-                          alt={product.name}
-                          fill
-                          sizes="(max-width: 768px) 50vw, 25vw"
-                          className="object-cover transition-all duration-500 group-hover:opacity-0"
-                        />
-                        <Image
-                          src={hoverImage}
-                          alt={`${product.name} — alternativa`}
-                          fill
-                          sizes="(max-width: 768px) 50vw, 25vw"
-                          className="object-cover opacity-0 transition-all duration-500 group-hover:opacity-100"
-                        />
-
-                        {/* Badge tech */}
-                        {tech && (
-                          <div className="absolute top-3 left-3 flex items-center gap-1.5 bg-obsidian/90 backdrop-blur-sm px-2.5 py-1.5">
-                            <span className="font-sans text-[9px] font-semibold tracking-widest uppercase text-ivory">
-                              {tech}
-                            </span>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Info */}
-                      <h3 className="font-sans text-sm font-medium text-obsidian tracking-tight mb-1 group-hover:text-stone-500 transition-colors">
-                        {product.name}
-                      </h3>
-                      <div className="flex items-center justify-between">
-                        <p className="font-sans text-sm text-obsidian">
-                          {formatCurrency(product.price)}
-                        </p>
-                        {material && (
-                          <p className="font-sans text-[10px] tracking-wider uppercase text-stone-400">
-                            {material}
-                          </p>
-                        )}
-                      </div>
-                    </Link>
-                  );
-                })}
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-10 md:gap-x-6 md:gap-y-14">
+                {products.map((product, i) => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    index={i}
+                    priority={i < 4}
+                    grid
+                  />
+                ))}
               </div>
             )}
           </div>
