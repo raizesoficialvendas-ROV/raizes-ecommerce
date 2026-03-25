@@ -39,10 +39,15 @@
 }
 
 /* --- Base Resets & Typography --- */
-*, *::before, *::after {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+/* IMPORTANTE: Este reset deve estar dentro de @layer base para que os utilitários
+   do Tailwind (@layer utilities) tenham prioridade sobre ele na cascata CSS.
+   Sem isso, "padding: 0" unlayered derrota todas as classes py-*, px-*, etc. */
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
 }
 
 html {
