@@ -26,42 +26,32 @@ export default function HeroSection({ banner }: { banner?: Banner | null }) {
       ref={containerRef}
       className="relative w-full h-screen min-h-[640px] overflow-hidden bg-obsidian"
     >
-      {/* ── Background Image com Parallax ── */}
+      {/* ── Background Video & Parallax Poster ── */}
       <motion.div
         style={{ y: imageY }}
         className="absolute inset-0 w-full h-[115%] -top-[7.5%]"
       >
-        {banner?.image_desktop_url ? (
-          <>
-            <Image
-              src={banner.image_desktop_url}
-              alt="Capa Raízes"
-              fill
-              priority
-              sizes="100vw"
-              className={`object-cover object-center ${banner.image_mobile_url ? 'hidden md:block' : ''}`}
-            />
-            {banner.image_mobile_url && (
-              <Image
-                src={banner.image_mobile_url}
-                alt="Capa Raízes Mobile"
-                fill
-                priority
-                sizes="100vw"
-                className="object-cover object-center md:hidden"
-              />
-            )}
-          </>
-        ) : (
-          <Image
-            src="https://images.unsplash.com/photo-1516826957135-700dedea698c?w=1800&q=85&fit=crop"
-            alt="Homem vestindo camiseta essencial Raízes em ambiente urbano"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-center"
-          />
-        )}
+        {/* Placeholder image that loads instantly before the video */}
+        <Image
+          src="/assets/imagemframe.webp"
+          alt="Homem vestindo camiseta essencial Raízes em ambiente urbano"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center bg-obsidian"
+        />
+        
+        {/* Autoplaying background video */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+        >
+          <source src="/assets/videofundo.mp4" type="video/mp4" />
+        </video>
+
         {/* Overlay gradiente duplo — escurece de baixo para cima para legibilidade */}
         <div className="absolute inset-0 bg-gradient-to-t from-obsidian/80 via-obsidian/20 to-obsidian/30" />
         {/* Overlay lateral sutil */}
