@@ -91,10 +91,19 @@ function LoginContent() {
           return;
         }
 
-        // Supabase retorna session null quando confirmação de e-mail está ativa
+        // Se o Supabase retornar session null, pode ser por delay ou por exigeência de confirmação.
+        // Já que a confirmação está desativada globalmente, fazemos um signIn logo em seguida.
         if (data?.user && !data?.session) {
-          setEmailSent(true);
-          return;
+          const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+          });
+
+          if (signInError || !signInData.session) {
+            // Se continuou dando erro, então de fato a conta precisa ser ativada
+            setEmailSent(true);
+            return;
+          }
         }
       }
 
