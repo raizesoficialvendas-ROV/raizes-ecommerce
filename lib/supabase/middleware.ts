@@ -39,17 +39,24 @@ export async function updateSession(request: NextRequest) {
     // Rotas protegidas — adicione aqui conforme necessário
     const pathname = request.nextUrl.pathname;
 
-    // Não interceptar a própria página de login admin
-    if (pathname === "/admin-login") {
+    // Não interceptar as próprias páginas de login
+    if (pathname === "/admin-login" || pathname === "/login") {
       return supabaseResponse;
     }
 
-    if (
-      !user &&
-      (pathname.startsWith("/conta") || pathname.startsWith("/admin"))
-    ) {
+    if (!user && pathname.startsWith("/admin")) {
+      // Área admin → redireciona para login do admin
       const url = request.nextUrl.clone();
       url.pathname = "/admin-login";
+      return NextResponse.redirect(url);
+    }
+
+    if (!user && pathname.startsWith("/conta")) {
+      // Área do cliente → redireciona para login do cliente
+      // preservando a URL de destino para redirecionar após o login
+      const url = request.nextUrl.clone();
+      url.pathname = "/login";
+      url.searchParams.set("redirect", pathname);
       return NextResponse.redirect(url);
     }
   } catch (e) {
