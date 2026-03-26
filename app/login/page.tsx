@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition, useEffect } from "react";
+import { useState, useTransition, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -34,6 +34,7 @@ function LoginContent() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
+  const isSubmittingRef = useRef(false);
 
   useEffect(() => {
     const supabase = createClient();
@@ -44,10 +45,13 @@ function LoginContent() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (isSubmittingRef.current) return;  // bloqueia duplo envio
+    isSubmittingRef.current = true;
     setError(null);
 
     startTransition(async () => {
-      const supabase = createClient();
+      try {
+        const supabase = createClient();
 
       if (mode === "login") {
         const { error: authError } = await supabase.auth.signInWithPassword({
@@ -99,6 +103,9 @@ function LoginContent() {
         router.push(redirect);
         router.refresh();
       }, 800);
+      } finally {
+        isSubmittingRef.current = false;
+      }
     });
   }
 
