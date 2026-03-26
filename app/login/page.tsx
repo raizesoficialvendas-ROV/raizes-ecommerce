@@ -33,6 +33,7 @@ function LoginContent() {
   const [showPass, setShowPass] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
 
   useEffect(() => {
     const supabase = createClient();
@@ -58,20 +59,37 @@ function LoginContent() {
           return;
         }
       } else {
-        const { error: authError } = await supabase.auth.signUp({
+        const siteUrl =
+          typeof window !== "undefined"
+            ? window.location.origin
+            : process.env.NEXT_PUBLIC_SITE_URL ?? "https://raizesoficial.com.br";
+
+        const { data, error: authError } = await supabase.auth.signUp({
           email,
           password,
           options: {
             data: { full_name: name },
+            emailRedirectTo: `${siteUrl}/login?redirect=${encodeURIComponent(redirect)}`,
           },
         });
+
         if (authError) {
-          if (authError.message.includes("already registered")) {
+          const msg = authError.message?.toLowerCase() ?? "";
+          if (msg.includes("already registered") || msg.includes("already exists") || msg.includes("user already")) {
             setError("Este e-mail já possui uma conta. Faça login.");
             setMode("login");
+          } else if (authError.status === 429 || msg.includes("rate limit")) {
+            setError("Muitas tentativas. Aguarde alguns minutos e tente novamente.");
           } else {
-            setError("Erro ao criar conta. Tente novamente.");
+            // Exibe a mensagem real do Supabase para facilitar diagnóstico
+            setError(`Erro ao criar conta: ${authError.message}`);
           }
+          return;
+        }
+
+        // Supabase retorna session null quando confirmação de e-mail está ativa
+        if (data?.user && !data?.session) {
+          setEmailSent(true);
           return;
         }
       }
@@ -134,7 +152,23 @@ function LoginContent() {
             </motion.div>
 
             <AnimatePresence mode="wait">
-              {success ? (
+              {emailSent ? (
+                <motion.div
+                  key="email-sent"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="space-y-1"
+                >
+                  <h1 className="font-serif text-2xl text-obsidian tracking-tight">
+                    Confirme seu e-mail
+                  </h1>
+                  <p className="font-sans text-sm text-stone-400 leading-relaxed">
+                    Enviamos um link de confirmação para{" "}
+                    <strong className="text-obsidian">{email}</strong>.<br />
+                    Clique no link para ativar sua conta e acessar suas compras.
+                  </p>
+                </motion.div>
+              ) : success ? (
                 <motion.div
                   key="success"
                   initial={{ opacity: 0, y: 8 }}
@@ -171,7 +205,7 @@ function LoginContent() {
           </div>
 
           {/* Formulário */}
-          {!success && (
+          {!success && !emailSent && (
             <motion.form
               onSubmit={handleSubmit}
               className="space-y-4"
