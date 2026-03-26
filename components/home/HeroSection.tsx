@@ -109,17 +109,13 @@ export default function HeroSection({ banner }: { banner?: Banner | null }) {
               transition={{ duration: 0.7, delay: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
               className="flex flex-col sm:flex-row items-start gap-4"
             >
-              <Link href="/colecoes/essenciais" className="btn-primary group">
+              <Link href="#produtos" className="btn-primary group">
                 Explorar coleção
                 <ArrowRight
                   size={15}
                   strokeWidth={1.5}
                   className="transition-transform duration-300 group-hover:translate-x-1"
                 />
-              </Link>
-
-              <Link href="/sobre" className="btn-outline border-linen/40 text-linen hover:bg-linen hover:text-obsidian">
-                Nossa história
               </Link>
             </motion.div>
           </div>
