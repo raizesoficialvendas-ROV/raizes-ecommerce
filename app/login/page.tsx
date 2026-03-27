@@ -109,8 +109,7 @@ function LoginContent() {
 
       setSuccess(true);
       setTimeout(() => {
-        router.push(redirect);
-        router.refresh();
+        window.location.href = redirect;
       }, 800);
       } finally {
         isSubmittingRef.current = false;
