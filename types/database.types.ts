@@ -363,4 +363,6 @@ export interface ColorEntry {
    * Ex: [0, 1] → as 2 primeiras imagens são desta cor.
    */
   imageIndexes: number[];
+  /** Index signature required for Supabase Json type compatibility */
+  [key: string]: Json | undefined;
 }
