@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ShoppingBag, Check, Zap, Truck, ChevronDown, Shield, Repeat, Droplets, Minus, Plus } from "lucide-react";
 import { useCartStore } from "@/store/useCartStore";
 import { formatCurrency } from "@/lib/utils";
-import type { Product } from "@/types/database.types";
+import type { Product, ColorEntry } from "@/types/database.types";
 import ProductCharacteristics from "./ProductCharacteristics";
 import ProductShippingEstimate from "./ProductShippingEstimate";
 
@@ -21,6 +21,9 @@ const CARE_ICONS = [
 interface ProductInfoProps {
   product: Product;
   categoryName?: string;
+  colors?: ColorEntry[];
+  selectedColorIdx?: number | null;
+  onColorChange?: (idx: number) => void;
 }
 
 type AccordionSection = {
@@ -29,7 +32,7 @@ type AccordionSection = {
   content: ReactNode;
 };
 
-export default function ProductInfo({ product, categoryName }: ProductInfoProps) {
+export default function ProductInfo({ product, categoryName, colors, selectedColorIdx, onColorChange }: ProductInfoProps) {
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
@@ -196,6 +199,45 @@ export default function ProductInfo({ product, categoryName }: ProductInfoProps)
       </div>
 
       <div className="w-8 h-px bg-stone-200" />
+
+      {/* Cores */}
+      {colors && colors.length > 0 && (
+        <div>
+          <p className="font-sans text-xs font-medium tracking-widest uppercase text-stone-600 mb-4">
+            Cor
+            {selectedColorIdx !== null && selectedColorIdx !== undefined && (
+              <span className="ml-2 text-obsidian font-semibold">
+                — {colors[selectedColorIdx]?.name}
+              </span>
+            )}
+          </p>
+          <div className="flex gap-3 flex-wrap">
+            {colors.map((color, idx) => (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => onColorChange?.(idx)}
+                title={color.name}
+                aria-label={`Cor: ${color.name}`}
+                className={[
+                  "relative w-8 h-8 rounded-full border-2 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/50",
+                  selectedColorIdx === idx
+                    ? "border-obsidian scale-110 shadow-md"
+                    : "border-stone-200 hover:border-stone-400 hover:scale-105",
+                ].join(" ")}
+                style={{ backgroundColor: color.hex }}
+              >
+                {selectedColorIdx === idx && (
+                  <span
+                    className="absolute inset-0 rounded-full ring-2 ring-offset-1 ring-obsidian/30"
+                    aria-hidden="true"
+                  />
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Tamanho */}
       <div>

@@ -2,8 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import ProductGallery from "@/components/product/ProductGallery";
-import ProductInfo from "@/components/product/ProductInfo";
+import ProductClientSection from "@/components/product/ProductClientSection";
 import ProductShowcase from "@/components/product/ProductShowcase";
 import type { ShowcaseImage } from "@/components/product/ProductShowcase";
 import { getProductById, getPublishedProducts } from "@/lib/queries/products";
@@ -71,19 +70,11 @@ export default async function ProductPage({ params }: PageProps) {
 
         {/* ── Layout principal: Galeria + Info ── */}
         <section className="raizes-container pt-10 pb-16 md:py-16">
-          <div className="grid grid-cols-1 md:grid-cols-[1fr_420px] gap-10 md:gap-12 lg:gap-16">
-
-            {/* Galeria */}
-            <ProductGallery images={images} productName={product.name} />
-
-            {/* Info — sticky no desktop */}
-            <div className="md:sticky md:top-[92px] md:self-start">
-              <ProductInfo
-                product={product}
-                categoryName={categoryName}
-              />
-            </div>
-          </div>
+          <ProductClientSection
+            product={product}
+            allImages={images}
+            categoryName={categoryName}
+          />
         </section>
 
         {/* ── Apresentação editorial ── */}

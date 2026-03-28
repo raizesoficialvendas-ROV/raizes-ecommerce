@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ZoomIn, ChevronLeft, ChevronRight, X } from "lucide-react";
@@ -13,6 +13,11 @@ interface ProductGalleryProps {
 export default function ProductGallery({ images, productName }: ProductGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
+
+  // Reset carousel when the image set changes (e.g. color variant selected)
+  useEffect(() => {
+    setActiveIndex(0);
+  }, [images]);
 
   const safeImages =
     images.length > 0

@@ -346,3 +346,21 @@ export type OrderWithItems = Order & {
     products: Product | null;
   })[];
 };
+
+// ---- Sistema de cores ----
+
+/**
+ * Representa uma variação de cor de um produto.
+ * Armazenada em metadata.colors[] no banco.
+ */
+export interface ColorEntry {
+  /** Nome legível, ex: "Preto", "Off-White", "Navy" */
+  name: string;
+  /** Hex value, ex: "#1C1C1C" */
+  hex: string;
+  /**
+   * Índices do array images_urls que pertencem a esta cor.
+   * Ex: [0, 1] → as 2 primeiras imagens são desta cor.
+   */
+  imageIndexes: number[];
+}

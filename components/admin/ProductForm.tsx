@@ -2,12 +2,12 @@
 
 import { useState, useTransition, useId } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, Wand2, Truck } from "lucide-react";
+import { Loader2, Wand2, Truck, Palette, Plus, X, Image as ImageIcon } from "lucide-react";
 import ImageUploader from "@/components/admin/ImageUploader";
 import { slugify } from "@/lib/utils";
 import { createProduct, updateProduct, type ProductFormData } from "@/lib/actions/products";
 import { useToastStore } from "@/store/useToastStore";
-import type { Category, Product } from "@/types/database.types";
+import type { Category, Product, ColorEntry } from "@/types/database.types";
 
 const SIZES = ["P", "M", "G", "GG", "EGG"];
 
@@ -25,6 +25,14 @@ function getInitialSizes(product?: Product): Record<string, number> {
     return { ...DEFAULT_SIZES, ...(meta.sizes as Record<string, number>) };
   }
   return { ...DEFAULT_SIZES };
+}
+
+function getInitialColors(product?: Product): ColorEntry[] {
+  const meta = product?.metadata as Record<string, unknown> | null;
+  if (meta?.colors && Array.isArray(meta.colors)) {
+    return meta.colors as ColorEntry[];
+  }
+  return [];
 }
 
 export default function ProductForm({ categories, product }: ProductFormProps) {
@@ -49,6 +57,8 @@ export default function ProductForm({ categories, product }: ProductFormProps) {
   const [tech, setTech] = useState(String(meta?.tech ?? ""));
   const [material, setMaterial] = useState(String(meta?.material ?? ""));
   const [freeShipping, setFreeShipping] = useState(Boolean(meta?.free_shipping));
+  const [colors, setColors] = useState<ColorEntry[]>(getInitialColors(product));
+  const [expandedColorIdx, setExpandedColorIdx] = useState<number | null>(null);
 
   // Auto-generate slug from name (when not in edit mode and not locked)
   function handleNameChange(val: string) {
@@ -61,6 +71,38 @@ export default function ProductForm({ categories, product }: ProductFormProps) {
   function handleSizeChange(size: string, val: string) {
     const num = parseInt(val, 10);
     setSizes((prev) => ({ ...prev, [size]: isNaN(num) ? 0 : Math.max(0, num) }));
+  }
+
+  // ── Color helpers ──────────────────────────────────────────────────────────
+
+  function addColor() {
+    const newIdx = colors.length;
+    setColors((prev) => [...prev, { name: "", hex: "#1C1C1C", imageIndexes: [] }]);
+    setExpandedColorIdx(newIdx);
+  }
+
+  function removeColor(idx: number) {
+    setColors((prev) => prev.filter((_, i) => i !== idx));
+    setExpandedColorIdx(null);
+  }
+
+  function updateColorField(idx: number, field: keyof ColorEntry, value: string | number[]) {
+    setColors((prev) =>
+      prev.map((c, i) => (i === idx ? { ...c, [field]: value } : c))
+    );
+  }
+
+  function toggleImageForColor(colorIdx: number, imgIdx: number) {
+    setColors((prev) =>
+      prev.map((c, i) => {
+        if (i !== colorIdx) return c;
+        const has = c.imageIndexes.includes(imgIdx);
+        const next = has
+          ? c.imageIndexes.filter((x) => x !== imgIdx)
+          : [...c.imageIndexes, imgIdx].sort((a, b) => a - b);
+        return { ...c, imageIndexes: next };
+      })
+    );
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -85,6 +127,7 @@ export default function ProductForm({ categories, product }: ProductFormProps) {
       tech,
       material,
       free_shipping: freeShipping,
+      colors: colors.filter((c) => c.name.trim() !== ""),
     };
 
     startTransition(async () => {
@@ -200,6 +243,170 @@ export default function ProductForm({ categories, product }: ProductFormProps) {
               onChange={setImages}
               maxImages={8}
             />
+          </div>
+
+          {/* Card: Cores */}
+          <div className="bg-white rounded-xl border border-stone-200 p-5 md:p-6 space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Palette size={15} strokeWidth={1.5} className="text-stone-400" />
+                <h2 className="font-serif text-base font-semibold text-obsidian tracking-tight">
+                  Cores
+                </h2>
+              </div>
+              <button
+                type="button"
+                onClick={addColor}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-stone-200 bg-white text-xs font-medium text-stone-600 hover:bg-stone-50 hover:border-stone-300 transition-all cursor-pointer"
+              >
+                <Plus size={12} /> Adicionar cor
+              </button>
+            </div>
+
+            {colors.length === 0 && (
+              <p className="font-sans text-xs text-stone-400 italic">
+                Nenhuma cor cadastrada. Clique em &quot;Adicionar cor&quot; para começar.
+              </p>
+            )}
+
+            <div className="space-y-3">
+              {colors.map((color, colorIdx) => (
+                <div key={colorIdx} className="border border-stone-200 rounded-lg overflow-hidden">
+                  {/* Header da cor */}
+                  <div
+                    className="flex items-center gap-3 px-4 py-3 bg-stone-50 cursor-pointer select-none"
+                    onClick={() =>
+                      setExpandedColorIdx(expandedColorIdx === colorIdx ? null : colorIdx)
+                    }
+                  >
+                    {/* Swatch preview */}
+                    <span
+                      className="w-5 h-5 rounded-full border border-stone-300 flex-shrink-0 shadow-sm"
+                      style={{ backgroundColor: color.hex }}
+                    />
+                    <span className="flex-1 font-sans text-sm text-obsidian">
+                      {color.name || <span className="text-stone-400 italic">Sem nome</span>}
+                    </span>
+                    <span className="font-mono text-xs text-stone-400">{color.hex}</span>
+                    <button
+                      type="button"
+                      onClick={(e) => { e.stopPropagation(); removeColor(colorIdx); }}
+                      className="ml-1 p-1 rounded hover:bg-red-50 hover:text-red-500 text-stone-400 transition-colors cursor-pointer"
+                      title="Remover cor"
+                    >
+                      <X size={13} />
+                    </button>
+                  </div>
+
+                  {/* Corpo expandido */}
+                  {expandedColorIdx === colorIdx && (
+                    <div className="px-4 py-4 space-y-4 border-t border-stone-100">
+                      {/* Picker + nome */}
+                      <div className="flex items-end gap-4">
+                        <div className="flex flex-col gap-1.5">
+                          <label className="font-sans text-xs font-semibold text-stone-500 uppercase tracking-wider">
+                            Cor
+                          </label>
+                          <div className="relative w-12 h-10 rounded-lg overflow-hidden border border-stone-200 cursor-pointer">
+                            <input
+                              type="color"
+                              value={color.hex}
+                              onChange={(e) => updateColorField(colorIdx, "hex", e.target.value)}
+                              className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer"
+                              title="Escolher cor"
+                            />
+                          </div>
+                        </div>
+                        <div className="flex-1">
+                          <label className="font-sans text-xs font-semibold text-stone-500 uppercase tracking-wider mb-1.5 block">
+                            Nome da cor
+                          </label>
+                          <input
+                            type="text"
+                            value={color.name}
+                            onChange={(e) => updateColorField(colorIdx, "name", e.target.value)}
+                            placeholder="Ex: Preto, Off-White, Navy…"
+                            className={inputCls}
+                          />
+                        </div>
+                        <div>
+                          <label className="font-sans text-xs font-semibold text-stone-500 uppercase tracking-wider mb-1.5 block">
+                            Hex
+                          </label>
+                          <input
+                            type="text"
+                            value={color.hex}
+                            onChange={(e) =>
+                              updateColorField(colorIdx, "hex",
+                                e.target.value.startsWith("#") ? e.target.value : `#${e.target.value}`
+                              )
+                            }
+                            placeholder="#1C1C1C"
+                            className={`${inputCls} w-28 font-mono`}
+                            maxLength={7}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Associação de imagens */}
+                      <div>
+                        <p className="font-sans text-xs font-semibold text-stone-500 uppercase tracking-wider mb-2">
+                          Imagens desta cor
+                          <span className="ml-1 text-stone-400 font-normal normal-case">
+                            — clique para associar/desassociar
+                          </span>
+                        </p>
+                        {images.length === 0 ? (
+                          <div className="flex items-center gap-2 text-stone-400 py-2">
+                            <ImageIcon size={14} />
+                            <span className="font-sans text-xs">
+                              Faça upload das imagens acima para associá-las a cores.
+                            </span>
+                          </div>
+                        ) : (
+                          <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
+                            {images.map((url, imgIdx) => {
+                              const selected = color.imageIndexes.includes(imgIdx);
+                              return (
+                                <button
+                                  key={imgIdx}
+                                  type="button"
+                                  onClick={() => toggleImageForColor(colorIdx, imgIdx)}
+                                  className={[
+                                    "relative aspect-square rounded-lg overflow-hidden border-2 transition-all cursor-pointer",
+                                    selected
+                                      ? "border-gold ring-1 ring-gold/40"
+                                      : "border-stone-200 hover:border-stone-400 opacity-50 hover:opacity-100",
+                                  ].join(" ")}
+                                  title={`Imagem ${imgIdx + 1}${selected ? " (associada)" : ""}`}
+                                >
+                                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                                  <img
+                                    src={url}
+                                    alt={`Imagem ${imgIdx + 1}`}
+                                    className="w-full h-full object-cover"
+                                  />
+                                  {selected && (
+                                    <div className="absolute top-1 right-1 w-4 h-4 bg-gold rounded-full flex items-center justify-center">
+                                      <svg viewBox="0 0 10 8" fill="none" className="w-2.5 h-2">
+                                        <path d="M1 4l2.5 2.5L9 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                      </svg>
+                                    </div>
+                                  )}
+                                  <div className="absolute bottom-0 left-0 right-0 bg-obsidian/60 text-white font-sans text-[9px] text-center py-0.5">
+                                    #{imgIdx + 1}
+                                  </div>
+                                </button>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Card: Tecnologia e Material */}

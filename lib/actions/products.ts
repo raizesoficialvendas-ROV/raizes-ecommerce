@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { slugify } from "@/lib/utils";
-import type { ProductInsert, ProductUpdate, ProductWithCategory, Product } from "@/types/database.types";
+import type { ProductInsert, ProductUpdate, ProductWithCategory, Product, ColorEntry } from "@/types/database.types";
 
 // ── Tipos do formulário ──────────────────────────────────────────────────────
 
@@ -22,6 +22,8 @@ export interface ProductFormData {
   tech?: string;
   material?: string;
   free_shipping?: boolean;
+  // Variações de cor com imagens associadas
+  colors?: ColorEntry[];
 }
 
 // ── Helper: Supabase Storage ─────────────────────────────────────────────────
@@ -75,6 +77,7 @@ export async function createProduct(
       tech: formData.tech?.trim() ?? null,
       material: formData.material?.trim() ?? null,
       free_shipping: formData.free_shipping ?? false,
+      colors: formData.colors ?? [],
     },
   };
 
@@ -117,6 +120,7 @@ export async function updateProduct(
       tech: formData.tech?.trim() ?? null,
       material: formData.material?.trim() ?? null,
       free_shipping: formData.free_shipping ?? false,
+      colors: formData.colors ?? [],
     },
   };
 
