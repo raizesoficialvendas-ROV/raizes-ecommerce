@@ -90,7 +90,7 @@ export default function ManifestoScrollSection() {
   const currentFrameRef = useRef(0);
   const rafRef          = useRef<number | null>(null);
 
-  /* ── Desenha um frame num canvas individual com cover-fit ── */
+  /* ── Desenha um frame com contain-fit (frame completo, sem cortes) ── */
   const drawToCanvas = useCallback(
     (canvas: HTMLCanvasElement | null, img: HTMLImageElement) => {
       if (!canvas) return;
@@ -107,19 +107,18 @@ export default function ManifestoScrollSection() {
         canvas.height = H;
       }
 
-      const iR = img.naturalWidth / img.naturalHeight;
-      const cR = W / H;
-      let sx = 0, sy = 0, sw = img.naturalWidth, sh = img.naturalHeight;
+      // Limpa com fundo branco (cobre possível letterbox)
+      ctx.fillStyle = "#FFFFFF";
+      ctx.fillRect(0, 0, W, H);
 
-      if (iR > cR) {
-        sw = img.naturalHeight * cR;
-        sx = (img.naturalWidth - sw) / 2;
-      } else {
-        sh = img.naturalWidth / cR;
-        sy = (img.naturalHeight - sh) / 2;
-      }
+      // object-fit: contain — escala proporcional para caber inteiro
+      const scale = Math.min(W / img.naturalWidth, H / img.naturalHeight);
+      const dw    = img.naturalWidth  * scale;
+      const dh    = img.naturalHeight * scale;
+      const dx    = (W - dw) / 2;
+      const dy    = (H - dh) / 2;
 
-      ctx.drawImage(img, sx, sy, sw, sh, 0, 0, W, H);
+      ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, dx, dy, dw, dh);
     },
     []
   );
