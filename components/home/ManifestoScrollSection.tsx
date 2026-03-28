@@ -137,21 +137,26 @@ export default function ManifestoScrollSection() {
       // canvas oculto (display:none) terá W/H = 0 → skip
       if (W === 0 || H === 0) return;
 
-      if (canvas.width !== W || canvas.height !== H) {
-        canvas.width  = W;
-        canvas.height = H;
+      // ── DPR: garante resolução nativa em telas retina/mobile ──
+      const dpr = typeof window !== "undefined" ? (window.devicePixelRatio || 1) : 1;
+      const rW  = Math.round(W * dpr);
+      const rH  = Math.round(H * dpr);
+
+      if (canvas.width !== rW || canvas.height !== rH) {
+        canvas.width  = rW;
+        canvas.height = rH;
       }
 
       // Limpa com fundo branco (cobre possível letterbox)
       ctx.fillStyle = "#FFFFFF";
-      ctx.fillRect(0, 0, W, H);
+      ctx.fillRect(0, 0, rW, rH);
 
       // object-fit: contain — escala proporcional para caber inteiro
-      const scale = Math.min(W / img.naturalWidth, H / img.naturalHeight);
+      const scale = Math.min(rW / img.naturalWidth, rH / img.naturalHeight);
       const dw    = img.naturalWidth  * scale;
       const dh    = img.naturalHeight * scale;
-      const dx    = (W - dw) / 2;
-      const dy    = (H - dh) / 2;
+      const dx    = (rW - dw) / 2;
+      const dy    = (rH - dh) / 2;
 
       ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, dx, dy, dw, dh);
     },
