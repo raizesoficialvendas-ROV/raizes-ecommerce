@@ -18,6 +18,7 @@ import {
   Hash,
   BarChart2,
   Star,
+  Zap,
 } from "lucide-react";
 
 export const metadata: Metadata = { title: "Guia de Uso" };
@@ -404,11 +405,11 @@ export default function GuiaPage() {
           </h3>
           <div className="flex flex-col md:flex-row items-stretch gap-0">
             {[
-              { step: "1", label: "Cliente faz pedido e paga", icon: ShoppingBag, color: "bg-stone-100 text-stone-600" },
-              { step: "2", label: "Você recebe no painel Admin", icon: FileText, color: "bg-amber-100 text-amber-700" },
-              { step: "3", label: "Gera etiqueta no Melhor Envio", icon: Printer, color: "bg-blue-100 text-blue-700" },
-              { step: "4", label: "Posta nos Correios", icon: Truck, color: "bg-emerald-100 text-emerald-700" },
-              { step: "5", label: "Marca como enviado + código", icon: CheckCircle2, color: "bg-emerald-100 text-emerald-700" },
+              { step: "1", label: "Cliente paga", icon: ShoppingBag, color: "bg-stone-100 text-stone-600" },
+              { step: "2", label: "Envio criado no ME automaticamente", icon: Zap, color: "bg-emerald-100 text-emerald-700" },
+              { step: "3", label: "Você paga etiqueta no ME", icon: Printer, color: "bg-blue-100 text-blue-700" },
+              { step: "4", label: "Posta nos Correios", icon: Truck, color: "bg-amber-100 text-amber-700" },
+              { step: "5", label: "Insere código no Admin → Enviado", icon: CheckCircle2, color: "bg-emerald-100 text-emerald-700" },
             ].map(({ step, label, icon: Icon, color }, idx, arr) => (
               <div key={step} className="flex md:flex-col items-center gap-3 md:gap-2 flex-1">
                 <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 ${color}`}>
@@ -426,6 +427,21 @@ export default function GuiaPage() {
           </div>
         </div>
 
+        {/* Banner de destaque — automação */}
+        <div className="bg-emerald-900 rounded-2xl p-5 flex items-start gap-4">
+          <div className="w-10 h-10 rounded-xl bg-emerald-700 flex items-center justify-center shrink-0">
+            <Zap size={18} className="text-emerald-200" />
+          </div>
+          <div>
+            <p className="font-bold text-emerald-100 mb-1">O envio no Melhor Envio é criado automaticamente!</p>
+            <p className="text-sm text-emerald-300 leading-relaxed">
+              Assim que o cliente paga, nosso sistema envia todos os dados para o Melhor Envio
+              automaticamente — sem nenhum preenchimento manual. Você só precisa <strong className="text-emerald-100">pagar a etiqueta,
+              imprimir e postar</strong>.
+            </p>
+          </div>
+        </div>
+
         {/* Passo a passo detalhado */}
         <div className="bg-white border border-stone-200 rounded-2xl p-6 space-y-0">
           <h3 className="font-semibold text-obsidian mb-6 flex items-center gap-2">
@@ -433,38 +449,78 @@ export default function GuiaPage() {
             Passo a passo detalhado
           </h3>
 
-          <Step number={1} title="Verifique os pedidos no painel Admin">
+          <Step number={1} title="Pagamento confirmado — envio criado automaticamente">
             <p>
-              Acesse <strong>Pedidos</strong> no menu lateral. Os novos pedidos aparecem com o
-              status <Badge label="Aguardando Pagamento" color="amber" />. Aguarde a confirmação
-              do pagamento antes de processar o envio.
+              Quando o cliente finaliza o pagamento, a <strong>InfinitePay</strong> notifica nossa
+              loja em tempo real via webhook. Neste momento, o sistema automaticamente:
             </p>
-            <Tip type="info">
-              O pagamento é processado automaticamente pela <strong>InfinitePay</strong>. Quando
-              confirmado, o status muda para <Badge label="Pago" color="green" /> automaticamente
-              via webhook.
+            <div className="bg-stone-50 rounded-xl p-4 mt-2 border border-stone-100 space-y-2">
+              <div className="flex items-start gap-2 text-sm">
+                <CheckCircle2 size={13} className="text-emerald-500 mt-0.5 shrink-0" />
+                <span>Atualiza o status do pedido para <Badge label="Pago" color="green" /></span>
+              </div>
+              <div className="flex items-start gap-2 text-sm">
+                <CheckCircle2 size={13} className="text-emerald-500 mt-0.5 shrink-0" />
+                <span>Envia os dados do cliente, endereço, serviço (PAC/SEDEX) e dimensões para o Melhor Envio</span>
+              </div>
+              <div className="flex items-start gap-2 text-sm">
+                <CheckCircle2 size={13} className="text-emerald-500 mt-0.5 shrink-0" />
+                <span>O envio aparece no carrinho do Melhor Envio pronto para ser pago</span>
+              </div>
+            </div>
+            <Tip type="success">
+              No painel Admin em <strong>Pedidos</strong>, o pedido pago exibirá o badge{" "}
+              <code className="bg-stone-100 px-1.5 py-0.5 rounded text-xs font-mono text-emerald-700">ME ✓</code>{" "}
+              em verde ao lado do pedido, confirmando que o envio foi criado no Melhor Envio com sucesso.
             </Tip>
           </Step>
 
-          <Step number={2} title="Separe e embale o produto">
+          <Step number={2} title="E se o envio não foi criado automaticamente?">
             <p>
-              Após o pagamento confirmado, expanda o pedido clicando nele para ver os detalhes
-              completos: nome do cliente, endereço de entrega, tamanho solicitado e método de
-              frete escolhido (PAC ou SEDEX).
+              Em raras situações (instabilidade de rede, token expirado), o envio pode não ter
+              sido criado automaticamente. Nesse caso, o pedido pago exibirá o botão laranja{" "}
+              <strong>Criar Envio ME</strong> no lugar do badge verde.
+            </p>
+            <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mt-2 space-y-2">
+              <p className="text-sm font-semibold text-amber-800">Como resolver em 1 clique:</p>
+              <div className="flex items-start gap-2 text-sm text-amber-700">
+                <ChevronRight size={13} className="mt-0.5 shrink-0" />
+                <span>No painel Admin &gt; Pedidos, localize o pedido com status <Badge label="Pago" color="green" /></span>
+              </div>
+              <div className="flex items-start gap-2 text-sm text-amber-700">
+                <ChevronRight size={13} className="mt-0.5 shrink-0" />
+                <span>Clique no botão laranja <strong>Criar Envio ME</strong> — o sistema preenche tudo automaticamente e envia para o Melhor Envio</span>
+              </div>
+              <div className="flex items-start gap-2 text-sm text-amber-700">
+                <ChevronRight size={13} className="mt-0.5 shrink-0" />
+                <span>Aguarde a confirmação — o badge <code className="bg-amber-100 px-1 py-0.5 rounded text-xs font-mono">ME ✓</code> aparecerá quando concluído</span>
+              </div>
+            </div>
+            <Tip type="warning">
+              Nunca crie o envio manualmente no painel do Melhor Envio se for usar este botão.
+              O sistema já preenche todos os dados automaticamente.
+            </Tip>
+          </Step>
+
+          <Step number={3} title="Separe e embale o produto">
+            <p>
+              Enquanto o sistema cria o envio, você pode separar o pedido. Expanda o pedido
+              clicando nele para ver: nome do cliente, endereço completo, tamanho solicitado
+              e método de frete.
             </p>
             <p>
-              Separe a peça no estoque, confira o tamanho e embale com cuidado. Use uma embalagem
-              resistente adequada para camisetas.
+              Separe a peça no estoque, confira o tamanho e embale com cuidado em uma embalagem
+              resistente.
             </p>
             <Tip type="warning">
               Confira o <strong>tamanho</strong> exibido no pedido antes de embalar. Este dado
-              é informado pelo cliente e é de responsabilidade do operador validar.
+              é informado pelo cliente.
             </Tip>
           </Step>
 
-          <Step number={3} title="Acesse o painel do Melhor Envio">
+          <Step number={4} title="Acesse o Melhor Envio e pague a etiqueta">
             <p>
-              Abra uma nova aba e acesse{" "}
+              Abra o painel do Melhor Envio em{" "}
               <a
                 href="https://melhorenvio.com.br"
                 target="_blank"
@@ -475,66 +531,30 @@ export default function GuiaPage() {
               </a>{" "}
               e faça login com a conta da loja.
             </p>
-          </Step>
-
-          <Step number={4} title="Adicione o envio ao carrinho do Melhor Envio">
-            <p>
-              No painel do Melhor Envio, clique em <strong>Envios &gt; Criar envio</strong>.
-              Preencha os dados:
-            </p>
-            <div className="bg-stone-50 rounded-xl p-4 mt-2 border border-stone-100 space-y-2 text-sm">
-              <div className="flex items-start gap-2">
-                <ChevronRight size={13} className="text-stone-400 mt-0.5 shrink-0" />
-                <span><strong>Remetente:</strong> já configurado com os dados da loja (CEP 88380-000)</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <ChevronRight size={13} className="text-stone-400 mt-0.5 shrink-0" />
-                <span><strong>Destinatário:</strong> nome, CPF, endereço completo e CEP do cliente (consulte no pedido)</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <ChevronRight size={13} className="text-stone-400 mt-0.5 shrink-0" />
-                <span><strong>Serviço:</strong> selecione PAC ou SEDEX conforme escolhido pelo cliente no pedido</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <ChevronRight size={13} className="text-stone-400 mt-0.5 shrink-0" />
-                <span><strong>Dimensões:</strong> largura 30cm, altura 5cm, comprimento 40cm, peso 0,3kg por peça</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <ChevronRight size={13} className="text-stone-400 mt-0.5 shrink-0" />
-                <span><strong>Nota fiscal / Valor declarado:</strong> informe o valor total do pedido</span>
-              </div>
-            </div>
             <p className="mt-2">
-              Clique em <strong>Adicionar ao carrinho</strong>. O envio ficará em{" "}
-              <Badge label="Aguardando pagamento" color="amber" /> no Melhor Envio.
-            </p>
-          </Step>
-
-          <Step number={5} title="Pague a etiqueta no Melhor Envio">
-            <p>
-              Vá ao <strong>carrinho</strong> do Melhor Envio, confira o envio adicionado e clique
-              em <strong>Finalizar compra</strong>. O valor da etiqueta será debitado do saldo
-              da conta no Melhor Envio.
+              Vá ao <strong>Carrinho</strong> — o envio já estará lá com todos os dados preenchidos.
+              Confira o destinatário e o serviço (PAC ou SEDEX), depois clique em{" "}
+              <strong>Finalizar compra</strong>. O valor será debitado do saldo da conta no ME.
             </p>
             <Tip type="info">
-              Mantenha saldo disponível na conta do Melhor Envio para não interromper o processo.
-              Você pode recarregar via PIX diretamente no painel deles.
+              Mantenha saldo disponível na conta do Melhor Envio. Você pode recarregar via PIX
+              diretamente no painel deles em <strong>Saldo &gt; Adicionar créditos</strong>.
             </Tip>
           </Step>
 
-          <Step number={6} title="Gere e imprima a etiqueta">
+          <Step number={5} title="Gere e imprima a etiqueta">
             <p>
               Após o pagamento, acesse <strong>Envios &gt; Meus envios</strong>. O pedido estará
               com o status <Badge label="Pago" color="green" />. Clique em{" "}
               <strong>Gerar etiqueta</strong> e depois em <strong>Imprimir</strong>.
             </p>
             <p>
-              Cole a etiqueta na embalagem de forma visível e sem dobras que prejudiquem a leitura
-              do código de barras.
+              Cole a etiqueta na embalagem de forma visível e sem dobras que prejudiquem a
+              leitura do código de barras.
             </p>
           </Step>
 
-          <Step number={7} title="Poste nos Correios">
+          <Step number={6} title="Poste nos Correios">
             <p>
               Leve o pacote a uma agência dos Correios. <strong>Não é necessário preencher
               nenhum formulário</strong> — a etiqueta já contém todas as informações. Basta
@@ -542,24 +562,32 @@ export default function GuiaPage() {
             </p>
             <Tip type="success">
               Guarde o comprovante de postagem até a entrega ser confirmada. Em caso de extravio,
-              ele será necessário para abrir uma reclamação.
+              ele será necessário para abrir uma reclamação nos Correios.
             </Tip>
           </Step>
 
-          <Step number={8} title="Atualize o status do pedido no Admin">
+          <Step number={7} title="Registre o envio no painel Admin">
             <p>
-              Volte ao painel Admin, abra o pedido correspondente e clique no botão{" "}
-              <Badge label="Enviado" color="blue" />. Em seguida, cole o código de rastreio
-              dos Correios no campo indicado.
+              Volte ao painel Admin em <strong>Pedidos</strong>. No pedido correspondente (que
+              já estará visível na lista), você verá:
             </p>
-            <p>
-              O cliente poderá rastrear o pedido diretamente pela página{" "}
-              <strong>/rastreamento</strong> da loja usando o código fornecido.
-            </p>
+            <div className="bg-stone-50 rounded-xl p-4 mt-2 border border-stone-100 space-y-2 text-sm">
+              <div className="flex items-start gap-2">
+                <ChevronRight size={13} className="text-stone-400 mt-0.5 shrink-0" />
+                <span>Um campo de texto <strong>Cód. rastreio</strong> — cole aqui o código dos Correios (ex: <code className="bg-stone-100 px-1.5 py-0.5 rounded text-xs">AA123456789BR</code>)</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <ChevronRight size={13} className="text-stone-400 mt-0.5 shrink-0" />
+                <span>Clique no botão <strong>Enviar</strong> ao lado do campo</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <CheckCircle2 size={13} className="text-emerald-500 mt-0.5 shrink-0" />
+                <span>O status muda automaticamente para <Badge label="Enviado" color="blue" /> e o cliente pode rastrear pelo site</span>
+              </div>
+            </div>
             <Tip type="info">
-              O código de rastreio dos Correios começa com letras (ex: <code className="bg-stone-100 px-1.5 py-0.5 rounded text-xs">AA123456789BR</code>).
-              Você o encontra impresso na própria etiqueta ou no painel do Melhor Envio após a
-              postagem.
+              O código de rastreio está impresso na etiqueta gerada e também disponível no
+              painel do Melhor Envio em <strong>Meus envios</strong>.
             </Tip>
           </Step>
 
@@ -574,8 +602,8 @@ export default function GuiaPage() {
               <h4 className="font-semibold text-emerald-700 mb-1">Pedido concluído!</h4>
               <p className="text-sm text-stone-600">
                 Após a entrega, o status pode ser atualizado para{" "}
-                <Badge label="Entregue" color="green" /> manualmente ou aguardando confirmação
-                do cliente.
+                <Badge label="Entregue" color="green" /> manualmente. O cliente pode rastrear
+                o envio a qualquer momento em <strong>raizesoficial.com.br/rastreamento</strong>.
               </p>
             </div>
           </div>
