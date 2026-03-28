@@ -67,7 +67,7 @@ function TextContent() {
    Pasta: /public/assets/manifesto-frames/
    Nomeação: ezgif-frame-001.jpg … ezgif-frame-212.jpg
    ───────────────────────────────────────────────────────────── */
-const TOTAL_FRAMES = 212;
+const TOTAL_FRAMES = 240;
 
 function frameSrc(n: number): string {
   return `/assets/manifesto-frames/ezgif-frame-${String(n).padStart(3, "0")}.jpg`;
