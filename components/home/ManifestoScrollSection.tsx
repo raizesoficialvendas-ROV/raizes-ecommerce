@@ -199,17 +199,15 @@ export default function ManifestoScrollSection() {
 
   /* ────────────────────────────────────────────────────────── */
   return (
-    <>
-      {/*
-        400 vh → 300 vh de área rolável ≈ 15 px por frame.
-        Container de referência para o cálculo do progresso.
-      */}
-      <div ref={containerRef} className="relative" style={{ height: "400vh" }}>
+    <div ref={containerRef} className="relative" style={{ height: "400vh" }}>
 
-        <div className="sticky top-0 h-screen overflow-hidden bg-white">
+      <div className="sticky top-0 h-screen overflow-hidden bg-white">
 
-          {/* ───────── MOBILE: canvas ocupa toda a tela ───────── */}
-          <div className="md:hidden absolute inset-0">
+        {/* ───────── MOBILE: canvas + texto empilhados ───────── */}
+        <div className="md:hidden flex flex-col h-full">
+
+          {/* Canvas — ocupa ~57 vh, proporcional ao frame */}
+          <div className="relative w-full flex-shrink-0" style={{ height: "57vh" }}>
             <canvas
               ref={canvasMobileRef}
               className="absolute inset-0 w-full h-full"
@@ -218,37 +216,38 @@ export default function ManifestoScrollSection() {
             />
           </div>
 
-          {/* ───────── DESKTOP: layout 2 colunas original ───────── */}
-          <div className="hidden md:flex items-center h-full">
-            <div className="w-full py-[clamp(5rem,8vw,9rem)]">
-              <div className="raizes-container">
-                <div className="grid grid-cols-2 gap-16 lg:gap-24 items-center">
-
-                  {/* Coluna esquerda — canvas no quadrado */}
-                  <div className="relative w-full aspect-[3/4] lg:aspect-[4/5] overflow-hidden">
-                    <canvas
-                      ref={canvasDesktopRef}
-                      className="absolute inset-0 w-full h-full"
-                      style={{ willChange: "contents" }}
-                      aria-hidden
-                    />
-                  </div>
-
-                  {/* Coluna direita — texto */}
-                  <TextContent />
-
-                </div>
-              </div>
-            </div>
+          {/* Texto — imediatamente abaixo do frame, sem gap */}
+          <div className="flex-1 overflow-hidden px-6 pt-8 pb-4">
+            <TextContent />
           </div>
 
         </div>
-      </div>
 
-      {/* ───────── MOBILE: texto aparece APÓS a animação ───────── */}
-      <div className="md:hidden bg-white px-6 py-16">
-        <TextContent />
+        {/* ───────── DESKTOP: layout 2 colunas original ───────── */}
+        <div className="hidden md:flex items-center h-full">
+          <div className="w-full py-[clamp(5rem,8vw,9rem)]">
+            <div className="raizes-container">
+              <div className="grid grid-cols-2 gap-16 lg:gap-24 items-center">
+
+                {/* Coluna esquerda — canvas no quadrado */}
+                <div className="relative w-full aspect-[3/4] lg:aspect-[4/5] overflow-hidden">
+                  <canvas
+                    ref={canvasDesktopRef}
+                    className="absolute inset-0 w-full h-full"
+                    style={{ willChange: "contents" }}
+                    aria-hidden
+                  />
+                </div>
+
+                {/* Coluna direita — texto */}
+                <TextContent />
+
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
-    </>
+    </div>
   );
 }
