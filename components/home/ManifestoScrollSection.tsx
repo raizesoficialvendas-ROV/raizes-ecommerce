@@ -206,8 +206,8 @@ export default function ManifestoScrollSection() {
         {/* ───────── MOBILE: canvas + texto empilhados ───────── */}
         <div className="md:hidden flex flex-col h-full">
 
-          {/* Canvas — ocupa ~57 vh, proporcional ao frame */}
-          <div className="relative w-full flex-shrink-0" style={{ height: "57vh" }}>
+          {/* Canvas — ocupa ~50 vh, proporcional ao frame */}
+          <div className="relative w-full flex-shrink-0" style={{ height: "50vh" }}>
             <canvas
               ref={canvasMobileRef}
               className="absolute inset-0 w-full h-full"
@@ -217,7 +217,10 @@ export default function ManifestoScrollSection() {
           </div>
 
           {/* Texto — imediatamente abaixo do frame, sem gap */}
-          <div className="flex-1 overflow-hidden px-6 pt-8 pb-4">
+          <div
+            className="flex-1 px-6 pt-8 pb-6"
+            style={{ overflowY: "auto", scrollbarWidth: "none" }}
+          >
             <TextContent />
           </div>
 
