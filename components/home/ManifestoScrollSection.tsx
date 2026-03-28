@@ -63,10 +63,45 @@ function TextContent() {
 }
 
 /* ─────────────────────────────────────────────────────────────
+   Conteúdo de texto MOBILE — overlay na base do canvas
+   Versão compacta, sem listas longas (cabe em ~35vh)
+   ───────────────────────────────────────────────────────────── */
+function MobileTextOverlay() {
+  return (
+    <div className="px-6 pb-10 pt-0">
+      <p className="label-category text-stone-500 mb-4">Manifesto</p>
+
+      <h2 className="font-serif text-3xl font-normal tracking-wide text-obsidian leading-[1.08] mb-5">
+        Homens de Fé,{" "}
+        <em className="not-italic text-stone-400">Família</em>
+        {" "}e Propósito.
+      </h2>
+
+      <p className="font-sans text-sm text-stone-500 leading-[1.7] mb-5">
+        RAÍZES nasceu para homens que vivem pela fé, protegem a família e
+        permanecem firmes.
+      </p>
+
+      <Link
+        href="/sobre"
+        className="inline-flex items-center gap-3 font-sans text-xs font-medium tracking-widest uppercase text-obsidian group"
+      >
+        Nossa história
+        <ArrowRight
+          size={14}
+          strokeWidth={1.5}
+          className="transition-transform duration-300 group-hover:translate-x-1"
+        />
+      </Link>
+    </div>
+  );
+}
+
+/* -----------------------------------------------------------------
    Configuração dos frames
    Pasta: /public/assets/manifesto-frames/
-   Nomeação: ezgif-frame-001.jpg … ezgif-frame-212.jpg
-   ───────────────────────────────────────────────────────────── */
+   Nomeação: ezgif-frame-001.jpg a ezgif-frame-240.jpg
+----------------------------------------------------------------- */
 const TOTAL_FRAMES = 240;
 
 function frameSrc(n: number): string {
@@ -199,19 +234,14 @@ export default function ManifestoScrollSection() {
 
   /* ────────────────────────────────────────────────────────── */
   return (
-    <>
-      {/*
-        400vh de scroll zone:
-        ─ Página TRAVA (sticky) enquanto os frames animam
-        ─ Nenhum scroll interno → eventos chegam 100% à window
-        ─ Ao terminar os 400vh, o sticky solta e o texto entra
-          em fluxo normal abaixo (sem overflow hijack)
-      */}
-      <div ref={containerRef} className="relative" style={{ height: "400vh" }}>
-        <div className="sticky top-0 h-screen overflow-hidden bg-white">
+    <div ref={containerRef} className="relative" style={{ height: "400vh" }}>
+      <div className="sticky top-0 h-screen overflow-hidden bg-white">
 
-          {/* ── MOBILE: canvas ocupa a tela inteira ── */}
-          <div className="md:hidden absolute inset-0">
+        {/* ── MOBILE: canvas + texto overlay ── */}
+        <div className="md:hidden absolute inset-0 flex flex-col">
+
+          {/* Canvas — ~62vh, imagem com contain-fit */}
+          <div className="relative w-full flex-shrink-0" style={{ height: "62vh" }}>
             <canvas
               ref={canvasMobileRef}
               className="absolute inset-0 w-full h-full"
@@ -220,43 +250,49 @@ export default function ManifestoScrollSection() {
             />
           </div>
 
-          {/* ── DESKTOP: layout 2 colunas original ── */}
-          <div className="hidden md:flex items-center h-full">
-            <div className="w-full py-[clamp(5rem,8vw,9rem)]">
-              <div className="raizes-container">
-                <div className="grid grid-cols-2 gap-16 lg:gap-24 items-center">
+          {/* Gradiente de transição canvas → texto */}
+          <div
+            aria-hidden
+            className="absolute left-0 right-0 pointer-events-none"
+            style={{
+              top: "calc(62vh - 48px)",
+              height: "64px",
+              background: "linear-gradient(to bottom, transparent, #ffffff)",
+            }}
+          />
 
-                  {/* Coluna esquerda — canvas no quadrado */}
-                  <div className="relative w-full aspect-[3/4] lg:aspect-[4/5] overflow-hidden">
-                    <canvas
-                      ref={canvasDesktopRef}
-                      className="absolute inset-0 w-full h-full"
-                      style={{ willChange: "contents" }}
-                      aria-hidden
-                    />
-                  </div>
-
-                  {/* Coluna direita — texto */}
-                  <TextContent />
-
-                </div>
-              </div>
-            </div>
+          {/* Texto — abaixo do canvas, sem overflow, sem scroll interno */}
+          <div className="flex-1 bg-white overflow-hidden">
+            <MobileTextOverlay />
           </div>
 
         </div>
-      </div>
 
-      {/*
-        MOBILE ONLY — texto em fluxo normal, fora do scroll zone.
-        Aparece imediatamente após o sticky soltar (último frame).
-        Sem overflow interno: a rolagem é da página, não do div.
-        Ao chegar ao fim do texto, a página continua para a
-        próxima seção sem nenhum tratamento especial.
-      */}
-      <div className="md:hidden bg-white px-6 pt-10 pb-16">
-        <TextContent />
+        {/* ── DESKTOP: layout 2 colunas original ── */}
+        <div className="hidden md:flex items-center h-full">
+          <div className="w-full py-[clamp(5rem,8vw,9rem)]">
+            <div className="raizes-container">
+              <div className="grid grid-cols-2 gap-16 lg:gap-24 items-center">
+
+                {/* Coluna esquerda — canvas no quadrado */}
+                <div className="relative w-full aspect-[3/4] lg:aspect-[4/5] overflow-hidden">
+                  <canvas
+                    ref={canvasDesktopRef}
+                    className="absolute inset-0 w-full h-full"
+                    style={{ willChange: "contents" }}
+                    aria-hidden
+                  />
+                </div>
+
+                {/* Coluna direita — texto completo */}
+                <TextContent />
+
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
-    </>
+    </div>
   );
 }
