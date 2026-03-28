@@ -3,7 +3,7 @@
 import { useState } from "react";
 import type { ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingBag, Check, Zap, Truck, ChevronDown, Shield, Repeat, Droplets } from "lucide-react";
+import { ShoppingBag, Check, Zap, Truck, ChevronDown, Shield, Repeat, Droplets, Minus, Plus } from "lucide-react";
 import { useCartStore } from "@/store/useCartStore";
 import { formatCurrency } from "@/lib/utils";
 import type { Product } from "@/types/database.types";
@@ -31,10 +31,21 @@ type AccordionSection = {
 
 export default function ProductInfo({ product, categoryName }: ProductInfoProps) {
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const [sizeError, setSizeError] = useState(false);
   const [openSection, setOpenSection] = useState<string | null>("descricao");
-  const { addItem } = useCartStore();
+  const addItem = useCartStore((state) => state.addItem);
+
+  const maxStock = product.stock_quantity ?? 99;
+
+  function decreaseQty() {
+    setQuantity((q) => Math.max(1, q - 1));
+  }
+
+  function increaseQty() {
+    setQuantity((q) => Math.min(maxStock, q + 1));
+  }
 
   const meta = product.metadata as Record<string, string> | null;
 
@@ -44,7 +55,7 @@ export default function ProductInfo({ product, categoryName }: ProductInfoProps)
       setTimeout(() => setSizeError(false), 2000);
       return;
     }
-    addItem(product, 1, selectedSize);
+    addItem(product, quantity, selectedSize);
     setAdded(true);
     setTimeout(() => setAdded(false), 2500);
   }
@@ -143,11 +154,17 @@ export default function ProductInfo({ product, categoryName }: ProductInfoProps)
       {/* Preço */}
       <div className="flex items-baseline gap-3">
         <p className="font-sans text-2xl font-light text-obsidian">
-          {formatCurrency(product.price)}
+          {formatCurrency(product.price * quantity)}
         </p>
-        <p className="font-sans text-xs text-stone-400 tracking-wide">
-          ou 6× de {formatCurrency(product.price / 6)} sem juros
-        </p>
+        {quantity > 1 ? (
+          <p className="font-sans text-xs text-stone-400 tracking-wide">
+            {quantity}× {formatCurrency(product.price)}
+          </p>
+        ) : (
+          <p className="font-sans text-xs text-stone-400 tracking-wide">
+            ou 6× de {formatCurrency(product.price / 6)} sem juros
+          </p>
+        )}
       </div>
 
       {/* Badges */}
@@ -223,6 +240,34 @@ export default function ProductInfo({ product, categoryName }: ProductInfoProps)
             </motion.p>
           )}
         </AnimatePresence>
+      </div>
+
+      {/* Quantidade */}
+      <div>
+        <p className="font-sans text-xs font-medium tracking-widest uppercase text-stone-600 mb-4">
+          Quantidade
+        </p>
+        <div className="flex items-center gap-0">
+          <button
+            onClick={decreaseQty}
+            disabled={quantity <= 1}
+            aria-label="Diminuir quantidade"
+            className="w-12 h-12 flex items-center justify-center border border-stone-200 text-stone-600 hover:border-obsidian hover:text-obsidian transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:border-stone-200 disabled:hover:text-stone-600"
+          >
+            <Minus size={13} strokeWidth={1.8} />
+          </button>
+          <div className="w-14 h-12 flex items-center justify-center border-y border-stone-200 font-sans text-sm font-medium text-obsidian select-none">
+            {quantity}
+          </div>
+          <button
+            onClick={increaseQty}
+            disabled={quantity >= maxStock}
+            aria-label="Aumentar quantidade"
+            className="w-12 h-12 flex items-center justify-center border border-stone-200 text-stone-600 hover:border-obsidian hover:text-obsidian transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:border-stone-200 disabled:hover:text-stone-600"
+          >
+            <Plus size={13} strokeWidth={1.8} />
+          </button>
+        </div>
       </div>
 
       {/* CTA */}

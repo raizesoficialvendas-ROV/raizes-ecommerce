@@ -39,7 +39,6 @@ export async function POST(req: NextRequest) {
       const mockOptions = [
         { id: 1, name: "PAC", price: 18.90, deliveryDays: 8, company: "Correios" },
         { id: 2, name: "SEDEX", price: 32.50, deliveryDays: 3, company: "Correios" },
-        { id: 17, name: "Mini Envios", price: 12.40, deliveryDays: 12, company: "Correios" },
       ];
       return NextResponse.json({ options: mockOptions });
     }
@@ -63,7 +62,7 @@ export async function POST(req: NextRequest) {
         from: { postal_code: originCep },
         to: { postal_code: cleanCep },
         package: pkg,
-        services: "1,2,3,4,17",
+        services: "1,2",
       }),
     });
 
