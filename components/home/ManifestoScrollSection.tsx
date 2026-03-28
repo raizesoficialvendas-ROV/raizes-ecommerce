@@ -199,15 +199,19 @@ export default function ManifestoScrollSection() {
 
   /* ────────────────────────────────────────────────────────── */
   return (
-    <div ref={containerRef} className="relative" style={{ height: "400vh" }}>
+    <>
+      {/*
+        400vh de scroll zone:
+        ─ Página TRAVA (sticky) enquanto os frames animam
+        ─ Nenhum scroll interno → eventos chegam 100% à window
+        ─ Ao terminar os 400vh, o sticky solta e o texto entra
+          em fluxo normal abaixo (sem overflow hijack)
+      */}
+      <div ref={containerRef} className="relative" style={{ height: "400vh" }}>
+        <div className="sticky top-0 h-screen overflow-hidden bg-white">
 
-      <div className="sticky top-0 h-screen overflow-hidden bg-white">
-
-        {/* ───────── MOBILE: canvas + texto empilhados ───────── */}
-        <div className="md:hidden flex flex-col h-full">
-
-          {/* Canvas — ocupa ~50 vh, proporcional ao frame */}
-          <div className="relative w-full flex-shrink-0" style={{ height: "50vh" }}>
+          {/* ── MOBILE: canvas ocupa a tela inteira ── */}
+          <div className="md:hidden absolute inset-0">
             <canvas
               ref={canvasMobileRef}
               className="absolute inset-0 w-full h-full"
@@ -216,41 +220,43 @@ export default function ManifestoScrollSection() {
             />
           </div>
 
-          {/* Texto — imediatamente abaixo do frame, sem gap */}
-          <div
-            className="flex-1 px-6 pt-8 pb-6"
-            style={{ overflowY: "auto", scrollbarWidth: "none" }}
-          >
-            <TextContent />
-          </div>
+          {/* ── DESKTOP: layout 2 colunas original ── */}
+          <div className="hidden md:flex items-center h-full">
+            <div className="w-full py-[clamp(5rem,8vw,9rem)]">
+              <div className="raizes-container">
+                <div className="grid grid-cols-2 gap-16 lg:gap-24 items-center">
 
-        </div>
+                  {/* Coluna esquerda — canvas no quadrado */}
+                  <div className="relative w-full aspect-[3/4] lg:aspect-[4/5] overflow-hidden">
+                    <canvas
+                      ref={canvasDesktopRef}
+                      className="absolute inset-0 w-full h-full"
+                      style={{ willChange: "contents" }}
+                      aria-hidden
+                    />
+                  </div>
 
-        {/* ───────── DESKTOP: layout 2 colunas original ───────── */}
-        <div className="hidden md:flex items-center h-full">
-          <div className="w-full py-[clamp(5rem,8vw,9rem)]">
-            <div className="raizes-container">
-              <div className="grid grid-cols-2 gap-16 lg:gap-24 items-center">
+                  {/* Coluna direita — texto */}
+                  <TextContent />
 
-                {/* Coluna esquerda — canvas no quadrado */}
-                <div className="relative w-full aspect-[3/4] lg:aspect-[4/5] overflow-hidden">
-                  <canvas
-                    ref={canvasDesktopRef}
-                    className="absolute inset-0 w-full h-full"
-                    style={{ willChange: "contents" }}
-                    aria-hidden
-                  />
                 </div>
-
-                {/* Coluna direita — texto */}
-                <TextContent />
-
               </div>
             </div>
           </div>
-        </div>
 
+        </div>
       </div>
-    </div>
+
+      {/*
+        MOBILE ONLY — texto em fluxo normal, fora do scroll zone.
+        Aparece imediatamente após o sticky soltar (último frame).
+        Sem overflow interno: a rolagem é da página, não do div.
+        Ao chegar ao fim do texto, a página continua para a
+        próxima seção sem nenhum tratamento especial.
+      */}
+      <div className="md:hidden bg-white px-6 pt-10 pb-16">
+        <TextContent />
+      </div>
+    </>
   );
 }
