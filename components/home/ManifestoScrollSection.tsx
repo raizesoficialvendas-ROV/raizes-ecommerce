@@ -102,7 +102,7 @@ function MobileTextOverlay() {
    Pasta: /public/assets/manifesto-frames/
    Nomeação: ezgif-frame-001.jpg a ezgif-frame-240.jpg
 ----------------------------------------------------------------- */
-const TOTAL_FRAMES = 240;
+const TOTAL_FRAMES = 208;
 
 function frameSrc(n: number): string {
   return `/assets/manifesto-frames/ezgif-frame-${String(n).padStart(3, "0")}.jpg`;
