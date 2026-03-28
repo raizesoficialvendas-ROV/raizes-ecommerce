@@ -2,7 +2,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import HeroSection from "@/components/home/HeroSection";
 import CollectionSection from "@/components/home/CollectionSection";
-import ManifestoSection from "@/components/home/ManifestoSection";
+import ManifestoScrollSection from "@/components/home/ManifestoScrollSection";
 import ValueProposition from "@/components/home/ValueProposition";
 import FaqSection from "@/components/home/FaqSection";
 import NewsletterSection from "@/components/home/NewsletterSection";
@@ -12,7 +12,6 @@ import { getActiveBanner } from "@/lib/actions/banners";
 export default async function Home() {
   const collections = await getCollectionsForHome();
   const heroBanner = await getActiveBanner("hero");
-  const manifestoBanner = await getActiveBanner("manifesto");
 
   return (
     <>
@@ -27,7 +26,7 @@ export default async function Home() {
             sectionIndex={index}
           />
         ))}
-        <ManifestoSection banner={manifestoBanner} />
+        <ManifestoScrollSection />
         <ValueProposition />
         <FaqSection />
         <NewsletterSection />
