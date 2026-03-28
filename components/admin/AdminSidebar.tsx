@@ -11,6 +11,7 @@ import {
   LogOut,
   Sprout,
   Image as ImageIcon,
+  BookOpen,
 } from "lucide-react";
 
 const NAV = [
@@ -18,8 +19,7 @@ const NAV = [
   { label: "Banners",      href: "/admin/banners",       icon: ImageIcon },
   { label: "Produtos",     href: "/admin/produtos",      icon: Package },
   { label: "Coleções",     href: "/admin/colecoes",      icon: Layers },
-  { label: "Pedidos",      href: "/admin/pedidos",       icon: ShoppingBag },
-  { label: "Configurações",href: "/admin/configuracoes", icon: Settings },
+  { label: "Pedidos",      href: "/admin/pedidos",       icon: ShoppingBag },  { label: "Guia",         href: "/admin/guia",         icon: BookOpen },  { label: "Configurações",href: "/admin/configuracoes", icon: Settings },
 ];
 
 export default function AdminSidebar() {
