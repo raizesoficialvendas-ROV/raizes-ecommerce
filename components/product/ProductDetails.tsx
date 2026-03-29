@@ -65,12 +65,6 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
                 <p className="font-sans text-sm text-obsidian">{meta.material}</p>
               </div>
             )}
-            {meta?.tech && (
-              <div className="flex items-baseline justify-between py-4 border-b border-stone-100">
-                <p className="font-sans text-[11px] font-medium text-stone-400 tracking-widest uppercase">Tecnologia</p>
-                <p className="font-sans text-sm text-obsidian">{meta.tech}</p>
-              </div>
-            )}
             {specs.map(([key, value]) => (
               <div key={key} className="flex items-baseline justify-between py-4 border-b border-stone-100">
                 <p className="font-sans text-[11px] font-medium text-stone-400 tracking-widest uppercase">{key}</p>
@@ -94,9 +88,9 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
             <em className="not-italic text-stone-400">intenção.</em>
           </h2>
           <p className="font-sans text-sm text-stone-500 leading-[1.9] mb-6">
-            Esta peça não foi feita para impressionar — foi feita para
+            Esta peça não foi feita para impressionar. Foi feita para
             acompanhar. O cristão moderno não precisa gritar para ser visto.
-            Uma presença calibrada, um visual intencional, fala antes de
+            Uma presença cuidada e um visual intencional falam antes de
             qualquer palavra.
           </p>
           <p className="font-sans text-sm text-stone-500 leading-[1.9] mb-12">

@@ -34,27 +34,26 @@ const SLIDES: Slide[] = [
       <p className="font-sans text-[15px] text-stone-500 leading-[1.9]">
         Um homem de fé não precisa gritar para ser visto. Cada peça Raízes
         foi concebida para quem vive com{" "}
-        <strong className="text-obsidian font-semibold">intenção</strong>{" "}
-        — do café da manhã à última oração do dia.
+        <strong className="text-obsidian font-semibold">intenção</strong>
+        : do café da manhã à última oração do dia.
       </p>
     ),
     imageIndex: 0,
     reverse: false,
   },
   {
-    tag: "TECNOLOGIA",
+    tag: "O TECIDO",
     headline: (
       <>
-        Biotecnologia{"\n"}a serviço{"\n"}da{" "}
-        <em className="not-italic font-serif italic">fé.</em>
+        Conforto para{"\n"}quem tem{" "}
+        <em className="not-italic font-serif italic">propósito.</em>
       </>
     ),
     body: (
       <p className="font-sans text-[15px] text-stone-500 leading-[1.9]">
-        Fiação penteada premium, acabamento antimicrobiano e regulação
-        térmica. Ciência que{" "}
-        <strong className="text-obsidian font-semibold">liberta</strong>{" "}
-        o homem para focar no que realmente importa:{" "}
+        100% algodão, leve e respirável para cada momento do dia. Uma
+        camiseta que simplesmente funciona, para que você possa focar no
+        que realmente importa:{" "}
         <strong className="text-obsidian font-semibold">
           família, fé e propósito.
         </strong>
@@ -77,8 +76,8 @@ const SLIDES: Slide[] = [
         símbolo carrega{" "}
         <strong className="text-obsidian font-semibold">
           Fé, Família e Propósito
-        </strong>{" "}
-        — comunicados sem precisar dizer uma palavra.
+        </strong>
+        , comunicados sem precisar dizer uma palavra.
       </p>
     ),
     imageIndex: 2,

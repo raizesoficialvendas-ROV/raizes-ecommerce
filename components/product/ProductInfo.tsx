@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import type { ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingBag, Check, Zap, Truck, ChevronDown, Shield, Repeat, Droplets, Minus, Plus, Star } from "lucide-react";
+import { ShoppingBag, Check, Truck, ChevronDown, Shield, Repeat, Droplets, Minus, Plus, Star } from "lucide-react";
 import { useCartStore } from "@/store/useCartStore";
 import { formatCurrency } from "@/lib/utils";
 import type { Product, ColorEntry } from "@/types/database.types";
@@ -88,7 +88,7 @@ export default function ProductInfo({ product, categoryName, colors, selectedCol
           },
         ]
       : []),
-    ...(meta?.material || meta?.tech || specs.length > 0
+    ...(meta?.material || specs.length > 0
       ? [
           {
             id: "tecnologia",
@@ -101,14 +101,6 @@ export default function ProductInfo({ product, categoryName, colors, selectedCol
                       Material
                     </p>
                     <p className="font-sans text-sm text-obsidian">{meta.material}</p>
-                  </div>
-                )}
-                {meta?.tech && (
-                  <div className="flex items-baseline justify-between py-3.5 border-b border-stone-100">
-                    <p className="font-sans text-[11px] font-medium text-stone-400 tracking-widest uppercase">
-                      Tecnologia
-                    </p>
-                    <p className="font-sans text-sm text-obsidian">{meta.tech}</p>
                   </div>
                 )}
                 {specs.map(([key, value]) => (
@@ -201,20 +193,11 @@ export default function ProductInfo({ product, categoryName, colors, selectedCol
             </span>
           </div>
         )}
-        {meta?.tech && (
+        {meta?.material && (
           <div className="flex items-center gap-2 w-fit bg-stone-100 px-3 py-1.5">
-            <Zap size={11} strokeWidth={2} className="text-gold" />
-            <span className="font-sans text-[11px] font-semibold tracking-widest uppercase text-stone-600">
-              {meta.tech}
+            <span className="font-sans text-[11px] text-stone-500 tracking-wide">
+              {meta.material}
             </span>
-            {meta.material && (
-              <>
-                <span className="text-stone-300">·</span>
-                <span className="font-sans text-[11px] text-stone-400 tracking-wide">
-                  {meta.material}
-                </span>
-              </>
-            )}
           </div>
         )}
       </div>
