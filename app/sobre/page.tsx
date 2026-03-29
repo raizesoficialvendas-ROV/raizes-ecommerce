@@ -33,36 +33,36 @@ const VALORES = [
 
 const DIFERENCIAIS = [
   {
-    label: "Tecnologia têxtil",
-    titulo: "O tecido que não te decepciona.",
+    label: "O tecido",
+    titulo: "Simples por honestidade.",
     corpo:
-      "Nosso algodão passa por processo de Fiação Penteada de Alta Precisão, que remove fibras curtas e irregulares. O resultado é um fio mais liso, mais resistente e significativamente mais macio ao toque. Associado à tecnologia antimicrobiana integrada ao fio (não um tratamento superficial), o tecido inibe a proliferação bacteriana e controla o odor, lavagem após lavagem, ano após ano.",
+      "Confeccionada em 100% algodão, com malha leve e confortável para o dia a dia. Toque macio, boa respirabilidade e modelagem clássica com gola redonda. Uma peça criada para quem valoriza conforto real e autenticidade, sem depender de promessas exageradas sobre o tecido.",
   },
   {
-    label: "Modelagem CAD",
-    titulo: "Caimento que não é coincidência.",
+    label: "O corte",
+    titulo: "Um caimento que faz sentido.",
     corpo:
-      "Cada molde da Raízes é desenvolvido com Modelagem Digital CAD, o mesmo processo utilizado por marcas de luxo europeu. Isso garante que o caimento seja consistente em todos os tamanhos, do P ao GG, sem as distorções de escala que arruínam grande parte das camisetas do mercado. Você compra um M e recebe exatamente o que esperava.",
+      "Modelagem tradicional pensada para o corpo masculino, com acabamento cuidadoso em todos os tamanhos. Do P ao GG, cada peça é feita para cair bem e acompanhar os movimentos do dia sem perder a forma. Sem surpresas quando o pedido chegar.",
   },
   {
-    label: "Cor que permanece",
-    titulo: "Pigmentos que não desbotam.",
+    label: "A cor",
+    titulo: "Cuidada para durar.",
     corpo:
-      "Utilizamos tintura a fio com pigmentos de alta solidez, fixados antes da tecelagem. Não é estamparia. Não é tingimento superficial. A cor é parte do fio, o que garante resistência ao desbotamento por no mínimo dois anos de uso e lavagem regulares. Nossa garantia não é marketing: é compromisso.",
+      "Utilizamos processo de tingimento cuidadoso para que as cores se mantenham com o uso regular. Lavando corretamente, a durabilidade é muito boa. Paleta sóbria e atemporal, pensada para combinar com qualquer ocasião e resistir ao tempo sem perder a identidade.",
   },
   {
     label: "Design atemporal",
     titulo: "Criado para não envelhecer.",
     corpo:
-      "Não seguimos temporadas de moda. Não lançamos coleções sazonais que ficam obsoletas em seis meses. Cada peça da Raízes foi desenhada para ser igualmente relevante hoje, em três anos e em dez. Cores sóbrias, cortes clássicos, acabamento impecável. Isso é o oposto do descartável.",
+      "Não seguimos temporadas de moda. Não lançamos coleções sazonais que ficam obsoletas em seis meses. Cada peça da Raízes foi desenhada para ser igualmente relevante hoje, em três anos e em dez. Cores sóbrias, cortes clássicos e propósito em cada detalhe.",
   },
 ];
 
 const NUMEROS = [
-  { valor: "2 anos", descricao: "de garantia contra desbotamento" },
-  { valor: "100%", descricao: "algodão penteado de alta precisão" },
+  { valor: "100%", descricao: "algodão, malha leve e confortável" },
   { valor: "30 dias", descricao: "para troca ou devolução sem burocracia" },
   { valor: "0", descricao: "compromisso com modismos ou tendências passageiras" },
+  { valor: "3", descricao: "valores que guiam tudo: fé, família e propósito" },
 ];
 
 export default function SobrePage() {
@@ -116,10 +116,7 @@ export default function SobrePage() {
                     A resposta não foi reclamar. Foi criar.
                   </p>
                   <p className="font-sans text-sm md:text-base text-stone-500 leading-relaxed">
-                    A Raízes foi fundada com uma premissa simples: o cristão moderno merece o mesmo
-                    nível de atenção ao detalhe que qualquer outra área da sua vida recebe. Se você
-                    estuda sua Bíblia com profundidade, se você é presente na sua família, se você é
-                    excelente no seu trabalho, então sua roupa também deveria ser excelente.
+                    A Raízes foi fundada com uma premissa simples: o cristão moderno merece o mesmo cuidado no vestuário que dedica a qualquer outra área da sua vida. Se você estuda sua Bíblia com profundidade, se você é presente na sua família, se você é comprometido no seu trabalho, sua roupa também pode ser digna da vida que você está construindo.
                     Não por vaidade. Por integridade.
                   </p>
                 </div>
@@ -220,7 +217,7 @@ export default function SobrePage() {
             <div className="mb-12 md:mb-16">
               <p className="label-category text-stone-400 mb-5">O produto</p>
               <h2 className="font-serif text-3xl md:text-4xl font-normal tracking-tighter text-obsidian leading-tight max-w-lg">
-                Excelência que você sente antes de ver.
+                Feita com cuidado. Vestida com propósito.
               </h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -279,9 +276,9 @@ export default function SobrePage() {
                   Cada peça que fazemos precisa passar por um teste simples.
                 </p>
                 <p className="font-sans text-stone-400 text-sm leading-relaxed mb-6">
-                  Perguntamos: este produto é digno do homem que vai usá-lo? Não apenas
-                  visualmente. Na qualidade do tecido, na precisão do corte, na durabilidade
-                  ao longo do tempo, na intenção por trás de cada detalhe.
+                  Perguntamos: esta peça é digna do homem que vai usá-la? Não apenas
+                  visualmente. No conforto do tecido, no cuidado do corte, na durabilidade
+                  que o uso real exige, na intenção por trás de cada detalhe.
                 </p>
                 <p className="font-sans text-stone-400 text-sm leading-relaxed">
                   Se a resposta for não, o produto não existe. Simples assim.
