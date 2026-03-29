@@ -1,6 +1,5 @@
 "use server";
 
-import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { revalidatePath } from "next/cache";
 import type { Review, ReviewInsert, ReviewUpdate } from "@/types/database.types";
@@ -35,7 +34,7 @@ export async function submitReview(
   data: SubmitReviewData
 ): Promise<ReviewActionResult> {
   try {
-    const supabase = await createClient();
+    const supabase = createAdminClient();
     const insert: ReviewInsert = {
       product_id: data.product_id,
       author_name: data.author_name.trim(),
@@ -152,7 +151,7 @@ export async function voteHelpful(
   vote: "yes" | "no"
 ): Promise<ReviewActionResult> {
   try {
-    const supabase = await createClient();
+    const supabase = createAdminClient();
     const col = vote === "yes" ? "helpful_yes" : "helpful_no";
 
     // Incrementa via RPC para evitar race condition

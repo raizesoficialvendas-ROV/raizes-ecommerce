@@ -335,15 +335,9 @@ export type Database = {
         ];
       };
     };
-    Views: Record<string, {
-      Row: Record<string, unknown>;
-      Relationships: {
-        foreignKeyName: string;
-        columns: string[];
-        referencedRelation: string;
-        referencedColumns: string[];
-      }[];
-    }>;
+    Views: {
+      [_ in never]: never;
+    };
     Functions: Record<string, {
       Args: Record<string, unknown>;
       Returns: unknown;
