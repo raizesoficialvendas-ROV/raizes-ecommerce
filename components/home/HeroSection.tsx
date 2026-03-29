@@ -61,42 +61,40 @@ export default function HeroSection({ banner }: { banner?: Banner | null }) {
       {/* ── Conteúdo Principal ── */}
       <motion.div
         style={{ opacity: contentOpacity, y: contentY }}
-        className="relative z-10 h-full flex flex-col justify-end pb-20 md:pb-28"
+        className="relative z-10 h-full flex flex-col justify-end pb-16 md:pb-24"
       >
         <div className="raizes-container">
-          <div className="max-w-3xl">
+          <div className="flex flex-col items-center text-center max-w-2xl mx-auto">
 
             {/* Badge de categoria */}
             <motion.p
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-              className="label-category text-linen/70 mb-6"
+              className="label-category text-linen/60 mb-5 tracking-[0.2em]"
             >
               Coleção Essenciais · Verão 2026
             </motion.p>
 
             {/* Headline principal */}
             <motion.h1
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
-              className="font-serif !text-linen font-normal leading-[1.08] tracking-tighter mb-7"
-              style={{ fontSize: "clamp(2.5rem, 6vw, 5rem)" }}
+              className="font-serif text-linen font-normal leading-[1.1] tracking-tight mb-5"
+              style={{ fontSize: "clamp(1.9rem, 4vw, 3.25rem)" }}
             >
               A Camiseta Essencial
               <br />
-              <em className="not-italic !text-linen/65">para a Rotina</em>
-              <br />
-              do Cristão.
+              <em className="not-italic text-linen/55">para a Rotina do Cristão.</em>
             </motion.h1>
 
             {/* Subtexto */}
             <motion.p
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.55, ease: [0.25, 0.1, 0.25, 1] }}
-              className="font-sans text-linen/60 text-base md:text-lg font-light leading-[1.7] max-w-xl mb-12"
+              className="font-sans text-linen/50 text-sm md:text-base font-light leading-[1.75] max-w-sm mb-10"
             >
               Funcional, atemporal e versátil. Feita para quem busca
               excelência em todas as ocasiões — do culto ao cotidiano.
@@ -104,15 +102,15 @@ export default function HeroSection({ banner }: { banner?: Banner | null }) {
 
             {/* CTAs */}
             <motion.div
-              initial={{ opacity: 0, y: 14 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
-              className="flex flex-col sm:flex-row items-start gap-4"
+              className="flex flex-col sm:flex-row items-center gap-4"
             >
               <Link href="#produtos" className="btn-primary group">
                 Explorar coleção
                 <ArrowRight
-                  size={15}
+                  size={14}
                   strokeWidth={1.5}
                   className="transition-transform duration-300 group-hover:translate-x-1"
                 />
