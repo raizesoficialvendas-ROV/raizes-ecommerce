@@ -44,19 +44,17 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
           transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
           className="flex flex-col"
         >
-          <p className="label-category text-stone-400 mb-8">Tecnologia</p>
+          <p className="label-category text-stone-400 mb-8">Composição</p>
           <h2 className="font-serif text-3xl md:text-4xl font-normal tracking-tighter text-obsidian mb-8 leading-[1.2]">
             Funcional por{" "}
             <em className="not-italic text-stone-400">design.</em>
           </h2>
           <p className="font-sans text-sm text-stone-500 leading-[1.9] mb-10">
-            Cada fio foi escolhido com intenção. O tecido{" "}
+            Confeccionada em{" "}
             <strong className="font-medium text-stone-700">
-              {meta?.tech ?? "premium"}
-            </strong>{" "}
-            regula a temperatura do corpo, bloqueia a radiação UV e mantém a
-            forma mesmo após centenas de lavagens. Performance que não se
-            anuncia — apenas funciona.
+              {meta?.material ?? "100% algodão"}
+            </strong>
+            , leve e respirável para o conforto do dia a dia. Toque macio, modelagem clássica e acabamento cuidadoso para quem quer se sentir bem sem precisar pensar muito nisso.
           </p>
 
           {/* Specs — linhas de tabela */}
@@ -103,7 +101,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
           </p>
           <p className="font-sans text-sm text-stone-500 leading-[1.9] mb-12">
             Da manhã de devoção ao compromisso profissional, do encontro de
-            célula ao café casual — {product.name} é a peça que não precisa
+            célula ao café casual: {product.name} é a peça que não precisa
             ser trocada porque já está certa.
           </p>
 

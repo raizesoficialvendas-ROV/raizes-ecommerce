@@ -67,9 +67,9 @@ const CHARACTERISTICS = [
   { label: "Não Desbota",       Icon: NaoDesbotaIcon      },
   { label: "Leve e Macia",      Icon: LeveMaciaIcon       },
   { label: "Sustentável",       Icon: SustentavelIcon     },
-  { label: "Anti Odor",         Icon: AntiOdorIcon        },
+  { label: "Toque Macio",      Icon: AntiOdorIcon        },
   { label: "Desamassa\nno Corpo", Icon: DesamassaIcon     },
-  { label: "Regulação\nTérmica",  Icon: RegulacaoTermicaIcon },
+  { label: "Respirável\ne Leve",  Icon: RegulacaoTermicaIcon },
 ];
 
 const ITEMS_PER_PAGE = 3;

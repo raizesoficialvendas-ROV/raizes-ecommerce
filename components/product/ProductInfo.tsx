@@ -92,7 +92,7 @@ export default function ProductInfo({ product, categoryName, colors, selectedCol
       ? [
           {
             id: "tecnologia",
-            label: "Tecnologia & Material",
+            label: "Material & Acabamento",
             content: (
               <div>
                 {meta?.material && (
@@ -228,7 +228,7 @@ export default function ProductInfo({ product, categoryName, colors, selectedCol
             Cor
             {selectedColorIdx !== null && selectedColorIdx !== undefined && (
               <span className="ml-2 text-obsidian font-semibold">
-                — {colors[selectedColorIdx]?.name}
+                : {colors[selectedColorIdx]?.name}
               </span>
             )}
           </p>
