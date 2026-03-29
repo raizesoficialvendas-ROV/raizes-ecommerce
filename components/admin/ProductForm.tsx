@@ -241,7 +241,7 @@ export default function ProductForm({ categories, product }: ProductFormProps) {
               productId={product?.id}
               value={images}
               onChange={setImages}
-              maxImages={8}
+              maxImages={15}
             />
           </div>
 

@@ -102,7 +102,7 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
       </div>
 
       {/* ── Desktop: 2-column image grid ── */}
-      <div className="hidden md:grid grid-cols-2 gap-2">
+      <div className="hidden md:grid grid-cols-2">
         {safeImages.map((src, i) => (
           <div
             key={i}

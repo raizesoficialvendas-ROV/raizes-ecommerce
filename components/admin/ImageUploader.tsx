@@ -169,42 +169,47 @@ export default function ImageUploader({
 
       {/* Preview grid */}
       {value.length > 0 && (
-        <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 mt-4">
-          {value.map((url, i) => (
-            <div
-              key={url}
-              draggable
-              onDragStart={() => handleDragStart(i)}
-              onDragEnter={() => handleDragEnterItem(i)}
-              onDragOver={(e) => e.preventDefault()}
-              onDrop={handleDropReorder}
-              className="relative group aspect-square rounded-lg overflow-hidden border border-stone-200 bg-stone-100 cursor-grab active:cursor-grabbing"
-            >
-              <Image src={url} alt={`Imagem ${i + 1}`} fill sizes="120px" className="object-cover" />
+        <div
+          className="mt-4 overflow-y-auto pr-1"
+          style={{ maxHeight: "520px", scrollbarWidth: "thin", scrollbarColor: "#C8C0B8 transparent" }}
+        >
+          <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
+            {value.map((url, i) => (
+              <div
+                key={url}
+                draggable
+                onDragStart={() => handleDragStart(i)}
+                onDragEnter={() => handleDragEnterItem(i)}
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={handleDropReorder}
+                className="relative group aspect-square rounded-lg overflow-hidden border border-stone-200 bg-stone-100 cursor-grab active:cursor-grabbing"
+              >
+                <Image src={url} alt={`Imagem ${i + 1}`} fill sizes="120px" className="object-cover" />
 
-              {/* Overlay */}
-              <div className="absolute inset-0 bg-obsidian/0 group-hover:bg-obsidian/40 transition-all duration-200 flex items-center justify-center">
-                <button
-                  type="button"
-                  onClick={(e) => { e.stopPropagation(); handleRemove(url); }}
-                  className="opacity-0 group-hover:opacity-100 transition-opacity w-7 h-7 rounded-full bg-white flex items-center justify-center text-obsidian hover:bg-red-50 hover:text-red-500 shadow cursor-pointer"
-                  title="Remover imagem"
-                >
-                  <X size={14} />
-                </button>
-              </div>
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-obsidian/0 group-hover:bg-obsidian/40 transition-all duration-200 flex items-center justify-center">
+                  <button
+                    type="button"
+                    onClick={(e) => { e.stopPropagation(); handleRemove(url); }}
+                    className="opacity-0 group-hover:opacity-100 transition-opacity w-7 h-7 rounded-full bg-white flex items-center justify-center text-obsidian hover:bg-red-50 hover:text-red-500 shadow cursor-pointer"
+                    title="Remover imagem"
+                  >
+                    <X size={14} />
+                  </button>
+                </div>
 
-              {/* Index badge */}
-              <div className="absolute top-1 left-1 w-5 h-5 rounded-md bg-obsidian/70 flex items-center justify-center">
-                <span className="font-sans text-[10px] text-white font-medium">{i + 1}</span>
-              </div>
+                {/* Index badge */}
+                <div className="absolute top-1 left-1 w-5 h-5 rounded-md bg-obsidian/70 flex items-center justify-center">
+                  <span className="font-sans text-[10px] text-white font-medium">{i + 1}</span>
+                </div>
 
-              {/* Drag handle */}
-              <div className="absolute bottom-1 right-1 opacity-0 group-hover:opacity-60 transition-opacity">
-                <GripVertical size={14} className="text-white" />
+                {/* Drag handle */}
+                <div className="absolute bottom-1 right-1 opacity-0 group-hover:opacity-60 transition-opacity">
+                  <GripVertical size={14} className="text-white" />
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       )}
 
