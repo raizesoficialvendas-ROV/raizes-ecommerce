@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import type { Review } from "@/types/database.types";
 
 /* ─────────────────────────────────────────────
@@ -79,4 +80,45 @@ export function computeReviewStats(reviews: Review[]): ReviewStats {
     avgPurchaseExp: peCount > 0 ? peSum / peCount : null,
     avgSizeFit: sfCount > 0 ? sfSum / sfCount : null,
   };
+}
+
+/* ─────────────────────────────────────────────
+   Estatísticas agregadas para múltiplos produtos
+   Retorna: { [productId]: { avg, count } }
+   ───────────────────────────────────────────── */
+export type ProductsReviewStats = Record<string, { avg: number; count: number }>;
+
+export async function getProductsReviewStats(
+  productIds: string[]
+): Promise<ProductsReviewStats> {
+  if (productIds.length === 0) return {};
+  try {
+    const supabase = createAdminClient();
+    const { data, error } = await supabase
+      .from("reviews")
+      .select("product_id, rating")
+      .in("product_id", productIds)
+      .eq("approved", true);
+
+    if (error || !data) return {};
+
+    const map: Record<string, { sum: number; count: number }> = {};
+    for (const row of data) {
+      if (!map[row.product_id]) map[row.product_id] = { sum: 0, count: 0 };
+      map[row.product_id].sum += row.rating;
+      map[row.product_id].count += 1;
+    }
+
+    const result: ProductsReviewStats = {};
+    for (const [id, { sum, count }] of Object.entries(map)) {
+      result[id] = {
+        avg: Math.round((sum / count) * 10) / 10,
+        count,
+      };
+    }
+    return result;
+  } catch (err) {
+    console.error("[getProductsReviewStats]", err);
+    return {};
+  }
 }

@@ -6,16 +6,18 @@ import { motion, useMotionValue, animate } from "framer-motion";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import ProductCard from "./ProductCard";
 import type { Product } from "@/types/database.types";
+import type { ProductsReviewStats } from "@/lib/queries/reviews";
 
 interface BestSellersCarouselProps {
   products: Product[];
+  reviewStats?: ProductsReviewStats;
 }
 
 const CARD_WIDTH = 320;
 const CARD_GAP = 24;
 const STEP = CARD_WIDTH + CARD_GAP;
 
-export default function BestSellersCarousel({ products }: BestSellersCarouselProps) {
+export default function BestSellersCarousel({ products, reviewStats }: BestSellersCarouselProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const [isDragging, setIsDragging] = useState(false);
@@ -131,6 +133,8 @@ export default function BestSellersCarousel({ products }: BestSellersCarouselPro
                 product={product}
                 index={i}
                 priority={i < 2}
+                reviewAvg={reviewStats?.[product.id]?.avg}
+                reviewCount={reviewStats?.[product.id]?.count}
               />
             </div>
           ))}

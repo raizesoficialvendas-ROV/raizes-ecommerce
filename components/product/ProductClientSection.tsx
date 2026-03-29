@@ -9,12 +9,16 @@ interface ProductClientSectionProps {
   product: Product;
   allImages: string[];
   categoryName?: string;
+  reviewAvg?: number;
+  reviewCount?: number;
 }
 
 export default function ProductClientSection({
   product,
   allImages,
   categoryName,
+  reviewAvg,
+  reviewCount,
 }: ProductClientSectionProps) {
   const meta = product.metadata as Record<string, unknown> | null;
   const colors = useMemo<ColorEntry[]>(() => {
@@ -58,6 +62,8 @@ export default function ProductClientSection({
           colors={colors.length > 0 ? colors : undefined}
           selectedColorIdx={selectedColorIdx}
           onColorChange={setSelectedColorIdx}
+          reviewAvg={reviewAvg}
+          reviewCount={reviewCount}
         />
       </div>
     </div>

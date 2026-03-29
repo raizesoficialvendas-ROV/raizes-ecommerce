@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { ShoppingBag, Truck } from "lucide-react";
+import { ShoppingBag, Truck, Star } from "lucide-react";
 import { useCartStore } from "@/store/useCartStore";
 import { formatCurrency } from "@/lib/utils";
 import type { Product, ColorEntry } from "@/types/database.types";
@@ -14,6 +14,8 @@ interface ProductCardProps {
   index?: number;
   priority?: boolean;
   grid?: boolean;
+  reviewAvg?: number;
+  reviewCount?: number;
 }
 
 export default function ProductCard({
@@ -21,6 +23,8 @@ export default function ProductCard({
   index = 0,
   priority = false,
   grid = false,
+  reviewAvg,
+  reviewCount,
 }: ProductCardProps) {
   const [hovered, setHovered] = useState(false);
   const { addItem } = useCartStore();
@@ -201,6 +205,19 @@ export default function ProductCard({
             {material}
           </p>
         )}
+
+        {/* Avaliações */}
+        {reviewCount && reviewCount > 0 && reviewAvg ? (
+          <div className="flex items-center gap-1 mt-0.5">
+            <Star size={10} className="fill-amber-400 text-amber-400 shrink-0" />
+            <span className="font-sans text-[11px] font-semibold text-[#111827] leading-none">
+              {reviewAvg.toFixed(1)}
+            </span>
+            <span className="font-sans text-[11px] text-[#6B7280] leading-none">
+              ({reviewCount.toLocaleString("pt-BR")})
+            </span>
+          </div>
+        ) : null}
 
         {/* Preços */}
         <div className="flex items-baseline gap-2 mt-0.5">

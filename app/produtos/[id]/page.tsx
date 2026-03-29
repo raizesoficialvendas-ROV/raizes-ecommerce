@@ -78,6 +78,8 @@ export default async function ProductPage({ params }: PageProps) {
             product={product}
             allImages={images}
             categoryName={categoryName}
+            reviewAvg={reviewStats.total > 0 ? reviewStats.average : undefined}
+            reviewCount={reviewStats.total > 0 ? reviewStats.total : undefined}
           />
         </section>
 

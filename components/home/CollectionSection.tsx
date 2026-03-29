@@ -6,11 +6,13 @@ import { motion, useMotionValue, animate } from "framer-motion";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import ProductCard from "./ProductCard";
 import type { Product, Category } from "@/types/database.types";
+import type { ProductsReviewStats } from "@/lib/queries/reviews";
 
 interface CollectionSectionProps {
   collection: Category;
   products: Product[];
   sectionIndex?: number;
+  reviewStats?: ProductsReviewStats;
 }
 
 // The step will be dynamic based on screen size
@@ -19,6 +21,7 @@ export default function CollectionSection({
   collection,
   products,
   sectionIndex = 0,
+  reviewStats,
 }: CollectionSectionProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
@@ -192,7 +195,13 @@ export default function CollectionSection({
               key={product.id}
               style={{ pointerEvents: isDragging ? "none" : "auto" }}
             >
-              <ProductCard product={product} index={i} priority={i < 2} />
+              <ProductCard
+                product={product}
+                index={i}
+                priority={i < 2}
+                reviewAvg={reviewStats?.[product.id]?.avg}
+                reviewCount={reviewStats?.[product.id]?.count}
+              />
             </div>
           ))}
 

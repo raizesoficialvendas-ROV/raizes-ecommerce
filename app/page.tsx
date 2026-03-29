@@ -8,10 +8,15 @@ import FaqSection from "@/components/home/FaqSection";
 import NewsletterSection from "@/components/home/NewsletterSection";
 import { getCollectionsForHome } from "@/lib/queries/collections";
 import { getActiveBanner } from "@/lib/actions/banners";
+import { getProductsReviewStats } from "@/lib/queries/reviews";
 
 export default async function Home() {
   const collections = await getCollectionsForHome();
   const heroBanner = await getActiveBanner("hero");
+
+  // IDs de todos os produtos da homepage para buscar stats em lote
+  const allProductIds = collections.flatMap((c) => c.products.map((p) => p.id));
+  const reviewStats = await getProductsReviewStats(allProductIds);
 
   return (
     <>
@@ -24,6 +29,7 @@ export default async function Home() {
             collection={col}
             products={col.products}
             sectionIndex={index}
+            reviewStats={reviewStats}
           />
         ))}
         <ManifestoScrollSection />

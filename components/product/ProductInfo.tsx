@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import type { ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingBag, Check, Zap, Truck, ChevronDown, Shield, Repeat, Droplets, Minus, Plus } from "lucide-react";
+import { ShoppingBag, Check, Zap, Truck, ChevronDown, Shield, Repeat, Droplets, Minus, Plus, Star } from "lucide-react";
 import { useCartStore } from "@/store/useCartStore";
 import { formatCurrency } from "@/lib/utils";
 import type { Product, ColorEntry } from "@/types/database.types";
@@ -24,6 +24,8 @@ interface ProductInfoProps {
   colors?: ColorEntry[];
   selectedColorIdx?: number | null;
   onColorChange?: (idx: number) => void;
+  reviewAvg?: number;
+  reviewCount?: number;
 }
 
 type AccordionSection = {
@@ -32,7 +34,7 @@ type AccordionSection = {
   content: ReactNode;
 };
 
-export default function ProductInfo({ product, categoryName, colors, selectedColorIdx, onColorChange }: ProductInfoProps) {
+export default function ProductInfo({ product, categoryName, colors, selectedColorIdx, onColorChange, reviewAvg, reviewCount }: ProductInfoProps) {
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
@@ -153,6 +155,25 @@ export default function ProductInfo({ product, categoryName, colors, selectedCol
       <h1 className="font-serif text-3xl md:text-4xl font-normal tracking-tighter text-obsidian leading-[1.15]">
         {product.name}
       </h1>
+
+      {/* Avaliações inline */}
+      {reviewCount && reviewCount > 0 && reviewAvg ? (
+        <div className="flex items-center gap-1.5 -mt-1">
+          {[1,2,3,4,5].map((s) => (
+            <Star
+              key={s}
+              size={12}
+              className={s <= Math.round(reviewAvg) ? "fill-amber-400 text-amber-400" : "fill-stone-200 text-stone-200"}
+            />
+          ))}
+          <span className="font-sans text-sm font-medium text-obsidian ml-1">
+            {reviewAvg.toFixed(1)}
+          </span>
+          <span className="font-sans text-sm text-stone-400">
+            ({reviewCount.toLocaleString("pt-BR")} {reviewCount === 1 ? "avaliação" : "avaliações"})
+          </span>
+        </div>
+      ) : null}
 
       {/* Preço */}
       <div className="flex items-baseline gap-3">
