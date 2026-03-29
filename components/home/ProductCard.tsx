@@ -161,17 +161,11 @@ export default function ProductCard({
       </Link>
 
       {/* ── Info ── */}
-      <div className="pt-3 flex flex-col gap-1">
-        {/* Título */}
-        <Link href={`/produtos/${product.id}`} className="block">
-          <h3 className="!font-sans text-[14px] !font-medium text-[#111827] leading-snug truncate hover:text-[#6B7280] transition-colors duration-200">
-            {product.name}
-          </h3>
-        </Link>
+      <div className="pt-4 flex flex-col">
 
-        {/* ── Swatches de cores ── */}
+        {/* Swatches de cores */}
         {colors.length > 0 && (
-          <div className="flex items-center gap-1.5 mt-1 flex-wrap">
+          <div className="flex items-center gap-2 mb-3 flex-wrap">
             {colors.map((color, idx) => (
               <button
                 key={idx}
@@ -192,37 +186,44 @@ export default function ProductCard({
               />
             ))}
             {colors.length > 1 && (
-              <span className="font-sans text-[10px] text-stone-400 leading-none ml-0.5">
+              <span className="font-sans text-[10px] text-stone-400 leading-none">
                 {colors.length} cores
               </span>
             )}
           </div>
         )}
 
+        {/* Título */}
+        <Link href={`/produtos/${product.id}`} className="block mb-1.5">
+          <h3 className="!font-sans text-[13.5px] !font-medium text-[#111827] leading-snug line-clamp-2 hover:text-[#6B7280] transition-colors duration-200">
+            {product.name}
+          </h3>
+        </Link>
+
         {/* Material */}
         {material && (
-          <p className="font-sans text-[11px] font-normal text-[#6B7280] uppercase tracking-wide leading-none">
+          <p className="font-sans text-[11px] font-normal text-[#9CA3AF] uppercase tracking-wider leading-none mb-3">
             {material}
           </p>
         )}
 
         {/* Avaliações */}
         {reviewCount && reviewCount > 0 && reviewAvg ? (
-          <div className="flex items-center gap-1 mt-0.5">
-            <Star size={10} className="fill-amber-400 text-amber-400 shrink-0" />
-            <span className="font-sans text-[11px] font-semibold text-[#111827] leading-none">
+          <div className="flex items-center gap-1.5 mb-3">
+            <Star size={11} className="fill-amber-400 text-amber-400 shrink-0" />
+            <span className="font-sans text-[12px] font-semibold text-[#111827] leading-none">
               {reviewAvg.toFixed(1)}
             </span>
-            <span className="font-sans text-[11px] text-[#6B7280] leading-none">
+            <span className="font-sans text-[11px] text-[#9CA3AF] leading-none">
               ({reviewCount.toLocaleString("pt-BR")})
             </span>
           </div>
         ) : null}
 
         {/* Preços */}
-        <div className="flex items-baseline gap-2 mt-0.5">
+        <div className="flex items-baseline gap-2">
           {originalPrice && originalPrice > product.price && (
-            <span className="font-sans text-[12px] text-[#6B7280] line-through font-normal leading-none">
+            <span className="font-sans text-[12px] text-[#9CA3AF] line-through font-normal leading-none">
               {formatCurrency(originalPrice)}
             </span>
           )}
@@ -233,7 +234,7 @@ export default function ProductCard({
 
         {/* Frete Grátis */}
         {freeShipping && (
-          <div className="flex items-center gap-1 mt-0.5">
+          <div className="flex items-center gap-1.5 mt-2.5">
             <Truck size={10} strokeWidth={2} className="text-emerald-600 shrink-0" />
             <span className="font-sans text-[11px] font-semibold uppercase tracking-wide text-emerald-600 leading-none">
               Frete Grátis
