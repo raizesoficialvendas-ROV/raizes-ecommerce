@@ -8,32 +8,32 @@ const FAQS = [
   {
     question: "Os tecidos da Raízes são realmente diferentes?",
     answer:
-      "Sim. Trabalhamos exclusivamente com Algodão Penteado de Alta Precisão e tecnologia antimicrobiana integrada ao fio — não um tratamento superficial que lava e some. O resultado é uma camiseta que regula a temperatura, não desfia e mantém o caimento original mesmo após dezenas de lavagens.",
+      "Trabalhamos com 100% algodão leve e respirável, com toque macio e modelagem clássica. Sem promessas exageradas sobre o tecido. O que faz a Raízes diferente é a intenção de cada peça: honesta, confortável e carregada de significado. Você compra pela mensagem e recebe uma camiseta que cumpre o que promete.",
   },
   {
     question: "O que significa 'Moda com Alma'?",
     answer:
-      "Significa que cada peça da Raízes foi criada com intenção. Não seguimos tendências de temporada. Projetamos para o homem que busca excelência no caráter e quer que sua aparência reflita isso. Versículo, símbolo ou silêncio — cada detalhe comunica algo que vai além da roupa.",
+      "Significa que cada peça da Raízes foi criada com intenção. Não seguimos tendências de temporada. Pensamos para quem quer que sua aparência reflita seus valores e seu caráter. Versículo, símbolo ou silêncio: cada detalhe comunica algo que vai além da roupa.",
   },
   {
     question: "As peças desbotam com o tempo?",
     answer:
-      "Não. Utilizamos pigmentos de alta solidez e fixados por processo de tintura a fio, não por estampagem. Nossa garantia contra desbotamento é de 2 anos com uso e lavagem normais. Se sua peça desbotar antes disso, nós trocamos.",
+      "Não. Cuidamos do processo de tingimento para que as cores se mantenham com o uso e as lavagens normais. Lavando corretamente, a durabilidade é muito boa. Qualquer problema antes do esperado e nós cuidamos da troca.",
   },
   {
     question: "Como devo lavar minhas peças Raízes?",
     answer:
-      "Lave à máquina em ciclo delicado com água fria (até 30°C), de preferência pelo avesso. Evite amaciante — ele degrada as fibras tecnológicas ao longo do tempo. Seque à sombra, estendido horizontalmente, sem centrífuga. Simples assim.",
+      "Lave à máquina em ciclo delicado com água fria, de preferência pelo avesso. Evite amaciante, pois ele desgasta as fibras com o tempo. Seque à sombra, estendido, sem centrífuga. Simples assim.",
   },
   {
     question: "As camisetas amassam facilmente?",
     answer:
-      "Não. O caimento estruturado do nosso algodão penteado e o corte CAD garantem que as peças caiam naturalmente no corpo com pouquíssimas marcas. Para o dia a dia de quem não tem tempo a perder, é exatamente o que você precisa.",
+      "Não muito. O corte clássico e o algodão leve fazem com que as peças caiam bem no corpo com pouquíssimas marcas. Para o dia a dia de quem não tem tempo a perder, é exatamente o que você precisa.",
   },
   {
     question: "Posso usar as peças para atividades físicas e culto no mesmo dia?",
     answer:
-      "Sim — e esse é exatamente o propósito. Nossas Tech Shirts foram projetadas para transitar entre a academia, o escritório e o culto sem precisar trocar. A tecnologia antimicrobiana controla odor, e o caimento premium mantém a elegância em qualquer ambiente.",
+      "Sim, e esse é exatamente o propósito. Nossas camisetas foram feitas para transitar entre os diferentes momentos do dia sem precisar trocar. O algodão respirável mantém o conforto, e o corte clássico garante uma aparência cuidada em qualquer ambiente.",
   },
   {
     question: "Qual o prazo de entrega?",
