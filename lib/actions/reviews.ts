@@ -19,6 +19,7 @@ export interface SubmitReviewData {
   size_fit?: number;
   recommends?: boolean;
   product_variant?: string;
+  photos?: string[];
 }
 
 export interface ReviewActionResult {
@@ -46,6 +47,7 @@ export async function submitReview(
       size_fit: data.size_fit ?? null,
       recommends: data.recommends ?? null,
       product_variant: data.product_variant?.trim() || null,
+      photos: data.photos ?? [],
       approved: false,
       verified: false,
     };
@@ -58,6 +60,35 @@ export async function submitReview(
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : "Erro ao enviar avaliação";
     return { success: false, error: msg };
+  }
+}
+
+/* ─────────────────────────────────────────────
+   Upload de foto para bucket review-photos
+   ───────────────────────────────────────────── */
+export async function uploadReviewPhoto(
+  formData: FormData
+): Promise<{ url: string | null; error: string | null }> {
+  try {
+    const file = formData.get("file") as File | null;
+    if (!file || file.size === 0) return { url: null, error: "Arquivo inválido" };
+    if (file.size > 5 * 1024 * 1024) return { url: null, error: "Arquivo muito grande (máx 5 MB)" };
+
+    const supabase = createAdminClient();
+    const ext = file.name.split(".").pop()?.toLowerCase() ?? "jpg";
+    const path = `reviews/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+
+    const { error } = await supabase.storage
+      .from("review-photos")
+      .upload(path, file, { upsert: false, contentType: file.type });
+
+    if (error) return { url: null, error: error.message };
+
+    const { data } = supabase.storage.from("review-photos").getPublicUrl(path);
+    return { url: data.publicUrl, error: null };
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : "Erro ao fazer upload";
+    return { url: null, error: msg };
   }
 }
 

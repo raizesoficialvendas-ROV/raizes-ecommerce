@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useMemo, useTransition, useRef } from "react";
-import { Star, ThumbsUp, ThumbsDown, Share2, ChevronDown, Camera } from "lucide-react";
-import { submitReview, voteHelpful } from "@/lib/actions/reviews";
+import { Star, ThumbsUp, ThumbsDown, Share2, ChevronDown, Camera, X } from "lucide-react";
+import Image from "next/image";
+import { submitReview, voteHelpful, uploadReviewPhoto } from "@/lib/actions/reviews";
 import type { Review } from "@/types/database.types";
 import type { ReviewStats } from "@/lib/queries/reviews";
 
@@ -236,6 +237,7 @@ function ReviewForm({
   const [recommends, setRecommends] = useState<boolean | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [photos, setPhotos] = useState<File[]>([]);
+  const [uploadingPhotos, setUploadingPhotos] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const inputCls =
@@ -249,6 +251,24 @@ function ReviewForm({
     setError(null);
 
     startTransition(async () => {
+      // 1. Upload fotos para o Storage
+      let photoUrls: string[] = [];
+      if (photos.length > 0) {
+        setUploadingPhotos(true);
+        const uploadResults = await Promise.all(
+          photos.map((file) => {
+            const fd = new FormData();
+            fd.append("file", file);
+            return uploadReviewPhoto(fd);
+          })
+        );
+        setUploadingPhotos(false);
+        const failed = uploadResults.find((r) => r.error);
+        if (failed) { setError(`Erro ao enviar foto: ${failed.error}`); return; }
+        photoUrls = uploadResults.map((r) => r.url!).filter(Boolean);
+      }
+
+      // 2. Salvar avaliação com URLs das fotos
       const result = await submitReview({
         product_id: productId,
         author_name: name,
@@ -259,6 +279,7 @@ function ReviewForm({
         purchase_experience: purchaseExp ?? undefined,
         size_fit: sizeFit ?? undefined,
         recommends: recommends ?? undefined,
+        photos: photoUrls.length > 0 ? photoUrls : undefined,
       });
       if (result.success) {
         onSuccess();
@@ -391,6 +412,29 @@ function ReviewForm({
         </p>
       )}
 
+      {/* Preview de fotos selecionadas */}
+      {photos.length > 0 && (
+        <div className="flex flex-wrap gap-3">
+          {photos.map((file, i) => (
+            <div key={i} className="relative w-20 h-20 rounded overflow-hidden border border-stone-200 group">
+              <Image
+                src={URL.createObjectURL(file)}
+                alt={`Foto ${i + 1}`}
+                fill
+                className="object-cover"
+              />
+              <button
+                type="button"
+                onClick={() => setPhotos((prev) => prev.filter((_, idx) => idx !== i))}
+                className="absolute top-0.5 right-0.5 w-5 h-5 bg-obsidian/80 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+                <X size={10} className="text-white" />
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+
       {/* Ações */}
       <div className="flex items-center justify-end gap-3 pt-2">
         {/* Hidden file input */}
@@ -403,22 +447,25 @@ function ReviewForm({
           onChange={(e) => {
             const files = Array.from(e.target.files ?? []);
             setPhotos((prev) => [...prev, ...files].slice(0, 5));
+            // reset input so same file can be re-selected
+            if (fileInputRef.current) fileInputRef.current.value = "";
           }}
         />
         <button
           type="button"
           onClick={() => fileInputRef.current?.click()}
-          className="inline-flex items-center gap-2 px-4 py-2.5 border border-stone-300 font-sans text-xs font-semibold text-stone-600 uppercase tracking-widest hover:bg-stone-50 transition-colors"
+          disabled={photos.length >= 5}
+          className="inline-flex items-center gap-2 px-4 py-2.5 border border-stone-300 font-sans text-xs font-semibold text-stone-600 uppercase tracking-widest hover:bg-stone-50 transition-colors disabled:opacity-40"
         >
           <Camera size={13} />
-          {photos.length > 0 ? `${photos.length} foto${photos.length > 1 ? "s" : ""}` : "Add Photos"}
+          {photos.length > 0 ? `${photos.length}/5 foto${photos.length > 1 ? "s" : ""}` : "Add Photos"}
         </button>
         <button
           type="submit"
-          disabled={isPending}
+          disabled={isPending || uploadingPhotos}
           className="inline-flex items-center gap-2 px-6 py-2.5 bg-obsidian text-ivory font-sans text-xs font-semibold uppercase tracking-widest hover:bg-stone-800 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          {isPending ? "Enviando…" : "Enviar"}
+          {uploadingPhotos ? "Enviando fotos…" : isPending ? "Enviando…" : "Enviar"}
         </button>
       </div>
     </form>
@@ -498,6 +545,19 @@ function ReviewCard({ review }: { review: Review }) {
         <p className="font-sans text-sm text-stone-600 leading-[1.75] mt-2 mb-4">
           {review.body}
         </p>
+      )}
+
+      {/* Fotos da avaliação */}
+      {review.photos && review.photos.length > 0 && (
+        <div className="flex flex-wrap gap-2 mt-3 mb-4">
+          {review.photos.map((url, i) => (
+            <a key={i} href={url} target="_blank" rel="noopener noreferrer"
+              className="relative w-20 h-20 sm:w-24 sm:h-24 rounded overflow-hidden border border-stone-200 block hover:opacity-90 transition-opacity"
+            >
+              <Image src={url} alt={`Foto ${i + 1}`} fill className="object-cover" />
+            </a>
+          ))}
+        </div>
       )}
 
       {/* Sliders de experiência */}
