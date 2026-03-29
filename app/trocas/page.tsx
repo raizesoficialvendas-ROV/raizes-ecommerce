@@ -120,7 +120,7 @@ const FAQS = [
   },
   {
     q: "A garantia contra desbotamento funciona como devolução?",
-    a: "A garantia de 2 anos contra desbotamento é tratada como defeito de produto. Se sua peça desbotar com uso e lavagem normais dentro deste período, entre em contato com comprovante de compra e fotos. Realizamos a troca sem custo, independente do prazo de 30 dias.",
+    a: "Sim. A garantia de 5 meses é tratada como defeito de produto. Se sua peça apresentar desbotamento com uso e lavagem normais dentro deste período, entre em contato com o comprovante de compra e fotos. Realizamos a troca sem custo, independente do prazo de 30 dias.",
   },
   {
     q: "Posso fazer mais de uma troca por pedido?",
@@ -158,7 +158,7 @@ export default function TrocasPage() {
                 </div>
                 <div className="flex items-center gap-2 bg-stone-900 border border-stone-800 px-4 py-2">
                   <ShieldCheck size={14} strokeWidth={1.5} className="text-emerald-500" />
-                  <span className="font-sans text-xs text-stone-400 tracking-wide">2 anos de garantia contra desbotamento</span>
+                  <span className="font-sans text-xs text-stone-400 tracking-wide">5 meses de garantia</span>
                 </div>
                 <div className="flex items-center gap-2 bg-stone-900 border border-stone-800 px-4 py-2">
                   <ShieldCheck size={14} strokeWidth={1.5} className="text-emerald-500" />
@@ -223,7 +223,7 @@ export default function TrocasPage() {
             <div className="mb-12">
               <p className="label-category text-stone-400 mb-4">Condições</p>
               <h2 className="font-serif text-3xl md:text-4xl font-normal tracking-tighter text-obsidian leading-tight">
-                Seja transparente sobre o que aceitamos.
+                O que cobrimos e o que não cobrimos.
               </h2>
             </div>
 
@@ -343,12 +343,12 @@ export default function TrocasPage() {
                   <p className="label-category text-stone-600">Garantia exclusiva</p>
                 </div>
                 <h2 className="font-serif text-3xl md:text-4xl font-normal tracking-tighter text-ivory leading-tight mb-5">
-                  2 anos contra desbotamento.
+                  5 meses de garantia.
                 </h2>
                 <p className="font-sans text-stone-400 text-sm leading-relaxed">
-                  Nossa garantia contra desbotamento vai muito além dos 30 dias padrão.
-                  Se sua peça perder a cor com uso e lavagem normais nos primeiros 2 anos,
-                  substituímos sem custo e sem burocracia. Basta entrar em contato com o
+                  Nossa garantia vai além dos 30 dias padrão do mercado.
+                  Se sua peça apresentar defeito com uso e lavagem normais nos primeiros 5 meses,
+                  cuidamos da troca sem custo e sem burocracia. Basta entrar em contato com o
                   comprovante de compra e fotos da peça.
                 </p>
               </div>
