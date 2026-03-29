@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useTransition } from "react";
+import { useState, useMemo, useTransition, useRef } from "react";
 import { Star, ThumbsUp, ThumbsDown, Share2, ChevronDown, Camera } from "lucide-react";
 import { submitReview, voteHelpful } from "@/lib/actions/reviews";
 import type { Review } from "@/types/database.types";
@@ -110,8 +110,8 @@ function RadioScale({
 }) {
   return (
     <div>
-      <p className="font-sans text-sm font-medium text-obsidian mb-3">{label}</p>
-      <div className="flex items-center gap-2.5">
+      <p className="font-sans text-sm font-medium text-obsidian mb-4">{label}</p>
+      <div className="flex items-center justify-between w-full">
         {Array.from({ length: steps }, (_, i) => (
           <button
             key={i}
@@ -127,12 +127,12 @@ function RadioScale({
           />
         ))}
       </div>
-      <div className="flex justify-between mt-1.5">
-        <span className="font-sans text-[11px] text-stone-400">{leftLabel}</span>
+      <div className="flex justify-between mt-2">
+        <span className="font-sans text-[11px] text-stone-400 leading-tight max-w-[30%]">{leftLabel}</span>
         {midLabel && (
-          <span className="font-sans text-[11px] text-stone-400">{midLabel}</span>
+          <span className="font-sans text-[11px] text-stone-400 text-center leading-tight">{midLabel}</span>
         )}
-        <span className="font-sans text-[11px] text-stone-400">{rightLabel}</span>
+        <span className="font-sans text-[11px] text-stone-400 text-right leading-tight max-w-[30%]">{rightLabel}</span>
       </div>
     </div>
   );
@@ -235,6 +235,8 @@ function ReviewForm({
   const [sizeFit, setSizeFit] = useState<number | null>(null);
   const [recommends, setRecommends] = useState<boolean | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [photos, setPhotos] = useState<File[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const inputCls =
     "w-full border border-stone-200 bg-white font-sans text-sm text-obsidian px-4 py-3 focus:outline-none focus:border-obsidian transition-colors placeholder:text-stone-400";
@@ -391,12 +393,25 @@ function ReviewForm({
 
       {/* Ações */}
       <div className="flex items-center justify-end gap-3 pt-2">
+        {/* Hidden file input */}
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          multiple
+          className="hidden"
+          onChange={(e) => {
+            const files = Array.from(e.target.files ?? []);
+            setPhotos((prev) => [...prev, ...files].slice(0, 5));
+          }}
+        />
         <button
           type="button"
+          onClick={() => fileInputRef.current?.click()}
           className="inline-flex items-center gap-2 px-4 py-2.5 border border-stone-300 font-sans text-xs font-semibold text-stone-600 uppercase tracking-widest hover:bg-stone-50 transition-colors"
         >
           <Camera size={13} />
-          Add Photos
+          {photos.length > 0 ? `${photos.length} foto${photos.length > 1 ? "s" : ""}` : "Add Photos"}
         </button>
         <button
           type="submit"
@@ -521,13 +536,14 @@ function ReviewCard({ review }: { review: Review }) {
       )}
 
       {/* Footer: Compartilhar + Útil? */}
-      <div className="flex items-center justify-between mt-4">
-        <button className="inline-flex items-center gap-1.5 font-sans text-xs text-stone-500 hover:text-obsidian transition-colors">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mt-5">
+        <button className="inline-flex items-center gap-1.5 font-sans text-xs text-stone-500 hover:text-obsidian transition-colors w-fit">
           <Share2 size={12} />
           Compartilhar
         </button>
         <div className="flex items-center gap-3 font-sans text-xs text-stone-500">
-          <span>Este comentário foi útil?</span>
+          <span className="hidden sm:inline">Este comentário foi útil?</span>
+          <span className="sm:hidden">Foi útil?</span>
           <button
             onClick={() => handleVote("yes")}
             disabled={helpfulState.voted}
