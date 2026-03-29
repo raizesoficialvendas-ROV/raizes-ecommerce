@@ -263,6 +263,77 @@ export type Database = {
           }
         ];
       };
+      reviews: {
+        Row: {
+          id: string;
+          product_id: string;
+          author_name: string;
+          author_email: string;
+          rating: number;
+          title: string | null;
+          body: string | null;
+          purchase_experience: number | null;
+          size_fit: number | null;
+          recommends: boolean | null;
+          verified: boolean;
+          approved: boolean;
+          helpful_yes: number;
+          helpful_no: number;
+          photos: string[];
+          product_variant: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          product_id: string;
+          author_name: string;
+          author_email: string;
+          rating: number;
+          title?: string | null;
+          body?: string | null;
+          purchase_experience?: number | null;
+          size_fit?: number | null;
+          recommends?: boolean | null;
+          verified?: boolean;
+          approved?: boolean;
+          helpful_yes?: number;
+          helpful_no?: number;
+          photos?: string[];
+          product_variant?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          product_id?: string;
+          author_name?: string;
+          author_email?: string;
+          rating?: number;
+          title?: string | null;
+          body?: string | null;
+          purchase_experience?: number | null;
+          size_fit?: number | null;
+          recommends?: boolean | null;
+          verified?: boolean;
+          approved?: boolean;
+          helpful_yes?: number;
+          helpful_no?: number;
+          photos?: string[];
+          product_variant?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reviews_product_id_fkey";
+            columns: ["product_id"];
+            isOneToOne: false;
+            referencedRelation: "products";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
     };
     Views: Record<string, {
       Row: Record<string, unknown>;
@@ -334,7 +405,9 @@ export type OrderStatus = Enums<"order_status">;
 export type OrderItem = Tables<"order_items">;
 export type OrderItemInsert = TablesInsert<"order_items">;
 export type OrderItemUpdate = TablesUpdate<"order_items">;
-
+export type Review = Tables<"reviews">;
+export type ReviewInsert = TablesInsert<"reviews">;
+export type ReviewUpdate = TablesUpdate<"reviews">;
 // ---- Tipos compostos para UI ----
 
 export type ProductWithCategory = Product & {

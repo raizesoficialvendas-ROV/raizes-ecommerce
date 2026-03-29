@@ -5,7 +5,9 @@ import Footer from "@/components/layout/Footer";
 import ProductClientSection from "@/components/product/ProductClientSection";
 import ProductShowcase from "@/components/product/ProductShowcase";
 import type { ShowcaseImage } from "@/components/product/ProductShowcase";
+import ProductReviews from "@/components/product/ProductReviews";
 import { getProductById, getPublishedProducts } from "@/lib/queries/products";
+import { getProductReviews, computeReviewStats } from "@/lib/queries/reviews";
 import { getActiveBanner } from "@/lib/actions/banners";
 import { formatCurrency } from "@/lib/utils";
 import type { Product } from "@/types/database.types";
@@ -51,13 +53,15 @@ export default async function ProductPage({ params }: PageProps) {
     related = [];
   }
 
-  // Banners editoriais (showcase)
-  const [s1, s2, s3, s4] = await Promise.all([
+  // Banners editoriais (showcase) + reviews em paralelo
+  const [s1, s2, s3, s4, reviews] = await Promise.all([
     getActiveBanner("showcase_1"),
     getActiveBanner("showcase_2"),
     getActiveBanner("showcase_3"),
     getActiveBanner("showcase_4"),
+    getProductReviews(id),
   ]);
+  const reviewStats = computeReviewStats(reviews);
   const showcaseImages: ShowcaseImage[] = [s1, s2, s3, s4].map((b) => ({
     desktop: b?.image_desktop_url ?? null,
     mobile: b?.image_mobile_url ?? null,
@@ -79,6 +83,16 @@ export default async function ProductPage({ params }: PageProps) {
 
         {/* ── Apresentação editorial ── */}
         <ProductShowcase images={images} showcaseImages={showcaseImages} />
+
+        {/* ── Avaliações ── */}
+        <section className="raizes-container py-4 md:py-8">
+          <ProductReviews
+            productId={product.id}
+            productName={product.name}
+            reviews={reviews}
+            stats={reviewStats}
+          />
+        </section>
 
         {/* ── Produtos relacionados ── */}
         {related.length > 0 && (
