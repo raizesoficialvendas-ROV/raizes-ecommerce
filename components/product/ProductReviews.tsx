@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useTransition, useRef } from "react";
+import { motion } from "framer-motion";
 import { Star, ThumbsUp, ThumbsDown, Share2, ChevronDown, Camera, X } from "lucide-react";
 import Image from "next/image";
 import { submitReview, voteHelpful, uploadReviewPhoto } from "@/lib/actions/reviews";
@@ -502,7 +503,13 @@ function ReviewCard({ review }: { review: Review }) {
   });
 
   return (
-    <div className="py-7 border-b border-stone-100">
+    <motion.div
+      className="py-7 border-b border-stone-100"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-5%" }}
+      transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+    >
       {/* Header */}
       <div className="flex items-start justify-between gap-4 mb-4">
         <div className="flex items-center gap-3">
@@ -620,7 +627,7 @@ function ReviewCard({ review }: { review: Review }) {
           </button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -704,7 +711,13 @@ export default function ProductReviews({
     <section className="py-14 border-t border-stone-200">
 
       {/* ── Título da seção ── */}
-      <div className="flex items-center justify-between mb-2">
+      <motion.div
+        className="flex items-center justify-between mb-2"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-5%" }}
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      >
         <h2 className="font-serif text-2xl md:text-3xl font-normal text-obsidian tracking-tight">
           Avaliações
         </h2>
@@ -716,10 +729,19 @@ export default function ProductReviews({
             ✏ Escreva uma Avaliação
           </button>
         )}
-      </div>
+      </motion.div>
 
       {/* ── Resumo ── */}
-      {stats.total > 0 && <ReviewSummary stats={stats} />}
+      {stats.total > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-5%" }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+        >
+          <ReviewSummary stats={stats} />
+        </motion.div>
+      )}
 
       {/* ── Formulário ── */}
       {showForm && (

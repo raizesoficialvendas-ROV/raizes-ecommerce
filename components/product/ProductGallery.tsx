@@ -34,7 +34,12 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
   return (
     <>
       {/* ── Mobile: carousel ── */}
-      <div className="md:hidden">
+      <motion.div
+        className="md:hidden"
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      >
         <div
           className="relative aspect-[3/4] w-full overflow-hidden bg-stone-100"
           onClick={() => setLightboxOpen(true)}
@@ -99,7 +104,7 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
             ))}
           </div>
         )}
-      </div>
+      </motion.div>
 
       {/* ── Desktop: 2-column image grid ── */}
       <div className="hidden md:flex md:flex-col">
@@ -108,8 +113,11 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
             {safeImages.slice(rowIdx * 2, rowIdx * 2 + 2).map((src, colIdx) => {
               const i = rowIdx * 2 + colIdx;
               return (
-                <div
+                <motion.div
                   key={i}
+                  initial={{ opacity: 0, scale: 0.97 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: i * 0.08 }}
                   className="relative w-1/2 overflow-hidden bg-stone-100 cursor-zoom-in group"
                   style={{ paddingTop: "66.666%" }}
                   onClick={() => { setActiveIndex(i); setLightboxOpen(true); }}
@@ -126,7 +134,7 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
                     <ZoomIn size={11} strokeWidth={1.5} className="text-stone-600" />
                     <span className="font-sans text-[10px] text-stone-600 tracking-wider">Ampliar</span>
                   </div>
-                </div>
+                </motion.div>
               );
             })}
           </div>

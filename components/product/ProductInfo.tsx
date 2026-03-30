@@ -135,22 +135,38 @@ export default function ProductInfo({ product, categoryName, colors, selectedCol
     },
   ];
 
+  /* ── Apple-style entrance animation ─────────────────── */
+  const EASE = [0.22, 1, 0.36, 1] as const;
+  const containerVariants = {
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.09, delayChildren: 0.05 } },
+  };
+  const itemVariant = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.72, ease: EASE } },
+  };
+
   return (
-    <div className="flex flex-col gap-5">
+    <motion.div
+      className="flex flex-col gap-5"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
 
       {/* Categoria */}
       {categoryName && (
-        <p className="label-category text-stone-400">{categoryName}</p>
+        <motion.p variants={itemVariant} className="label-category text-stone-400">{categoryName}</motion.p>
       )}
 
       {/* Nome */}
-      <h1 className="font-serif text-3xl md:text-4xl font-normal tracking-tighter text-obsidian leading-[1.15]">
+      <motion.h1 variants={itemVariant} className="font-serif text-3xl md:text-4xl font-normal tracking-tighter text-obsidian leading-[1.15]">
         {product.name}
-      </h1>
+      </motion.h1>
 
       {/* Avaliações inline */}
       {reviewCount && reviewCount > 0 && reviewAvg ? (
-        <div className="flex items-center gap-1.5 -mt-1">
+        <motion.div variants={itemVariant} className="flex items-center gap-1.5 -mt-1">
           {[1,2,3,4,5].map((s) => (
             <Star
               key={s}
@@ -164,11 +180,11 @@ export default function ProductInfo({ product, categoryName, colors, selectedCol
           <span className="font-sans text-sm text-stone-400">
             ({reviewCount.toLocaleString("pt-BR")} {reviewCount === 1 ? "avaliação" : "avaliações"})
           </span>
-        </div>
+        </motion.div>
       ) : null}
 
       {/* Preço */}
-      <div className="flex items-baseline gap-3">
+      <motion.div variants={itemVariant} className="flex items-baseline gap-3">
         <p className="font-sans text-2xl font-light text-obsidian">
           {formatCurrency(product.price * quantity)}
         </p>
@@ -181,10 +197,10 @@ export default function ProductInfo({ product, categoryName, colors, selectedCol
             ou 6× de {formatCurrency(product.price / 6)} sem juros
           </p>
         )}
-      </div>
+      </motion.div>
 
       {/* Badges */}
-      <div className="flex flex-wrap items-center gap-2">
+      <motion.div variants={itemVariant} className="flex flex-wrap items-center gap-2">
         {(product.metadata as Record<string, unknown> | null)?.free_shipping === true && (
           <div className="flex items-center gap-2 w-fit bg-emerald-50 border border-emerald-200 px-3 py-1.5">
             <Truck size={12} strokeWidth={1.8} className="text-emerald-600" />
@@ -200,13 +216,13 @@ export default function ProductInfo({ product, categoryName, colors, selectedCol
             </span>
           </div>
         )}
-      </div>
+      </motion.div>
 
-      <div className="w-8 h-px bg-stone-200" />
+      <motion.div variants={itemVariant} className="w-8 h-px bg-stone-200" />
 
       {/* Cores */}
       {colors && colors.length > 0 && (
-        <div>
+        <motion.div variants={itemVariant}>
           <p className="font-sans text-xs font-medium tracking-widest uppercase text-stone-600 mb-4">
             Cor
             {selectedColorIdx !== null && selectedColorIdx !== undefined && (
@@ -240,11 +256,11 @@ export default function ProductInfo({ product, categoryName, colors, selectedCol
               </button>
             ))}
           </div>
-        </div>
+        </motion.div>
       )}
 
       {/* Tamanho */}
-      <div>
+      <motion.div variants={itemVariant}>
         <div className="flex items-center justify-between mb-4">
           <p className="font-sans text-xs font-medium tracking-widest uppercase text-stone-600">
             Tamanho
@@ -286,10 +302,10 @@ export default function ProductInfo({ product, categoryName, colors, selectedCol
             </motion.p>
           )}
         </AnimatePresence>
-      </div>
+      </motion.div>
 
       {/* Quantidade */}
-      <div>
+      <motion.div variants={itemVariant}>
         <p className="font-sans text-xs font-medium tracking-widest uppercase text-stone-600 mb-4">
           Quantidade
         </p>
@@ -314,10 +330,11 @@ export default function ProductInfo({ product, categoryName, colors, selectedCol
             <Plus size={13} strokeWidth={1.8} />
           </button>
         </div>
-      </div>
+      </motion.div>
 
       {/* CTA */}
       <motion.button
+        variants={itemVariant}
         onClick={handleAddToCart}
         whileTap={{ scale: 0.98 }}
         className={[
@@ -355,19 +372,19 @@ export default function ProductInfo({ product, categoryName, colors, selectedCol
 
       {/* Estoque */}
       {product.stock_quantity <= 10 && product.stock_quantity > 0 && (
-        <p className="font-sans text-xs text-stone-400 text-center">
+        <motion.p variants={itemVariant} className="font-sans text-xs text-stone-400 text-center">
           Apenas {product.stock_quantity} unidades disponíveis.
-        </p>
+        </motion.p>
       )}
 
       {/* ── Estimativa de Frete ── */}
-      <ProductShippingEstimate />
+      <motion.div variants={itemVariant}><ProductShippingEstimate /></motion.div>
 
       {/* ── Características ── */}
-      <ProductCharacteristics />
+      <motion.div variants={itemVariant}><ProductCharacteristics /></motion.div>
 
       {/* ── Accordion ── */}
-      <div className="border-t border-stone-100 mt-1">
+      <motion.div variants={itemVariant} className="border-t border-stone-100 mt-1">
         {accordionSections.map((section) => (
           <div key={section.id} className="border-b border-stone-100">
             <button
@@ -403,7 +420,7 @@ export default function ProductInfo({ product, categoryName, colors, selectedCol
             </AnimatePresence>
           </div>
         ))}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
