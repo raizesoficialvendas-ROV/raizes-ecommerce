@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useCallback } from "react";
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 /* ─────────────────────────────────────────────────────────────
    Conteúdo de texto — reutilizado em mobile e desktop
@@ -47,17 +46,16 @@ function TextContent() {
 
       <div className="w-12 h-px bg-stone-200 mb-12" />
 
-      <Link
-        href="/sobre"
-        className="inline-flex items-center gap-3 font-sans text-xs font-medium tracking-widest uppercase text-obsidian hover:text-stone-500 transition-colors duration-300 group w-fit"
-      >
-        Nossa história
-        <ArrowRight
-          size={14}
-          strokeWidth={1.5}
-          className="transition-transform duration-300 group-hover:translate-x-1"
+      <div className="flex flex-col items-start gap-2.5">
+        <span className="font-sans text-[10px] font-light tracking-[0.22em] uppercase text-stone-400 select-none">
+          Role a página
+        </span>
+        <ChevronDown
+          size={15}
+          strokeWidth={1}
+          className="text-stone-400 animate-bounce"
         />
-      </Link>
+      </div>
     </div>
   );
 }
@@ -82,17 +80,16 @@ function MobileTextOverlay() {
         permanecem firmes.
       </p>
 
-      <Link
-        href="/sobre"
-        className="inline-flex items-center gap-3 font-sans text-xs font-medium tracking-widest uppercase text-obsidian group"
-      >
-        Nossa história
-        <ArrowRight
-          size={14}
-          strokeWidth={1.5}
-          className="transition-transform duration-300 group-hover:translate-x-1"
+      <div className="flex flex-col items-start gap-2.5">
+        <span className="font-sans text-[10px] font-light tracking-[0.22em] uppercase text-stone-400 select-none">
+          Role a página
+        </span>
+        <ChevronDown
+          size={15}
+          strokeWidth={1}
+          className="text-stone-400 animate-bounce"
         />
-      </Link>
+      </div>
     </div>
   );
 }
