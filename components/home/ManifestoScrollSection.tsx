@@ -11,7 +11,7 @@ function TextContent() {
     <div className="flex flex-col justify-center">
       <p className="label-category text-stone-400 mb-8">Manifesto</p>
 
-      <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-normal tracking-wide text-obsidian leading-[1.08] mb-10">
+      <h2 className="font-serif text-2xl md:text-3xl lg:text-4xl font-normal tracking-wide text-obsidian leading-[1.1] mb-8">
         Homens de Fé,
         <br />
         <em className="not-italic text-stone-400">Família</em>
@@ -19,11 +19,11 @@ function TextContent() {
         e Propósito.
       </h2>
 
-      <div className="space-y-4 mb-12">
-        <p className="font-sans text-sm md:text-base text-stone-500 leading-[1.7]">
+      <div className="space-y-3 mb-10">
+        <p className="font-sans text-xs md:text-sm text-stone-500 leading-[1.7]">
           RAÍZES nasceu para homens que vivem pela fé.
         </p>
-        <ul className="space-y-2">
+        <ul className="space-y-1.5">
           {[
             "Homens que protegem a família.",
             "Homens que trabalham com propósito.",
@@ -31,14 +31,14 @@ function TextContent() {
           ].map((line) => (
             <li
               key={line}
-              className="font-sans text-sm md:text-base text-stone-400 leading-[1.7] flex items-start gap-3"
+              className="font-sans text-xs md:text-sm text-stone-400 leading-[1.7] flex items-start gap-3"
             >
               <span className="mt-[0.55em] w-1 h-1 flex-none bg-stone-300" />
               {line}
             </li>
           ))}
         </ul>
-        <p className="font-sans text-sm md:text-base text-stone-500 leading-[1.7] pt-2">
+        <p className="font-sans text-xs md:text-sm text-stone-500 leading-[1.7] pt-2">
           Vista aquilo que você acredita.{" "}
           <span className="text-obsidian font-medium">Vista propósito.</span>
         </p>
@@ -69,13 +69,13 @@ function MobileTextOverlay() {
     <div className="px-6 pb-10 pt-0">
       <p className="label-category text-stone-500 mb-4">Manifesto</p>
 
-      <h2 className="font-serif text-3xl font-normal tracking-wide text-obsidian leading-[1.08] mb-5">
+      <h2 className="font-serif text-xl font-normal tracking-wide text-obsidian leading-[1.1] mb-4">
         Homens de Fé,{" "}
         <em className="not-italic text-stone-400">Família</em>
         {" "}e Propósito.
       </h2>
 
-      <p className="font-sans text-sm text-stone-500 leading-[1.7] mb-5">
+      <p className="font-sans text-xs text-stone-500 leading-[1.7] mb-5">
         RAÍZES nasceu para homens que vivem pela fé, protegem a família e
         permanecem firmes.
       </p>
