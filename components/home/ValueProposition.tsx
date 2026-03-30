@@ -1,7 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
-import { Layers, Clock, Compass } from "lucide-react";
+import { Layers, Clock, Compass, ArrowRight } from "lucide-react";
 
 const PILLARS = [
   {
@@ -121,6 +122,28 @@ export default function ValueProposition() {
             );
           })}
         </motion.div>
+
+        {/* ── CTA ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.8, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+          className="mt-16 md:mt-20 flex justify-center"
+        >
+          <Link
+            href="/#produtos"
+            className="group inline-flex items-center gap-4 px-10 py-4 border border-stone-700 hover:border-stone-400 text-stone-400 hover:text-ivory font-sans text-[10px] font-light tracking-[0.28em] uppercase transition-all duration-500"
+          >
+            Explorar Catálogo
+            <ArrowRight
+              size={12}
+              strokeWidth={1}
+              className="transition-transform duration-500 group-hover:translate-x-1.5"
+            />
+          </Link>
+        </motion.div>
+
       </div>
     </section>
   );

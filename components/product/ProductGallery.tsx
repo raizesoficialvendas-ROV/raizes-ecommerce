@@ -102,25 +102,33 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
       </div>
 
       {/* ── Desktop: 2-column image grid ── */}
-      <div className="hidden md:grid grid-cols-2">
-        {safeImages.map((src, i) => (
-          <div
-            key={i}
-            className="relative aspect-[3/4] overflow-hidden bg-stone-100 cursor-zoom-in group"
-            onClick={() => { setActiveIndex(i); setLightboxOpen(true); }}
-          >
-            <Image
-              src={src}
-              alt={`${productName} — imagem ${i + 1}`}
-              fill
-              priority={i < 2}
-              sizes="(max-width: 1400px) 25vw, 350px"
-              className="object-cover object-center transition-transform duration-700 group-hover:scale-[1.03]"
-            />
-            <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1.5 bg-white/75 backdrop-blur-sm px-2 py-1">
-              <ZoomIn size={11} strokeWidth={1.5} className="text-stone-600" />
-              <span className="font-sans text-[10px] text-stone-600 tracking-wider">Ampliar</span>
-            </div>
+      <div className="hidden md:flex md:flex-col">
+        {Array.from({ length: Math.ceil(safeImages.length / 2) }, (_, rowIdx) => (
+          <div key={rowIdx} className="flex w-full">
+            {safeImages.slice(rowIdx * 2, rowIdx * 2 + 2).map((src, colIdx) => {
+              const i = rowIdx * 2 + colIdx;
+              return (
+                <div
+                  key={i}
+                  className="relative w-1/2 overflow-hidden bg-stone-100 cursor-zoom-in group"
+                  style={{ paddingTop: "66.666%" }}
+                  onClick={() => { setActiveIndex(i); setLightboxOpen(true); }}
+                >
+                  <Image
+                    src={src}
+                    alt={`${productName} — imagem ${i + 1}`}
+                    fill
+                    priority={i < 2}
+                    sizes="(max-width: 1400px) 25vw, 350px"
+                    className="object-cover object-center transition-transform duration-700 group-hover:scale-[1.03]"
+                  />
+                  <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1.5 bg-white/75 backdrop-blur-sm px-2 py-1">
+                    <ZoomIn size={11} strokeWidth={1.5} className="text-stone-600" />
+                    <span className="font-sans text-[10px] text-stone-600 tracking-wider">Ampliar</span>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         ))}
       </div>

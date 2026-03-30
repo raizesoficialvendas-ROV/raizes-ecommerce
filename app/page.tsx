@@ -23,15 +23,17 @@ export default async function Home() {
       <Navbar transparent />
       <main>
         <HeroSection banner={heroBanner} />
-        {collections.map((col, index) => (
-          <CollectionSection
-            key={col.id}
-            collection={col}
-            products={col.products}
-            sectionIndex={index}
-            reviewStats={reviewStats}
-          />
-        ))}
+        <div id="produtos">
+          {collections.map((col, index) => (
+            <CollectionSection
+              key={col.id}
+              collection={col}
+              products={col.products}
+              sectionIndex={index}
+              reviewStats={reviewStats}
+            />
+          ))}
+        </div>
         <ManifestoScrollSection />
         <ValueProposition />
         <FaqSection />
