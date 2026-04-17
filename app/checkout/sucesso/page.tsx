@@ -16,6 +16,9 @@ import {
   Sparkles,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { useMetaPixel } from "@/hooks/useMetaPixel";
+import { useCartStore } from "@/store/useCartStore";
+import { useUser } from "@/hooks/useUser";
 
 type PaymentState = "checking" | "paid" | "timeout";
 
@@ -24,6 +27,10 @@ function SucessoContent() {
   const orderId = params.get("pedido");
   const transactionId = params.get("transaction_id");
   const isPendingFallback = params.get("pending") === "true";
+
+  const { trackPurchase } = useMetaPixel();
+  const { items, totalWithShipping, clearCart } = useCartStore();
+  const { user } = useUser();
 
   const [state, setState] = useState<PaymentState>(
     isPendingFallback ? "timeout" : "checking"
@@ -55,7 +62,20 @@ function SucessoContent() {
   const markAsPaid = useCallback(() => {
     setState("paid");
     cleanup();
-  }, [cleanup]);
+
+    // Purchase event — browser + CAPI (event_id = orderId para deduplicar com webhook)
+    if (orderId) {
+      const total = totalWithShipping();
+      const userMeta = user?.user_metadata;
+      trackPurchase(orderId, items, total, {
+        email: user?.email,
+        phone: userMeta?.phone,
+        name: userMeta?.full_name,
+      });
+      // Limpa o carrinho após registrar a compra
+      clearCart();
+    }
+  }, [cleanup, trackPurchase, items, totalWithShipping, orderId, user, clearCart]);
 
   // ── Canal A: Supabase Realtime ──
   useEffect(() => {

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Playfair_Display, Cormorant_Garamond } from "next/font/google";
 import CartDrawer from "@/components/layout/CartDrawer";
 import ToastProvider from "@/components/ui/ToastProvider";
+import MetaPixel from "@/components/meta/MetaPixel";
 import "./globals.css";
 
 const inter = Inter({
@@ -83,6 +84,7 @@ export default function RootLayout({
       className={`${inter.variable} ${playfairDisplay.variable} ${cormorantGaramond.variable}`}
     >
       <body className="bg-ivory text-obsidian antialiased" suppressHydrationWarning>
+        <MetaPixel />
         <CartDrawer />
         {children}
         <ToastProvider />

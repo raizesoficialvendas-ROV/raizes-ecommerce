@@ -9,6 +9,7 @@ import { formatCurrency } from "@/lib/utils";
 import type { Product, ColorEntry } from "@/types/database.types";
 import ProductCharacteristics from "./ProductCharacteristics";
 import ProductShippingEstimate from "./ProductShippingEstimate";
+import { useMetaPixel } from "@/hooks/useMetaPixel";
 
 const SIZES = ["P", "M", "G", "GG"];
 
@@ -41,6 +42,7 @@ export default function ProductInfo({ product, categoryName, colors, selectedCol
   const [sizeError, setSizeError] = useState(false);
   const [openSection, setOpenSection] = useState<string | null>("descricao");
   const addItem = useCartStore((state) => state.addItem);
+  const { trackAddToCart } = useMetaPixel();
 
   const maxStock = product.stock_quantity ?? 99;
 
@@ -61,6 +63,7 @@ export default function ProductInfo({ product, categoryName, colors, selectedCol
       return;
     }
     addItem(product, quantity, selectedSize);
+    trackAddToCart(product, quantity);
     setAdded(true);
     setTimeout(() => setAdded(false), 2500);
   }

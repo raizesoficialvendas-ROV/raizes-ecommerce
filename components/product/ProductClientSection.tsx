@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import ProductGallery from "./ProductGallery";
 import ProductInfo from "./ProductInfo";
 import type { Product, ColorEntry } from "@/types/database.types";
+import { useMetaPixel } from "@/hooks/useMetaPixel";
 
 interface ProductClientSectionProps {
   product: Product;
@@ -20,6 +21,7 @@ export default function ProductClientSection({
   reviewAvg,
   reviewCount,
 }: ProductClientSectionProps) {
+  const { trackViewContent } = useMetaPixel();
   const meta = product.metadata as Record<string, unknown> | null;
   const colors = useMemo<ColorEntry[]>(() => {
     if (meta?.colors && Array.isArray(meta.colors)) {
@@ -27,6 +29,12 @@ export default function ProductClientSection({
     }
     return [];
   }, [meta]);
+
+  // Dispara ViewContent ao montar (visita de produto)
+  useEffect(() => {
+    trackViewContent(product);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [product.id]);
 
   // Pre-select first color if any colors exist
   const [selectedColorIdx, setSelectedColorIdx] = useState<number | null>(

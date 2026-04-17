@@ -27,6 +27,7 @@ import AddressForm, {
   type AddressData,
 } from "@/components/checkout/AddressForm";
 import { createOrder } from "@/lib/actions/orders";
+import { useMetaPixel } from "@/hooks/useMetaPixel";
 
 // Steps (Conta já foi resolvida antes de chegar aqui)
 const STEPS = [
@@ -39,6 +40,7 @@ export default function CheckoutResumoPage() {
   const router = useRouter();
   const toast = useToastStore();
   const { user, loading: authLoading } = useUser();
+  const { trackInitiateCheckout, trackAddPaymentInfo } = useMetaPixel();
   const {
     items,
     subtotal,
@@ -107,6 +109,14 @@ export default function CheckoutResumoPage() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mounted]);
+
+  // AddPaymentInfo: dispara quando o usuário chega na etapa de pagamento
+  useEffect(() => {
+    if (step === 3 && items.length > 0) {
+      trackAddPaymentInfo(items, totalWithShipping(), user?.email);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step]);
 
   const handleAddressChange = useCallback(
     (addr: AddressData, complete: boolean) => {
@@ -398,7 +408,11 @@ export default function CheckoutResumoPage() {
                   />
 
                   <button
-                    onClick={() => setStep(3)}
+                    onClick={() => {
+                      // InitiateCheckout: usuário vai para a etapa de pagamento
+                      trackInitiateCheckout(items, totalWithShipping(), user?.email);
+                      setStep(3);
+                    }}
                     disabled={!canProceedToStep3}
                     className="btn-primary w-full justify-center"
                   >

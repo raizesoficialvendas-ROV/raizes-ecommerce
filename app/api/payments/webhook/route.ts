@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createMelhorEnvioShipment } from "@/lib/shipping/melhor-envio";
+import { sendCAPIEvent } from "@/lib/meta/capi";
 
 /**
  * ── InfinitePay — Webhook de confirmação ──
@@ -55,6 +56,44 @@ export async function POST(req: NextRequest) {
     }
 
     console.log(`[Webhook] Pedido ${orderNsu} marcado como paid.`);
+
+    // ── CAPI Purchase (garantia servidor) ──────────────────────────────
+    // Disparado MESMO se o usuário fechar o browser antes de /sucesso.
+    // O event_id = orderNsu garante deduplicidade com o evento browser.
+    try {
+      const { data: orderForCAPI } = await supabase
+        .from("orders")
+        .select(`id, total_amount, customer_email, customer_name, customer_phone, address_cep, address_city, address_state`)
+        .eq("id", orderNsu)
+        .single();
+
+      if (orderForCAPI) {
+        await sendCAPIEvent({
+          eventName: "Purchase",
+          eventId: orderNsu,  // ← mesma chave do browser → Meta deduplica
+          eventSourceUrl: `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://raizesoficial.com.br"}/checkout/sucesso`,
+          actionSource: "website",
+          userData: {
+            em: orderForCAPI.customer_email ?? undefined,
+            ph: orderForCAPI.customer_phone ?? undefined,
+            fn: orderForCAPI.customer_name ?? undefined,
+            ct: orderForCAPI.address_city ?? undefined,
+            st: orderForCAPI.address_state ?? undefined,
+            zp: orderForCAPI.address_cep ?? undefined,
+            country: "br",
+          },
+          customData: {
+            currency: "BRL",
+            value: orderForCAPI.total_amount ?? 0,
+            order_id: orderNsu,
+          },
+        });
+        console.log(`[Webhook] CAPI Purchase disparado para pedido ${orderNsu.slice(0, 8)}.`);
+      }
+    } catch (capiErr) {
+      console.error("[Webhook] Erro ao disparar CAPI Purchase:", capiErr);
+    }
+    // ─────────────────────────────────────────────────────────────────
 
     // Criar envio no Melhor Envio automaticamente
     try {
